@@ -2,26 +2,34 @@ import { useEffect, useState } from "react"
 import { WebsocketProvider } from "y-websocket"
 import * as Y from 'yjs'
 import { isNil } from "lodash-es"
-import PandaEditorCore from "./core"
+import PandaEditorCore, { PandaEditorCoreConfig } from "./core"
 import { Descendant } from "slate"
+// import { getGlobalEditor } from "./util"
+
+
 
 type WebsocketProviderParameters = ConstructorParameters<typeof WebsocketProvider>
 
-interface PandaEditorProps {
-  initialValue: Descendant[],
+interface PandaEditorConfig extends PandaEditorCoreConfig {
   yWebsocket?: {
     serverUrl: WebsocketProviderParameters[0],
-    roomname: WebsocketProviderParameters[1],
+    roomName: WebsocketProviderParameters[1],
     userName: string,
     options?: WebsocketProviderParameters[3]
   }
 }
+interface PandaEditorProps {
+  initialValue: Descendant[],
+  config?: PandaEditorConfig
+}
 
 export default function PandaEditor(props: PandaEditorProps) {
 
-  const { yWebsocket, initialValue } = props
+  const { config = {}, initialValue } = props
 
-  const needSyncDoc = !isNil(yWebsocket?.serverUrl) && !isNil(yWebsocket?.roomname)
+  const { yWebsocket } = config
+
+  const needSyncDoc = !isNil(yWebsocket?.serverUrl) && !isNil(yWebsocket?.roomName)
 
   const [connected, setConnected] = useState(false)
   const [sharedType, setSharedType] = useState<Y.XmlText>()
@@ -31,7 +39,7 @@ export default function PandaEditor(props: PandaEditorProps) {
     if (!needSyncDoc) return
 
     const yDoc = new Y.Doc()
-    const yProvider = new WebsocketProvider(yWebsocket.serverUrl, yWebsocket.roomname, yDoc, yWebsocket.options);
+    const yProvider = new WebsocketProvider(yWebsocket.serverUrl, yWebsocket.roomName, yDoc, yWebsocket.options);
 
     const sharedDoc = yDoc.get('slate', Y.XmlText)
 
@@ -51,5 +59,14 @@ export default function PandaEditor(props: PandaEditorProps) {
     return <div>Loading...</div>
   }
 
-  return <PandaEditorCore initialValue={initialValue} needSyncDoc={needSyncDoc} sharedType={sharedType!} provider={provider!} userName={yWebsocket?.userName} />
+  return (
+    <PandaEditorCore
+      initialValue={initialValue}
+      needSyncDoc={needSyncDoc}
+      sharedType={sharedType!}
+      provider={provider!}
+      userName={yWebsocket?.userName}
+      config={config}
+    />
+  )
 }

@@ -18,7 +18,13 @@ export default function App() {
   const docId = searchParams.get('docId') || ''
   const userId = searchParams.get('userId') || ''
 
-  return <CollaborativeEditor docId={docId} userId={userId} />
+  // const editor = useEditor()
+
+  return (
+    <div>
+      <CollaborativeEditor docId={docId} userId={userId} />
+    </div>
+  )
 }
 
 interface CollaborativeEditorProps {
@@ -32,10 +38,12 @@ const CollaborativeEditor = (props: CollaborativeEditorProps) => {
   return (
     <PandaEditor
       initialValue={defaultInitialValue}
-      yWebsocket={{
-        serverUrl: 'ws',
-        roomname: `doc-room?docId=${docId}&userId=${userId}`,
-        userName: userId,
+      config={{
+        yWebsocket: {
+          serverUrl: 'ws',
+          roomName: `doc-room?docId=${docId}&userId=${userId}`,
+          userName: userId,
+        }
       }}
     />
   )

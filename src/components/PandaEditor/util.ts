@@ -1,30 +1,63 @@
-import { CursorEditor, withCursors, withYjs, YjsEditor } from "@slate-yjs/core"
-import { Editor } from "slate"
-import type { WebsocketProvider } from "y-websocket"
-import * as Y from 'yjs'
+import { withCursors, withYjs } from "@slate-yjs/core"
+import { Editor, Range } from "slate"
 
-const nativeFn = {
+function withLink(editor: Editor) {
+  const { isInline } = editor
+  editor.isInline = (element) => {
+    return element.type === 'link' ? true : isInline(element)
+  }
+  return editor
+}
+
+const YJS_FNS = {
   withYjs,
   withCursors,
 }
 
-const customFn: typeof nativeFn = {
-  withYjs: <T extends Editor>(editor: Editor, _sharedRoot: Y.XmlText) => editor as T & YjsEditor,
-  withCursors: <TCursorData extends Record<string, unknown>, TEditor extends YjsEditor>(
-    editor: TEditor,
-    _awareness: WebsocketProvider['awareness'],
-    _options?: {
-      cursorStateField?: string,
-      cursorDataField?: string,
-      autoSend?: boolean,
-      data?: TCursorData
-    }
-  ) => editor as TEditor & CursorEditor<TCursorData>
+const NATIVE_FNS = {
+  withYjs: (editor => editor) as typeof withYjs,
+  withCursors: (editor => editor) as typeof withCursors,
+  withLink,
 }
 
 export function getPandaEditorFns(needSyncDoc: boolean) {
+  let fns = { ...NATIVE_FNS }
   if (needSyncDoc) {
-    return nativeFn
+    fns = { ...NATIVE_FNS, ...YJS_FNS }
   }
-  return customFn
+  return fns
+}
+
+export const getCurrentWordRange = (editor: Editor, trigger: string) => {
+
+  const { selection } = editor
+  if (!selection) return null
+
+  const [start] = Range.edges(selection)
+  const wordRange = Editor.before(editor, start, {
+    distance: trigger.length,
+    unit: 'character'
+  })
+
+  if (!wordRange) return null
+
+  const word = Editor.string(editor, { anchor: wordRange, focus: start })
+
+  if (word !== trigger) return null
+
+  return { anchor: wordRange, focus: start }
+}
+
+export const isMarkActive = (editor: Editor, format: string) => {
+  const marks = Editor.marks(editor)
+  return marks ? marks[format] === true : false
+}
+
+export const toggleMark = (editor: Editor, format: string) => {
+  const isActive = isMarkActive(editor, format)
+  if (isActive) {
+    Editor.removeMark(editor, format)
+  } else {
+    Editor.addMark(editor, format, true)
+  }
 }
