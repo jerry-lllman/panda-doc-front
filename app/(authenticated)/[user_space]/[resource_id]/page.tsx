@@ -7,7 +7,7 @@ export default function ResourcePage() {
   // const { resource_id: resourceId } = useParams()
 
   return (
-    <div className="px-4">
+    <div>
       <DocEditor />
     </div>
   )

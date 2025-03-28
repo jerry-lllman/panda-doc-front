@@ -1,23 +1,34 @@
 import './styles.scss'
 
-import Code from '@tiptap/extension-code'
-import Document from '@tiptap/extension-document'
-import Paragraph from '@tiptap/extension-paragraph'
-import Text from '@tiptap/extension-text'
 import { EditorContent, useEditor } from '@tiptap/react'
+import { StarterKit } from '@tiptap/starter-kit'
+import { TextStyle } from '@tiptap/extension-text-style'
+import { Underline } from '@tiptap/extension-underline'
+
 import { LinkToolbar } from './components'
-import { Link } from './extensions'
+import { Link, ResetMarksOnEnter } from './extensions'
+import { TopToolbar } from './components/toolbar/top-toolbar'
 
 export function DocEditor() {
 
   const editor = useEditor({
     editable: true,
     extensions: [
-      Document,
-      Paragraph,
-      Text,
-      Code,
+      StarterKit.configure({
+        horizontalRule: false,
+        codeBlock: false,
+        paragraph: { HTMLAttributes: { class: 'text-node' } },
+        heading: { HTMLAttributes: { class: 'heading-node' } },
+        blockquote: { HTMLAttributes: { class: 'block-node' } },
+        bulletList: { HTMLAttributes: { class: 'list-node' } },
+        orderedList: { HTMLAttributes: { class: 'list-node' } },
+        code: { HTMLAttributes: { class: 'inline', spellcheck: 'false' } },
+        dropcursor: { width: 2, class: 'ProseMirror-dropcursor border' }
+      }),
+      Underline,
+      TextStyle,
       Link,
+      ResetMarksOnEnter
     ],
     content: `
       <p>
@@ -35,7 +46,14 @@ export function DocEditor() {
 
   return (
     <div className='tiptap relative'>
+      <TopToolbar
+        editor={editor}
+        className='px-4'
+        // variant='outline'
+        items={['bold', 'italic', 'underline', 'strikethrough', 'code', 'link', 'clearFormatting']}
+      />
       <EditorContent
+        className='px-10'
         editor={editor}
       // onMouseOver={e => {
       //   const { className } = (e.target as HTMLElement)
