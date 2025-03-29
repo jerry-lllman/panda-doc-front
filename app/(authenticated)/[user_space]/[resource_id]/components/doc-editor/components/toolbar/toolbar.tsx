@@ -2,7 +2,7 @@ import { toggleVariants } from "@/components/ui/toggle"
 import { Editor } from "@tiptap/react"
 import { VariantProps } from "class-variance-authority"
 import { TextStyleAction, ToolbarFormat } from "./toolbar-format"
-import { LinkButton } from "./link-button"
+import { LinkButton } from "./link"
 
 interface ToolbarBaseProps extends VariantProps<typeof toggleVariants> {
   editor: Editor

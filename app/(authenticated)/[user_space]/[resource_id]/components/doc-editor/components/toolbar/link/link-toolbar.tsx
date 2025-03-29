@@ -1,13 +1,13 @@
 import { BubbleMenu } from "@tiptap/react"
 import type { Editor } from '@tiptap/react'
 import { useCallback, useState } from "react"
-import { ShouldShowProps } from "../../types"
+import { ShouldShowProps } from "../../../types"
 import { Copy, Edit, Link, Unlink } from "lucide-react"
 import copy from 'copy-to-clipboard'
 import { toast } from "sonner"
 import { LinkEditBlock } from "./link-edit-block"
 import { LinkInfo } from "./type"
-import ToolbarButton from "../toolbar-button"
+import ToolbarButton from "../../toolbar-button"
 import { Separator } from "@/components/ui/separator"
 
 interface LinkToolbarProps {

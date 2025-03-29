@@ -5,7 +5,6 @@ import { StarterKit } from '@tiptap/starter-kit'
 import { TextStyle } from '@tiptap/extension-text-style'
 import { Underline } from '@tiptap/extension-underline'
 
-import { LinkToolbar } from './components'
 import { Link, ResetMarksOnEnter } from './extensions'
 import { TopToolbar } from './components/toolbar/top-toolbar'
 
@@ -60,7 +59,6 @@ export function DocEditor() {
       //   console.log(className)
       // }}
       />
-      <LinkToolbar editor={editor} />
 
     </div>
   )

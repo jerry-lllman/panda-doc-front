@@ -2,11 +2,11 @@ import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover
 import { toggleVariants } from "@/components/ui/toggle";
 import { Editor } from "@tiptap/react";
 import { VariantProps } from "class-variance-authority";
-import ToolbarButton from "../toolbar-button";
+import ToolbarButton from "../../toolbar-button";
 import { Link } from "lucide-react";
-import { LinkEditBlock } from "../link/link-edit-block";
+import { LinkEditBlock } from ".";
 import { useCallback } from "react";
-import { LinkInfo } from "../link/type";
+import { LinkInfo } from "./type";
 
 
 
