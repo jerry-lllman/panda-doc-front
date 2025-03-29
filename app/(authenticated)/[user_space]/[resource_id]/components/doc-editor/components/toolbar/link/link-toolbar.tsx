@@ -7,7 +7,7 @@ import copy from 'copy-to-clipboard'
 import { toast } from "sonner"
 import { LinkEditBlock } from "./link-edit-block"
 import { LinkInfo } from "./type"
-import ToolbarButton from "../../toolbar-button"
+import { ToolbarButton } from "../../"
 import { Separator } from "@/components/ui/separator"
 
 interface LinkToolbarProps {
