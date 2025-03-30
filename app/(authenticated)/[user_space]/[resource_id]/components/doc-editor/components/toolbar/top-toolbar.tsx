@@ -5,14 +5,14 @@ import { toggleVariants } from "@/components/ui/toggle"
 import { cn } from "@/lib/utils";
 import { ToolbarBase } from "./toolbar";
 import { LinkToolbar } from "./link";
+import React from "react";
 
 interface TopToolbarProps extends Partial<HTMLDivElement>, VariantProps<typeof toggleVariants> {
   editor: Editor;
   items: TextStyleAction[];
 }
 
-export const TopToolbar = (props: TopToolbarProps) => {
-
+const TopToolbarComponent = (props: TopToolbarProps) => {
   const { editor, items, variant, className, style = {} } = props
 
   return (
@@ -28,3 +28,8 @@ export const TopToolbar = (props: TopToolbarProps) => {
     </div>
   )
 }
+
+export const TopToolbar = React.memo(TopToolbarComponent, (oldProps, newProps) => {
+  // TODO: optimize this
+  return oldProps.editor === newProps.editor && JSON.stringify(oldProps.items) === JSON.stringify(newProps.items) && oldProps.variant === newProps.variant && oldProps.className === newProps.className && oldProps.style === newProps.style
+})

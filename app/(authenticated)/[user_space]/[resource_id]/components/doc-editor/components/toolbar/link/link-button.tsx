@@ -2,10 +2,10 @@ import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover
 import { toggleVariants } from "@/components/ui/toggle";
 import { Editor } from "@tiptap/react";
 import { VariantProps } from "class-variance-authority";
-import { ToolbarButton } from "../../";
+import { TooltipButton } from "../../";
 import { Link } from "lucide-react";
 import { LinkEditBlock } from ".";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { LinkInfo } from "./type";
 
 
@@ -18,9 +18,27 @@ export const LinkButton = (props: LinkButtonProps) => {
 
   const { editor, variant } = props
 
-  const { from, to } = editor.state.selection
-  const text = editor.state.doc.textBetween(from, to, ' ')
-  const { href, target } = editor.getAttributes('link')
+  const [open, setOpen] = useState(false)
+  const [linkInfo, setLinkInfo] = useState<LinkInfo>({
+    text: '',
+    href: '',
+    target: '_self'
+  })
+
+  const openLinkModal = (visible: boolean) => {
+
+    const { from, to } = editor.state.selection
+    const text = editor.state.doc.textBetween(from, to, ' ')
+    const { href, target } = editor.getAttributes('link')
+
+    setLinkInfo({
+      text,
+      href: href || '',
+      target: target || ''
+    })
+    setOpen(visible)
+  }
+
 
   const onSetLink = useCallback((value: LinkInfo) => {
     const { text, href, target } = value
@@ -48,9 +66,9 @@ export const LinkButton = (props: LinkButtonProps) => {
   }, [editor])
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={openLinkModal}>
       <PopoverTrigger asChild>
-        <ToolbarButton
+        <TooltipButton
           isActive={editor.isActive('link')}
           tooltip="Link"
           aria-label="Insert link"
@@ -59,10 +77,10 @@ export const LinkButton = (props: LinkButtonProps) => {
           variant={variant}
         >
           <Link />
-        </ToolbarButton>
+        </TooltipButton>
       </PopoverTrigger>
       <PopoverContent>
-        <LinkEditBlock defaultValues={{ text, href, target }} onSave={onSetLink} />
+        <LinkEditBlock defaultValues={linkInfo} onSave={onSetLink} />
       </PopoverContent>
     </Popover>
   )

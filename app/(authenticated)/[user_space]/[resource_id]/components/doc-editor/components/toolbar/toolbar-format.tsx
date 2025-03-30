@@ -1,10 +1,11 @@
 import { Editor } from "@tiptap/react"
 import { Bold, Code, Italic, Strikethrough, Underline } from "lucide-react"
 import { FormatAction } from "../../types"
-import { ToolbarButton } from "../"
+import { TooltipButton } from "../"
 import { getShortcutKey } from "../../utils"
 import { VariantProps } from "class-variance-authority"
 import { toggleVariants } from "@/components/ui/toggle"
+import { useMemo } from "react"
 
 export type TextStyleAction = 'bold' | 'italic' | 'underline' | 'strikethrough' | 'code' | 'link' | 'clearFormatting'
 
@@ -80,14 +81,16 @@ interface ToolbarFormatProps extends VariantProps<typeof toggleVariants> {
 export const ToolbarFormat = (props: ToolbarFormatProps) => {
   const { editor, items = [], variant } = props
 
-  const renderActions = formatActions
-    .filter(actionItem => items.includes(actionItem.value))
-    .sort((a, b) => items.indexOf(a.value) - items.indexOf(b.value))
+  const renderActions = useMemo(() => {
+    return formatActions
+      .filter(actionItem => items.includes(actionItem.value))
+      .sort((a, b) => items.indexOf(a.value) - items.indexOf(b.value))
+  }, [items])
 
   return (
     <div className="inline-grid grid-flow-col">
       {renderActions.map((action, index) => (
-        <ToolbarButton
+        <TooltipButton
           key={index}
           onClick={() => action.action(editor)}
           disabled={!action.canExecute(editor)}
@@ -97,7 +100,7 @@ export const ToolbarFormat = (props: ToolbarFormatProps) => {
           variant={variant}
         >
           {action.icon}
-        </ToolbarButton>
+        </TooltipButton>
       ))}
     </div>
   )

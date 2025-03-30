@@ -10,7 +10,7 @@ interface ToolbarButtonProps extends React.ComponentPropsWithoutRef<typeof Toggl
   tooltipOptions?: TooltipContentProps
 }
 
-export const ToolbarButton = React.forwardRef<HTMLButtonElement, ToolbarButtonProps>(
+export const TooltipButton = React.forwardRef<HTMLButtonElement, ToolbarButtonProps>(
   (props, ref) => {
     const { isActive, children, tooltip, className, tooltipOptions, ...restProps } = props
     const toggleButton = (
@@ -34,4 +34,4 @@ export const ToolbarButton = React.forwardRef<HTMLButtonElement, ToolbarButtonPr
   }
 )
 
-ToolbarButton.displayName = 'ToolbarButton'
+TooltipButton.displayName = 'TooltipButton'

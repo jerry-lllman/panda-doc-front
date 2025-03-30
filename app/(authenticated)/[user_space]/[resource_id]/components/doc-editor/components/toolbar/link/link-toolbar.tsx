@@ -7,7 +7,7 @@ import copy from 'copy-to-clipboard'
 import { toast } from "sonner"
 import { LinkEditBlock } from "./link-edit-block"
 import { LinkInfo } from "./type"
-import { ToolbarButton } from "../../"
+import { TooltipButton } from "../../"
 import { Separator } from "@/components/ui/separator"
 
 interface LinkToolbarProps {
@@ -119,17 +119,17 @@ export const LinkToolbar = (props: LinkToolbarProps) => {
                   <div>{linkInfo.text}</div>
                 </div>
                 <Separator orientation="vertical" />
-                <ToolbarButton tooltip="Copy" onClick={handleCopy}>
+                <TooltipButton tooltip="Copy" onClick={handleCopy}>
                   <Copy className="size-4" />
-                </ToolbarButton>
+                </TooltipButton>
                 <Separator orientation="vertical" />
-                <ToolbarButton tooltip="Edit link" onClick={() => setShowEdit(true)} >
+                <TooltipButton tooltip="Edit link" onClick={() => setShowEdit(true)} >
                   <Edit className="size-4" />
-                </ToolbarButton>
+                </TooltipButton>
                 <Separator orientation="vertical" />
-                <ToolbarButton tooltip="Clear link" onClick={onUnsetLink} >
+                <TooltipButton tooltip="Clear link" onClick={onUnsetLink} >
                   <Unlink className="size-4" />
-                </ToolbarButton>
+                </TooltipButton>
               </div>
             </div>
           )
