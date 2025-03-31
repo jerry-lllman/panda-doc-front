@@ -30,6 +30,28 @@ const TopToolbarComponent = (props: TopToolbarProps) => {
 }
 
 export const TopToolbar = React.memo(TopToolbarComponent, (oldProps, newProps) => {
-  // TODO: optimize this
-  return oldProps.editor === newProps.editor && JSON.stringify(oldProps.items) === JSON.stringify(newProps.items) && oldProps.variant === newProps.variant && oldProps.className === newProps.className && oldProps.style === newProps.style
+  const oldPropsKeys = Object.keys(oldProps)
+  const newPropsKeys = Object.keys(newProps)
+
+  if (JSON.stringify(oldPropsKeys) !== JSON.stringify(newPropsKeys)) {
+    return false
+  }
+
+  for (const key of oldPropsKeys) {
+    const keyName = key as keyof TopToolbarProps
+
+    if (Object.is(oldProps[keyName], newProps[keyName])) {
+      continue
+    }
+
+    try {
+      if (JSON.stringify(oldProps[keyName]) !== JSON.stringify(newProps[keyName])) {
+        return false
+      }
+    } catch (_error) {
+      return false
+    }
+  }
+
+  return true
 })
