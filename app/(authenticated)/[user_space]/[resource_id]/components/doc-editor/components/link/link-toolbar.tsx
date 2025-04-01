@@ -1,9 +1,8 @@
 import { BubbleMenu } from "@tiptap/react"
 import type { Editor } from '@tiptap/react'
 import { useCallback, useState } from "react"
-import { ShouldShowProps } from "../../../types"
+import { ShouldShowProps, LinkInfo } from "./types"
 import { LinkEditBlock } from "./link-edit-block"
-import { LinkInfo } from "./type"
 import { LinkToolbarContent } from "./link-toolbar-content"
 
 interface LinkToolbarProps {

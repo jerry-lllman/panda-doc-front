@@ -1,8 +1,4 @@
 import type { Editor } from '@tiptap/react'
-import type { BubbleMenuProps } from '@tiptap/react'
-
-export type ShouldShowProps = Parameters<BubbleMenuProps['shouldShow']>[0]
-
 export interface FormatAction {
   label: string
   icon?: React.ReactNode
@@ -13,9 +9,3 @@ export interface FormatAction {
   value: string
 }
 
-// declare module '@tiptap/core' {
-//   interface Editor {
-//     linkPopover: boolean
-//     setLinkPopover: (value: boolean) => void
-//   }
-// }

@@ -2,7 +2,7 @@ import type { Editor } from '@tiptap/react'
 import { Copy, Edit, Link, Unlink } from "lucide-react"
 import copy from 'copy-to-clipboard'
 import { toast } from "sonner"
-import { LinkInfo } from "./type"
+import { LinkInfo } from "./types"
 import { TooltipButton } from "../"
 import { Separator } from "@/components/ui/separator"
 

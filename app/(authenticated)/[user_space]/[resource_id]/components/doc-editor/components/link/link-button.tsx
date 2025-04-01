@@ -6,7 +6,7 @@ import { TooltipButton } from "../";
 import { Link } from "lucide-react";
 import { LinkEditBlock } from ".";
 import { useCallback, useState } from "react";
-import { LinkInfo } from "./type";
+import { LinkInfo } from "./types";
 
 interface LinkButtonProps extends VariantProps<typeof toggleVariants> {
   editor: Editor

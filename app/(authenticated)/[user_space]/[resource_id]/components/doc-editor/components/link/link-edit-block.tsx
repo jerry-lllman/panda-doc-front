@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input"
 import { useEffect } from "react"
 import { Switch } from "@/components/ui/switch"
 import { cn } from "@/lib/utils"
-import { LinkInfo } from "./type"
+import { LinkInfo } from "./types"
 
 const FormSchema = z.object({
   href: z.string(),
