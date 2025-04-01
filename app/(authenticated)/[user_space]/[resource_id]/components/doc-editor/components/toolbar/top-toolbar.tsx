@@ -4,7 +4,7 @@ import { VariantProps } from "class-variance-authority"
 import { toggleVariants } from "@/components/ui/toggle"
 import { cn } from "@/lib/utils";
 import { ToolbarBase } from "./toolbar";
-import { LinkToolbar } from "./link";
+import { LinkToolbar } from "../link";
 import React from "react";
 
 interface TopToolbarProps extends Partial<HTMLDivElement>, VariantProps<typeof toggleVariants> {
