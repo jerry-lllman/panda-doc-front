@@ -7,6 +7,7 @@ import { Underline } from '@tiptap/extension-underline'
 
 import { Link, ResetMarksOnEnter } from './extensions'
 import { TopToolbar } from './components'
+import { useEffect } from 'react'
 
 export function DocEditor() {
 
@@ -21,7 +22,7 @@ export function DocEditor() {
         blockquote: { HTMLAttributes: { class: 'block-node' } },
         bulletList: { HTMLAttributes: { class: 'list-node' } },
         orderedList: { HTMLAttributes: { class: 'list-node' } },
-        code: { HTMLAttributes: { class: 'inline', spellcheck: 'false' } },
+        code: { HTMLAttributes: { class: 'inline inline-code', spellcheck: 'false' } },
         dropcursor: { width: 2, class: 'ProseMirror-dropcursor border' }
       }),
       Underline,
@@ -38,6 +39,18 @@ export function DocEditor() {
       </p>
     `,
   })
+
+  useEffect(() => {
+    // Stop editor shortcuts from bubbling up to the document
+    const stopShortcuts = (e: KeyboardEvent) => {
+      debugger
+      if ((e.metaKey || e.ctrlKey) && editor?.isFocused) {
+        e.stopPropagation()
+      }
+    }
+    document.addEventListener('keydown', stopShortcuts)
+    return () => document.removeEventListener('keydown', stopShortcuts)
+  }, [editor])
 
   if (!editor) {
     return null

@@ -6,7 +6,7 @@ import { TooltipContentProps } from '@radix-ui/react-tooltip'
 
 interface ToolbarButtonProps extends React.ComponentPropsWithoutRef<typeof Toggle> {
   isActive?: boolean
-  tooltip?: string
+  tooltip?: React.ReactNode
   tooltipOptions?: TooltipContentProps
 }
 
@@ -27,7 +27,7 @@ export const TooltipButton = React.forwardRef<HTMLButtonElement, ToolbarButtonPr
       <Tooltip>
         <TooltipTrigger asChild>{toggleButton}</TooltipTrigger>
         <TooltipContent  {...tooltipOptions}>
-          <div className="flex flex-col items-center text-center">{tooltip}</div>
+          <div className="flex flex-col items-center">{tooltip}</div>
         </TooltipContent>
       </Tooltip>
     )

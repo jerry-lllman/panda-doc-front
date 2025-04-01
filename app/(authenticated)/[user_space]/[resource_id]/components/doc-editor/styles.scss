@@ -1,4 +1,5 @@
 @reference 'tailwindcss';
+@reference 'tw-animate-css';
 
 /* Basic editor styles */
 .tiptap {
@@ -41,12 +42,8 @@
   }
 
   /* Code and preformatted text styles */
-  code {
-    background-color: var(--purple-light);
-    border-radius: 0.4rem;
-    color: var(--black);
-    font-size: 0.85rem;
-    padding: 0.25em 0.3em;
+  .inline-code {
+    @apply bg-gray-200 text-gray-900 rounded-sm px-1 py-0.5;
   }
 
   /* Link styles */

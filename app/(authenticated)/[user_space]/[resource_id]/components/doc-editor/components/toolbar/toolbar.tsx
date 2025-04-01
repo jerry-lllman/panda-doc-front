@@ -17,10 +17,9 @@ export const ToolbarBase = (props: ToolbarBaseProps) => {
 
   return (
     <div className="inline-grid grid-flow-col">
+      <BlockTypeSelector editor={editor} variant={variant} />
       <ToolbarFormat editor={editor} variant={variant} items={items} />
       <LinkButton editor={editor} variant={variant} />
-      <BlockTypeSelector editor={editor} variant={variant} />
-
     </div>
   )
 }

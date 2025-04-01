@@ -25,7 +25,7 @@ const formatActions: TextStyle[] = [
   },
   {
     value: 'italic',
-    label: 'Italic',
+    label: 'Italicize',
     icon: <Italic />,
     action: editor => editor.chain().focus().toggleItalic().run(),
     isActive: editor => editor.isActive('italic'),
@@ -43,7 +43,7 @@ const formatActions: TextStyle[] = [
   },
   {
     value: 'strikethrough',
-    label: 'Strikethrough',
+    label: 'Strike-through',
     icon: <Strikethrough />,
     action: editor => editor.chain().focus().toggleStrike().run(),
     isActive: editor => editor.isActive('strike'),
@@ -95,7 +95,12 @@ export const ToolbarFormat = (props: ToolbarFormatProps) => {
           onClick={() => action.action(editor)}
           disabled={!action.canExecute(editor)}
           isActive={action.isActive(editor)}
-          tooltip={`${action.label} ${action.shortcuts.map(s => getShortcutKey(s).symbol).join(' ')}`}
+          tooltip={
+            <div>
+              <div>{action.label}</div>
+              <div>{action.shortcuts.map(s => getShortcutKey(s).symbol).join('')}</div>
+            </div>
+          }
           aria-label={action.label}
           variant={variant}
         >
