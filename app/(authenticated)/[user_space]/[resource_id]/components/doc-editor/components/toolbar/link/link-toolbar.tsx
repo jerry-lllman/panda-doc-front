@@ -2,19 +2,14 @@ import { BubbleMenu } from "@tiptap/react"
 import type { Editor } from '@tiptap/react'
 import { useCallback, useState } from "react"
 import { ShouldShowProps } from "../../../types"
-import { Copy, Edit, Link, Unlink } from "lucide-react"
-import copy from 'copy-to-clipboard'
-import { toast } from "sonner"
 import { LinkEditBlock } from "./link-edit-block"
 import { LinkInfo } from "./type"
-import { TooltipButton } from "../../"
-import { Separator } from "@/components/ui/separator"
+import { LinkToolbarContent } from "./link-toolbar-content"
 
 interface LinkToolbarProps {
   editor: Editor
 }
 export const LinkToolbar = (props: LinkToolbarProps) => {
-
   const { editor } = props
 
   const [showEdit, setShowEdit] = useState(false)
@@ -52,13 +47,6 @@ export const LinkToolbar = (props: LinkToolbarProps) => {
     [updateLinkState]
   )
 
-  const handleCopy = () => {
-    copy(linkInfo.href)
-    toast.success('Link copied to clipboard', {
-      position: 'bottom-center'
-    })
-  }
-
   const onSetLink = useCallback(
     (value: LinkInfo) => {
       const { text, href, target } = value
@@ -87,9 +75,6 @@ export const LinkToolbar = (props: LinkToolbarProps) => {
     [editor, updateLinkState]
   )
 
-  const onUnsetLink = () => {
-    editor.chain().focus().unsetLink().run()
-  }
 
   return (
     <BubbleMenu
@@ -110,29 +95,11 @@ export const LinkToolbar = (props: LinkToolbarProps) => {
               onSave={onSetLink}
             />
           ) : (
-            <div
-              // className="overflow-hidden  bg-background py-1 px-4 shadow-lg inset-shadow-2xs "
-              className="flex h-10 overflow-hidden rounded-md bg-background p-2  shadow-lg inset-shadow-2xs pl-3 pr-1  "
-            >
-              <div className="inline-flex  items-center gap-1 text-sm">
-                <div className="grid grid-flow-col items-center space-x-1 text-gray-600">
-                  <Link className="size-4 mt-0.5" />
-                  <div>{linkInfo.text}</div>
-                </div>
-                <Separator orientation="vertical" />
-                <TooltipButton tooltip="Copy" onClick={handleCopy}>
-                  <Copy className="size-4" />
-                </TooltipButton>
-                <Separator orientation="vertical" />
-                <TooltipButton tooltip="Edit link" onClick={() => setShowEdit(true)} >
-                  <Edit className="size-4" />
-                </TooltipButton>
-                <Separator orientation="vertical" />
-                <TooltipButton tooltip="Clear link" onClick={onUnsetLink} >
-                  <Unlink className="size-4" />
-                </TooltipButton>
-              </div>
-            </div>
+            <LinkToolbarContent
+              editor={editor}
+              linkInfo={linkInfo}
+              setShowEdit={setShowEdit}
+            />
           )
         }
       </div>
