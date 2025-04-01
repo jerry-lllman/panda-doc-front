@@ -8,8 +8,6 @@ import { LinkEditBlock } from ".";
 import { useCallback, useState } from "react";
 import { LinkInfo } from "./type";
 
-
-
 interface LinkButtonProps extends VariantProps<typeof toggleVariants> {
   editor: Editor
 }
@@ -25,7 +23,7 @@ export const LinkButton = (props: LinkButtonProps) => {
     target: '_self'
   })
 
-  const openLinkModal = (visible: boolean) => {
+  const openLinkModal = useCallback((visible: boolean) => {
 
     const { from, to } = editor.state.selection
     const text = editor.state.doc.textBetween(from, to, ' ')
@@ -37,7 +35,7 @@ export const LinkButton = (props: LinkButtonProps) => {
       target: target || ''
     })
     setOpen(visible)
-  }
+  }, [editor])
 
 
   const onSetLink = useCallback((value: LinkInfo) => {

@@ -12,7 +12,7 @@ interface TopToolbarProps extends Partial<HTMLDivElement>, VariantProps<typeof t
   items: TextStyleAction[];
 }
 
-const TopToolbarComponent = (props: TopToolbarProps) => {
+export const TopToolbar = (props: TopToolbarProps) => {
   const { editor, items, variant, className, style = {} } = props
 
   return (
@@ -27,31 +27,4 @@ const TopToolbarComponent = (props: TopToolbarProps) => {
       <LinkToolbar editor={editor} />
     </div>
   )
-}
-
-export const TopToolbar = React.memo(TopToolbarComponent, (oldProps, newProps) => {
-  const oldPropsKeys = Object.keys(oldProps)
-  const newPropsKeys = Object.keys(newProps)
-
-  if (JSON.stringify(oldPropsKeys) !== JSON.stringify(newPropsKeys)) {
-    return false
-  }
-
-  for (const key of oldPropsKeys) {
-    const keyName = key as keyof TopToolbarProps
-
-    if (Object.is(oldProps[keyName], newProps[keyName])) {
-      continue
-    }
-
-    try {
-      if (JSON.stringify(oldProps[keyName]) !== JSON.stringify(newProps[keyName])) {
-        return false
-      }
-    } catch (_error) {
-      return false
-    }
-  }
-
-  return true
-})
+} 

@@ -48,8 +48,9 @@ export const LinkToolbar = (props: LinkToolbarProps) => {
         return true
       }
       return false
-    }
-    , [updateLinkState])
+    },
+    [updateLinkState]
+  )
 
   const handleCopy = () => {
     copy(linkInfo.href)

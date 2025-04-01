@@ -6,7 +6,7 @@ import { TextStyle } from '@tiptap/extension-text-style'
 import { Underline } from '@tiptap/extension-underline'
 
 import { Link, ResetMarksOnEnter } from './extensions'
-import { TopToolbar } from './components/toolbar/top-toolbar'
+import { TopToolbar } from './components'
 
 export function DocEditor() {
 

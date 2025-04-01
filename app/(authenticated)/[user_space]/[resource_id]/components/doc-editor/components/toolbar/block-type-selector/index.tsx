@@ -1,4 +1,4 @@
-import { Heading, Heading1, Heading2, Heading3, Heading4, Heading5, Heading6, Type } from "lucide-react";
+import { Check, ChevronDown, Heading, Heading1, Heading2, Heading3, Heading4, Heading5, Heading6, Type } from "lucide-react";
 import { FormatAction } from "../../../types"
 import type { Level } from '@tiptap/extension-heading'
 import { Editor } from "@tiptap/react";
@@ -8,13 +8,12 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { TooltipButton } from "../../tooltip-button";
 import { VariantProps } from "class-variance-authority";
 import { toggleVariants } from "@/components/ui/toggle";
-import { useMemo } from "react";
+import { cn } from "@/lib/utils";
 
 
 type Enumerate<N extends number, Acc extends number[] = []> =
@@ -67,7 +66,7 @@ const blockTypes: BlockStyle[] = [
     icon: <Type className="size-5" />,
     action: editor => editor.chain().focus().setParagraph().run(),
     isActive: editor => editor.isActive('text'),
-    shortcuts: ['mod', '0'],
+    shortcuts: ['mod', 'alt', '0'],
   },
   ...generateHeadings(6),
 ]
@@ -76,19 +75,23 @@ interface BlockTypeSelectorProps extends VariantProps<typeof toggleVariants> {
   editor: Editor
 }
 
+
+const getBlockType = (editor: Editor) => {
+  const node = editor.state.selection.$from.parent
+  const nodeTypeName = node.type.name
+  let key = nodeTypeName === 'heading' ? `h${node.attrs.level}` : nodeTypeName
+  if (key === 'paragraph') {
+    key = 'text'
+  }
+  const result = blockTypes.find(item => item.value === (key || 'text'))
+  return result
+}
+
 export const BlockTypeSelector = (props: BlockTypeSelectorProps) => {
 
   const { editor, variant } = props
 
-  const getBlockType = useMemo(() => {
-    const node = editor.state.selection.$from.parent
-    const nodeTypeName = node.type.name
-    let result = nodeTypeName === 'heading' ? `Heading ${node.attrs.level}` : nodeTypeName
-    if (result === 'paragraph') {
-      result = 'Text'
-    }
-    return result
-  }, [editor])
+  const blockType = getBlockType(editor)
 
   return (
     <DropdownMenu>
@@ -99,7 +102,10 @@ export const BlockTypeSelector = (props: BlockTypeSelectorProps) => {
           className="w-auto px-2"
           variant={variant}
         >
-          {getBlockType}
+          <span className="flex items-center">
+            {blockType?.label}
+            <ChevronDown />
+          </span>
         </TooltipButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-56">
@@ -114,7 +120,12 @@ export const BlockTypeSelector = (props: BlockTypeSelectorProps) => {
               >
                 {item.icon}
                 {item.label}
-                <DropdownMenuShortcut>{item.shortcuts.join('+')}</DropdownMenuShortcut>
+                <Check
+                  className={cn(
+                    "ml-auto",
+                    item.value === blockType?.value ? "opacity-100" : "opacity-0"
+                  )}
+                />
               </DropdownMenuItem>
             ))
           }
