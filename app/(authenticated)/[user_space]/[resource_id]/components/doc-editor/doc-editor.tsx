@@ -4,6 +4,8 @@ import { EditorContent, useEditor } from '@tiptap/react'
 import { StarterKit } from '@tiptap/starter-kit'
 import { TextStyle } from '@tiptap/extension-text-style'
 import { Underline } from '@tiptap/extension-underline'
+import { Color } from '@tiptap/extension-color'
+import Highlight from '@tiptap/extension-highlight'
 
 import { Link, ResetMarksOnEnter } from './extensions'
 import { TopToolbar } from './components'
@@ -25,8 +27,10 @@ export function DocEditor() {
         code: { HTMLAttributes: { class: 'inline inline-code', spellcheck: 'false' } },
         dropcursor: { width: 2, class: 'ProseMirror-dropcursor border' }
       }),
+      Highlight.configure({ multicolor: true }),
       Underline,
       TextStyle,
+      Color,
       Link,
       ResetMarksOnEnter
     ],
@@ -43,7 +47,6 @@ export function DocEditor() {
   useEffect(() => {
     // Stop editor shortcuts from bubbling up to the document
     const stopShortcuts = (e: KeyboardEvent) => {
-      debugger
       if ((e.metaKey || e.ctrlKey) && editor?.isFocused) {
         e.stopPropagation()
       }
