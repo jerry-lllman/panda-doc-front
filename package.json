@@ -57,7 +57,6 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.2.3",
-    "postcss-import": "^16.1.0",
     "sass": "^1.86.0",
     "tailwindcss": "^4",
     "typescript": "^5"

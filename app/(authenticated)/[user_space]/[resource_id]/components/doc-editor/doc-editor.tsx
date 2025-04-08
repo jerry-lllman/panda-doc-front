@@ -1,4 +1,4 @@
-import './styles.scss'
+import './styles.css'
 
 import { EditorContent, useEditor } from '@tiptap/react'
 import { StarterKit } from '@tiptap/starter-kit'

@@ -1,6 +1,7 @@
 @reference 'tailwindcss';
 @reference 'tw-animate-css';
 
+
 /* Basic editor styles */
 .tiptap {
   padding-left: 1rem;
@@ -11,8 +12,6 @@
   }
 
   h2 {
-    // font-size: 2rem;
-    // font-weight: 600;
     @apply mt-8 mb-1 font-semibold text-4xl leading-tight;
   }
 
@@ -43,7 +42,8 @@
 
   /* Code and preformatted text styles */
   .inline-code {
-    @apply bg-gray-200 text-gray-900 rounded-sm px-1 py-0.5;
+    @apply rounded-sm px-1 py-0.5;
+    background-color: var(--inline-code-background);
   }
 
   /* Link styles */
@@ -51,6 +51,6 @@
     color: var(--link-text);
     opacity: 0.7;
     border-bottom: 0.05em solid var(--link-text);
-
+    ;
   }
 }
