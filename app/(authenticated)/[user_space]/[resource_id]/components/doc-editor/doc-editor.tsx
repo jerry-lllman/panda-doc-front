@@ -7,7 +7,7 @@ import { Underline } from '@tiptap/extension-underline'
 import { Color } from '@tiptap/extension-color'
 import Highlight from '@tiptap/extension-highlight'
 
-import { Link, ResetMarksOnEnter } from './extensions'
+import { Link, ResetMarksOnEnter, Selection } from './extensions'
 import { TopToolbar } from './components'
 import { useEffect } from 'react'
 
@@ -28,6 +28,7 @@ export function DocEditor() {
         dropcursor: { width: 2, class: 'ProseMirror-dropcursor border' }
       }),
       Highlight.configure({ multicolor: true }),
+      Selection,
       Underline,
       TextStyle,
       Color,

@@ -20,7 +20,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
 
   const handlerBackgroundChange = useCallback((e: React.MouseEvent<HTMLButtonElement>, value: string) => {
     e.preventDefault()
-    editor.chain().focus().toggleHighlight({ color: value }).run()
+    editor.chain().focus().setHighlight({ color: value }).run()
   }, [editor])
 
   return (
@@ -30,7 +30,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
           A
         </TooltipButton>
       </PopoverTrigger>
-      <PopoverContent className="w-auto" align="start" alignOffset={-20}>
+      <PopoverContent className="w-auto" align="start" alignOffset={-20} asChild>
         <div>
           <div>
             <div>Text color</div>

@@ -53,4 +53,15 @@
     border-bottom: 0.05em solid var(--link-text);
     ;
   }
+
+  .selection {
+    @apply inline;
+  }
+
+  .selection,
+  *::selection {
+    @apply bg-black/10 inline;
+  }
+
+
 }
