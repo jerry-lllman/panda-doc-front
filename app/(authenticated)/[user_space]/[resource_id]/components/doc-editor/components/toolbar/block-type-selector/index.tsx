@@ -59,39 +59,34 @@ const generateHeadings = (maxLevel: Level) => {
   return headings
 }
 
+const paragraph: BlockStyle = {
+  value: 'text',
+  label: 'Text',
+  icon: <Type className="size-5" />,
+  action: editor => editor.chain().focus().setParagraph().run(),
+  isActive: editor => editor.isActive('text'),
+  shortcuts: ['mod', 'alt', '0'],
+}
+
 const blockTypes: BlockStyle[] = [
-  {
-    value: 'text',
-    label: 'Text',
-    icon: <Type className="size-5" />,
-    action: editor => editor.chain().focus().setParagraph().run(),
-    isActive: editor => editor.isActive('text'),
-    shortcuts: ['mod', 'alt', '0'],
-  },
+  paragraph,
   ...generateHeadings(6),
 ]
+
+const getActiveBlockType = (editor: Editor) => {
+  return blockTypes.find(blockType => blockType.isActive(editor)) || paragraph
+}
 
 interface BlockTypeSelectorProps extends VariantProps<typeof toggleVariants> {
   editor: Editor
 }
 
 
-const getBlockType = (editor: Editor) => {
-  const node = editor.state.selection.$from.parent
-  const nodeTypeName = node.type.name
-  let key = nodeTypeName === 'heading' ? `h${node.attrs.level}` : nodeTypeName
-  if (key === 'paragraph') {
-    key = 'text'
-  }
-  const result = blockTypes.find(item => item.value === (key || 'text'))
-  return result
-}
-
 export const BlockTypeSelector = (props: BlockTypeSelectorProps) => {
 
   const { editor, variant } = props
 
-  const blockType = getBlockType(editor)
+  const activeBlockType = getActiveBlockType(editor)
 
   return (
     <DropdownMenu>
@@ -103,7 +98,7 @@ export const BlockTypeSelector = (props: BlockTypeSelectorProps) => {
           variant={variant}
         >
           <span className="flex items-center">
-            {blockType?.label}
+            {activeBlockType?.label}
             <ChevronDown />
           </span>
         </TooltipButton>
@@ -123,7 +118,7 @@ export const BlockTypeSelector = (props: BlockTypeSelectorProps) => {
                 <Check
                   className={cn(
                     "ml-auto",
-                    item.value === blockType?.value ? "opacity-100" : "opacity-0"
+                    item.value === activeBlockType?.value ? "opacity-100" : "opacity-0"
                   )}
                 />
               </DropdownMenuItem>
