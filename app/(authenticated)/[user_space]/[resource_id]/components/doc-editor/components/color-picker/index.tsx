@@ -13,12 +13,18 @@ interface ColorPickerProps {
 export const ColorPicker = (props: ColorPickerProps) => {
 
   const { editor } = props
+  const currentColor = editor.getAttributes('textStyle')?.color
+  const currentBgColor = editor.getAttributes('highlight')?.color
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <TooltipButton
           tooltip="Text color"
+          style={{
+            color: currentColor,
+            backgroundColor: currentBgColor
+          }}
         >
           A
         </TooltipButton>
