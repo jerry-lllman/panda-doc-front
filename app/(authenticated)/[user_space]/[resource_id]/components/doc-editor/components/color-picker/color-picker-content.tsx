@@ -5,10 +5,12 @@ import { Editor } from "@tiptap/react"
 
 interface ColorPickerContentProps {
   editor: Editor
+  currentColor?: string
+  currentBgColor?: string
 }
 export const ColorPickerContent = (props: ColorPickerContentProps) => {
 
-  const { editor } = props
+  const { editor, currentColor, currentBgColor } = props
 
   const handlerColorChange = useCallback((e: React.MouseEvent<HTMLButtonElement>, value: string) => {
     e.preventDefault()
@@ -39,8 +41,12 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
                   onClick={e => handlerColorChange(e, color.text)}>
                   <div className="w-7 h-7 leading-none grid place-center" >
                     <div
-                      className="w-full h-auto grid place-items-center border rounded"
-                      style={{ color: color.text, }}
+                      className="w-full h-auto grid place-items-center box-border border rounded"
+                      style={{
+                        color: color.text,
+                        borderWidth: currentColor === color.text ? 2 : 1,
+                        borderColor: currentColor === color.text ? color.text : "",
+                      }}
                     >
                       A
                     </div>
@@ -61,7 +67,14 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
                     tooltip={`${color.label} background`}
                     onClick={e => handlerBackgroundChange(e, color.background)}
                   >
-                    <div className="w-7 h-7 border rounded" style={{ backgroundColor: color.background }} >
+                    <div
+                      className="w-7 h-7 box-border border rounded"
+                      style={{
+                        backgroundColor: color.background,
+                        borderWidth: currentBgColor === color.background ? 2 : 1,
+                        borderColor: currentBgColor === color.background ? color.text : "",
+                      }}
+                    >
                       <div className="w-full h-auto"></div>
                     </div>
                   </TooltipButton>

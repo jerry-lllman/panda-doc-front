@@ -29,9 +29,13 @@ export const ColorPicker = (props: ColorPickerProps) => {
           A
         </TooltipButton>
       </PopoverTrigger>
-      <PopoverContent className="w-auto" align="start" alignOffset={-20} asChild >
+      <PopoverContent className="w-auto" align="start" alignOffset={-20}  >
         <div className="bg-background">
-          <MemoPicker editor={editor} />
+          <MemoPicker
+            editor={editor}
+            currentColor={currentColor}
+            currentBgColor={currentBgColor}
+          />
         </div>
       </PopoverContent>
     </Popover>
