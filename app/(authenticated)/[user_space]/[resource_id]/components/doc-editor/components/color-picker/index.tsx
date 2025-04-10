@@ -17,7 +17,9 @@ export const ColorPicker = (props: ColorPickerProps) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <TooltipButton>
+        <TooltipButton
+          tooltip="Text color"
+        >
           A
         </TooltipButton>
       </PopoverTrigger>

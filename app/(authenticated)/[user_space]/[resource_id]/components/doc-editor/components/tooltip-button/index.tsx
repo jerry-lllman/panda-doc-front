@@ -24,9 +24,9 @@ export const TooltipButton = React.forwardRef<HTMLButtonElement, ToolbarButtonPr
     }
 
     return (
-      <Tooltip>
+      <Tooltip disableHoverableContent {...restProps}>
         <TooltipTrigger asChild>{toggleButton}</TooltipTrigger>
-        <TooltipContent  {...tooltipOptions}>
+        <TooltipContent {...tooltipOptions}>
           <div className="flex flex-col items-center">{tooltip}</div>
         </TooltipContent>
       </Tooltip>
