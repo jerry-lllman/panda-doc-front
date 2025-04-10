@@ -11,7 +11,6 @@ interface ToolbarBaseProps extends VariantProps<typeof toggleVariants> {
   items: TextStyleAction[]
 }
 
-
 export const ToolbarBase = (props: ToolbarBaseProps) => {
 
   const { editor, variant, items } = props
