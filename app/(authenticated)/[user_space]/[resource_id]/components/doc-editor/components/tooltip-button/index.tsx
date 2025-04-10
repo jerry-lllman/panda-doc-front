@@ -2,17 +2,18 @@ import * as React from 'react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Toggle } from '@/components/ui/toggle'
 import { cn } from '@/lib/utils'
-import { TooltipContentProps } from '@radix-ui/react-tooltip'
+import { TooltipProps, TooltipContentProps } from '@radix-ui/react-tooltip'
 
 interface ToolbarButtonProps extends React.ComponentPropsWithoutRef<typeof Toggle> {
   isActive?: boolean
   tooltip?: React.ReactNode
-  tooltipOptions?: TooltipContentProps
+  tooltipProps?: TooltipProps
+  tooltipContentProps?: TooltipContentProps
 }
 
 export const TooltipButton = React.forwardRef<HTMLButtonElement, ToolbarButtonProps>(
   (props, ref) => {
-    const { isActive, children, tooltip, className, tooltipOptions, ...restProps } = props
+    const { isActive, children, tooltip, className, tooltipProps, tooltipContentProps, ...restProps } = props
     const toggleButton = (
       <Toggle size="sm" ref={ref} className={cn('size-8 p-0', { 'bg-accent': isActive }, className)} {...restProps}>
         {children}
@@ -24,9 +25,9 @@ export const TooltipButton = React.forwardRef<HTMLButtonElement, ToolbarButtonPr
     }
 
     return (
-      <Tooltip disableHoverableContent {...restProps}>
+      <Tooltip disableHoverableContent {...tooltipProps}>
         <TooltipTrigger asChild>{toggleButton}</TooltipTrigger>
-        <TooltipContent {...tooltipOptions}>
+        <TooltipContent {...tooltipContentProps}>
           <div className="flex flex-col items-center">{tooltip}</div>
         </TooltipContent>
       </Tooltip>

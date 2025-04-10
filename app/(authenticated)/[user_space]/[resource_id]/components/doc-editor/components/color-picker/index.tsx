@@ -1,10 +1,8 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { TooltipButton } from ".."
 import { Editor } from "@tiptap/react"
-import { memo } from "react"
 import { ColorPickerContent } from './color-picker-content'
-
-const MemoPicker = memo(ColorPickerContent)
+import { Palette } from "lucide-react"
 
 interface ColorPickerProps {
   editor: Editor
@@ -21,17 +19,18 @@ export const ColorPicker = (props: ColorPickerProps) => {
       <PopoverTrigger asChild>
         <TooltipButton
           tooltip="Text color"
+          className="w-auto px-2"
           style={{
             color: currentColor,
             backgroundColor: currentBgColor
           }}
         >
-          A
+          <Palette />
         </TooltipButton>
       </PopoverTrigger>
       <PopoverContent className="w-auto" align="start" alignOffset={-20}  >
         <div className="bg-background">
-          <MemoPicker
+          <ColorPickerContent
             editor={editor}
             currentColor={currentColor}
             currentBgColor={currentBgColor}
