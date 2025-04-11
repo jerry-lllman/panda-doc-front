@@ -1,7 +1,7 @@
 import { Editor } from "@tiptap/react"
 import { Bold, Code, Italic, Strikethrough, Underline } from "lucide-react"
 import { FormatAction } from "../../types"
-import { TooltipButton } from "../"
+import { TooltipButton } from ".."
 import { getShortcutKey } from "../../utils"
 import { VariantProps } from "class-variance-authority"
 import { toggleVariants } from "@/components/ui/toggle"

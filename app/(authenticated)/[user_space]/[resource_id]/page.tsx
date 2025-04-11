@@ -1,6 +1,6 @@
 "use client"
 
-import { DocEditor } from "./components"
+import { DocEditor } from "./doc-editor"
 
 // import { useParams } from "next/navigation"
 export default function ResourcePage() {

@@ -3,7 +3,7 @@ import { Copy, Edit, Link, Unlink } from "lucide-react"
 import copy from 'copy-to-clipboard'
 import { toast } from "sonner"
 import { LinkInfo } from "./types"
-import { TooltipButton } from "../"
+import { TooltipButton } from ".."
 import { Separator } from "@/components/ui/separator"
 
 interface LinkToolbarProps {
