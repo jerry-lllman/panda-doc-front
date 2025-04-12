@@ -1,3 +1,4 @@
+import { Editor, isTextSelection } from "@tiptap/react"
 
 type ShortcutKeyResult = {
   symbol: string
@@ -16,3 +17,19 @@ const shortcutKeyMap: Record<string, ShortcutKeyResult> = {
 
 export const getShortcutKey = (key: string): ShortcutKeyResult =>
   shortcutKeyMap[key.toLowerCase()] || { symbol: key, readable: key }
+
+export const isTextSelected = (editor: Editor) => {
+  const {
+    state: {
+      doc,
+      selection,
+      selection: { empty, from, to }
+    }
+  } = editor
+
+  const isEmptyTextBlock = !doc.textBetween(from, to).length && isTextSelection(selection)
+
+  if (empty || isEmptyTextBlock || !editor.isEditable) return false
+
+  return true
+}

@@ -1,6 +1,6 @@
 import { EditorContent } from '@tiptap/react'
 
-import { TopToolbar } from './components'
+import { TextToolbar } from './components'
 import { usePandaEditor } from './hooks/use-panda-editor'
 
 import './styles.css'
@@ -15,12 +15,12 @@ export function DocEditor() {
 
   return (
     <div className='tiptap relative'>
-      <TopToolbar
+      {/* <TopToolbar
         editor={editor}
         className='px-4'
         // variant='outline'
         items={['bold', 'italic', 'underline', 'strikethrough', 'code', 'link', 'clearFormatting']}
-      />
+      /> */}
       <EditorContent
         className='px-10'
         editor={editor}
@@ -28,6 +28,9 @@ export function DocEditor() {
       //   const { className } = (e.target as HTMLElement)
       //   console.log(className)
       // }}
+      />
+      <TextToolbar
+        editor={editor}
       />
 
     </div>
