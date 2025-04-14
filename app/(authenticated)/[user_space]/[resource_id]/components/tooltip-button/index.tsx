@@ -15,7 +15,7 @@ export const TooltipButton = React.forwardRef<HTMLButtonElement, ToolbarButtonPr
   (props, ref) => {
     const { isActive, children, tooltip, className, tooltipProps, tooltipContentProps, ...restProps } = props
     const toggleButton = (
-      <Toggle size="sm" ref={ref} className={cn('size-8 p-0', { 'bg-accent': isActive }, className)} {...restProps}>
+      <Toggle size="sm" ref={ref} className={cn('size-8 w-auto p-0', { 'bg-accent': isActive }, className)} {...restProps}>
         {children}
       </Toggle>
     )

@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useMemo } from "react"
 import { TextToolbarContentTypes } from "../hooks/use-text-toolbar-content-types"
+import { TooltipButton } from "../../tooltip-button"
 
 interface ContentTypePickerProps {
   options: TextToolbarContentTypes[]
@@ -23,9 +24,14 @@ export const ContentTypePicker = (props: ContentTypePickerProps) => {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <span >{activeItem.label}</span>
+        <TooltipButton
+          className="px-2"
+          tooltip={activeItem.label}
+        >
+          {activeItem.label}
+        </TooltipButton>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent align="start">
         <DropdownMenuGroup>
           {
             options.map(option => {

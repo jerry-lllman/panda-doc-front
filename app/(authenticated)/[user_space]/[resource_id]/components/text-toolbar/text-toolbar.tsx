@@ -5,9 +5,7 @@ import { useTextToolbarCommands } from "./hooks/use-text-toolbar-commands"
 import { TooltipButton } from "../tooltip-button"
 import { useTextToolbarContentTypes } from "./hooks/use-text-toolbar-content-types"
 import { ContentTypePicker } from "./components/content-type-picker"
-import { memo, useEffect, useState } from "react"
-
-const MemoContentTypePicker = memo(ContentTypePicker)
+import { useEffect, useState } from "react"
 
 interface TextToolbarProps {
   editor: Editor
@@ -73,10 +71,10 @@ export const TextToolbar = (props: TextToolbarProps) => {
         maxWidth: 'calc(100vw - 16px)',
       }}
     >
-      <div className="bg-background rounded-xl shadow-md px-2 py-1" style={{
+      <div className="grid grid-flow-col bg-background rounded-xl shadow-md px-2 py-1" style={{
         boxShadow: `rgba(0, 0, 0, 0.1) 0px 14px 28px -6px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px, rgba(84, 72, 49, 0.08) 0px 0px 0px 1px`
       }}>
-        <MemoContentTypePicker
+        <ContentTypePicker
           options={options}
         />
         <TooltipButton
