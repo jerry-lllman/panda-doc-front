@@ -21,7 +21,6 @@ import { LinkInfo } from "./types"
 
 const FormSchema = z.object({
   href: z.string(),
-  text: z.string(),
   target: z.string()
 })
 
@@ -41,17 +40,15 @@ export const LinkEditBlock = (props: LinkEditBlockProps) => {
 
   useEffect(() => {
     form.setValue('href', defaultValues?.href || '')
-    form.setValue('text', defaultValues?.text || '')
     form.setValue('target', defaultValues?.target || '')
   }, [defaultValues, form])
 
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
 
-    const { text, href, target } = data
+    const { href, target } = data
 
     const value = {
-      text,
       href: href,
       target
     }
@@ -72,19 +69,6 @@ export const LinkEditBlock = (props: LinkEditBlockProps) => {
                   <FormLabel>Page or URL</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter URL or search pages" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="text"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Link title</FormLabel>
-                  <FormControl>
-                    <Input placeholder={defaultValues?.href} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

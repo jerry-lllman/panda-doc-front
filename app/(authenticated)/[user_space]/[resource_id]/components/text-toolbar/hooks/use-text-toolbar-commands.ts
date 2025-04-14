@@ -1,5 +1,6 @@
 import { Editor } from "@tiptap/react"
 import { useCallback } from "react"
+import { LinkInfo } from "../../link/types"
 
 export const useTextToolbarCommands = (editor: Editor) => {
   const onBold = useCallback(() => editor.chain().focus().toggleBold().run(), [editor])
@@ -7,6 +8,20 @@ export const useTextToolbarCommands = (editor: Editor) => {
   const onUnderline = useCallback(() => editor.chain().focus().toggleUnderline().run(), [editor])
   const onStrike = useCallback(() => editor.chain().focus().toggleStrike().run(), [editor])
   const onCode = useCallback(() => editor.chain().focus().toggleCode().run(), [editor])
+  const onLink = useCallback(
+    (value: LinkInfo) => {
+      const { href, target } = value
+      editor
+        .chain()
+        .focus()
+        .setLink({
+          href,
+          target
+        })
+        .run()
+    }
+    , [editor]
+  )
 
   return {
     onBold,
@@ -14,5 +29,6 @@ export const useTextToolbarCommands = (editor: Editor) => {
     onUnderline,
     onStrike,
     onCode,
+    onLink
   }
 }

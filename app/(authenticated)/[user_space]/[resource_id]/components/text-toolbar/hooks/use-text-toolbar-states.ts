@@ -1,6 +1,6 @@
 import { Editor, useEditorState } from "@tiptap/react";
 import { useCallback } from "react";
-import { ShouldShowProps } from "../../link/types";
+import { LinkInfo, ShouldShowProps } from "../../link/types";
 import { isTextSelected } from "../../../utils";
 
 export const useTextToolbarStates = (editor: Editor) => {
@@ -14,6 +14,7 @@ export const useTextToolbarStates = (editor: Editor) => {
       isCode: ctx.editor.isActive('code'),
       currentColor: ctx.editor.getAttributes('textStyle').color,
       currentHighlight: ctx.editor.getAttributes('highlight').highlight,
+      currentLink: ctx.editor.getAttributes('link').href ? ctx.editor.getAttributes('link') as LinkInfo : undefined
     })
   })
 

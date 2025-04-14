@@ -6,6 +6,7 @@ import { TooltipButton } from "../tooltip-button"
 import { useTextToolbarContentTypes } from "./hooks/use-text-toolbar-content-types"
 import { ContentTypePicker } from "./components/content-type-picker"
 import { useEffect, useState } from "react"
+import { LinkButton } from "../link"
 
 interface TextToolbarProps {
   editor: Editor
@@ -107,6 +108,7 @@ export const TextToolbar = (props: TextToolbarProps) => {
         >
           <Code />
         </TooltipButton>
+        <LinkButton linkInfo={states.currentLink} onLink={commands.onLink} />
       </div>
     </BubbleMenu>
   )
