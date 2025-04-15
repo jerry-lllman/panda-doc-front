@@ -50,13 +50,10 @@ export const LinkToolbar = (props: LinkToolbarProps) => {
 
   const onSetLink = useCallback(
     (value: LinkInfo) => {
-
       commands.onLink(value)
-
       setShowEdit(false)
-      updateLinkState()
     },
-    [commands, updateLinkState]
+    [commands]
   )
 
 
