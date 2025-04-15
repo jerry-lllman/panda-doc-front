@@ -3,6 +3,8 @@ import { Editor, EditorContent } from '@tiptap/react'
 import { TextToolbar } from './components'
 import './styles.css'
 import { LinkToolbar } from './components/link'
+import { useEditorContentStates } from './hooks/use-editor-states'
+import { useEditorCommands } from './hooks/use-editor-commands'
 
 interface DocEditorProps {
   editor: Editor
@@ -10,6 +12,9 @@ interface DocEditorProps {
 
 export function DocEditor(props: DocEditorProps) {
   const { editor } = props
+
+  const states = useEditorContentStates(editor)
+  const commands = useEditorCommands(editor)
 
   return (
     <div className='tiptap relative'>
@@ -29,6 +34,8 @@ export function DocEditor(props: DocEditorProps) {
       />
       <TextToolbar
         editor={editor}
+        states={states}
+        commands={commands}
       />
       <LinkToolbar editor={editor} />
     </div>

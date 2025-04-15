@@ -10,15 +10,16 @@ import { LinkButton } from "../link"
 
 interface TextToolbarProps {
   editor: Editor
+  states: ReturnType<typeof useEditorContentStates>
+  commands: ReturnType<typeof useEditorCommands>
 }
 export const TextToolbar = (props: TextToolbarProps) => {
 
-  const { editor } = props
-  const [selecting, setSelecting] = useState(false)
+  const { editor, states, commands } = props
 
-  const states = useEditorContentStates(editor)
-  const commands = useEditorCommands(editor)
   const options = useEditorContentTypes(editor)
+
+  const [selecting, setSelecting] = useState(false)
 
   useEffect(() => {
     let selectionTimeout: number
