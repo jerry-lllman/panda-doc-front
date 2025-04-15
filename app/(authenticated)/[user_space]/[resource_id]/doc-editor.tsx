@@ -1,17 +1,15 @@
-import { EditorContent } from '@tiptap/react'
+import { Editor, EditorContent } from '@tiptap/react'
 
 import { TextToolbar } from './components'
-import { usePandaEditor } from './hooks/use-panda-editor'
-
 import './styles.css'
+import { LinkToolbar } from './components/link'
 
-export function DocEditor() {
+interface DocEditorProps {
+  editor: Editor
+}
 
-  const { editor } = usePandaEditor()
-
-  if (!editor) {
-    return null
-  }
+export function DocEditor(props: DocEditorProps) {
+  const { editor } = props
 
   return (
     <div className='tiptap relative'>
@@ -32,7 +30,7 @@ export function DocEditor() {
       <TextToolbar
         editor={editor}
       />
-
+      <LinkToolbar editor={editor} />
     </div>
   )
 }
