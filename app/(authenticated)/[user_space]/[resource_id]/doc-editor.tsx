@@ -37,7 +37,11 @@ export function DocEditor(props: DocEditorProps) {
         states={states}
         commands={commands}
       />
-      <LinkToolbar editor={editor} />
+      <LinkToolbar
+        editor={editor}
+        states={states}
+        commands={commands}
+      />
     </div>
   )
 }

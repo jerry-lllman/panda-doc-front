@@ -4,12 +4,16 @@ import { useCallback, useState } from "react"
 import { ShouldShowProps, LinkInfo } from "./types"
 import { LinkEditBlock } from "./link-edit-block"
 import { LinkToolbarContent } from "./link-toolbar-content"
+import { useEditorContentStates } from "../../hooks/use-editor-states"
+import { useEditorCommands } from "../../hooks/use-editor-commands"
 
 interface LinkToolbarProps {
   editor: Editor
+  states: ReturnType<typeof useEditorContentStates>
+  commands: ReturnType<typeof useEditorCommands>
 }
 export const LinkToolbar = (props: LinkToolbarProps) => {
-  const { editor } = props
+  const { editor, states, commands } = props
 
   const [showEdit, setShowEdit] = useState(false)
   const [linkInfo, setLinkInfo] = useState<LinkInfo>({
@@ -19,11 +23,9 @@ export const LinkToolbar = (props: LinkToolbarProps) => {
   })
 
   const updateLinkState = useCallback(() => {
-    const { from, to } = editor.state.selection
-    const { href, target } = editor.getAttributes('link')
-    const text = editor.state.doc.textBetween(from, to, ' ')
+    const { href = '', target = '', text = '' } = states.getCurrentLink() || {}
     setLinkInfo({ href, target, text })
-  }, [editor])
+  }, [states])
 
   const shouldShowEdit = useCallback(
     ({ editor, from, to }: ShouldShowProps) => {
@@ -48,30 +50,13 @@ export const LinkToolbar = (props: LinkToolbarProps) => {
 
   const onSetLink = useCallback(
     (value: LinkInfo) => {
-      const { text, href, target } = value
-      editor
-        .chain()
-        .focus()
-        .extendMarkRange('link')
-        .insertContent({
-          type: 'text',
-          text: text || href,
-          marks: [
-            {
-              type: 'link',
-              attrs: {
-                href,
-                target
-              }
-            }
-          ]
-        })
-        .setLink(value)
-        .run()
+
+      commands.onLink(value)
+
       setShowEdit(false)
       updateLinkState()
     },
-    [editor, updateLinkState]
+    [commands, updateLinkState]
   )
 
 
