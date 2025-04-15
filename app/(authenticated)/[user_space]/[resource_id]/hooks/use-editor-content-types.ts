@@ -11,7 +11,7 @@ export interface TextToolbarContentTypes {
   isDisabled: () => boolean
 }
 
-export const useTextToolbarContentTypes = (editor: Editor) => {
+export const useEditorContentTypes = (editor: Editor) => {
 
   return useEditorState({
     editor,

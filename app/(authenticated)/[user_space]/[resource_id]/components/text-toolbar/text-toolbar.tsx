@@ -1,9 +1,9 @@
 import { BubbleMenu, Editor } from "@tiptap/react"
-import { useTextToolbarStates } from "./hooks/use-text-toolbar-states"
+import { useEditorContentStates } from "../../hooks/use-editor-states"
 import { Bold, Code, Italic, Strikethrough, Underline } from "lucide-react"
-import { useTextToolbarCommands } from "./hooks/use-text-toolbar-commands"
+import { useEditorCommands } from "../../hooks/use-editor-commands"
 import { TooltipButton } from "../tooltip-button"
-import { useTextToolbarContentTypes } from "./hooks/use-text-toolbar-content-types"
+import { useEditorContentTypes } from "../../hooks/use-editor-content-types"
 import { ContentTypePicker } from "./components/content-type-picker"
 import { useEffect, useState } from "react"
 import { LinkButton } from "../link"
@@ -16,9 +16,9 @@ export const TextToolbar = (props: TextToolbarProps) => {
   const { editor } = props
   const [selecting, setSelecting] = useState(false)
 
-  const states = useTextToolbarStates(editor)
-  const commands = useTextToolbarCommands(editor)
-  const options = useTextToolbarContentTypes(editor)
+  const states = useEditorContentStates(editor)
+  const commands = useEditorCommands(editor)
+  const options = useEditorContentTypes(editor)
 
   useEffect(() => {
     let selectionTimeout: number

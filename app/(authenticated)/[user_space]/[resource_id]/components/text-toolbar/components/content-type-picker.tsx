@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useMemo } from "react"
-import { TextToolbarContentTypes } from "../hooks/use-text-toolbar-content-types"
+import { TextToolbarContentTypes } from "../../../hooks/use-editor-content-types"
 import { TooltipButton } from "../../tooltip-button"
 
 interface ContentTypePickerProps {
