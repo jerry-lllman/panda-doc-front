@@ -2,6 +2,7 @@ import { Editor, useEditorState } from "@tiptap/react";
 import { useCallback } from "react";
 import { LinkInfo, ShouldShowProps } from "../../link/types";
 import { isTextSelected } from "../../../utils";
+import { isCustomTextNode } from "@/lib/utils/is-custom-text-node";
 
 export const useTextToolbarStates = (editor: Editor) => {
   const states = useEditorState({
@@ -31,6 +32,10 @@ export const useTextToolbarStates = (editor: Editor) => {
   const shouldShow = useCallback(
     ({ view }: ShouldShowProps) => {
       if (!view || editor.view.dragging) return false
+
+      if (isCustomTextNode(editor)) {
+        return false
+      }
 
       return isTextSelected(editor)
     }, [editor])
