@@ -49,7 +49,6 @@ export const TextToolbar = (props: TextToolbarProps) => {
       editor={editor}
       className={selecting ? 'hidden' : ''}
       shouldShow={states.shouldShow}
-      updateDelay={0}
       tippyOptions={{
         popperOptions: {
           placement: 'top-start',
@@ -71,6 +70,11 @@ export const TextToolbar = (props: TextToolbarProps) => {
         },
         offset: [0, 8],
         maxWidth: 'calc(100vw - 16px)',
+        onShown: (instance) => {
+          setTimeout(() => {
+            instance.popperInstance?.update()
+          }, 300)
+        },
       }}
     >
       <div className="grid grid-flow-col bg-background rounded-xl shadow-md px-2 py-1" style={{

@@ -64,6 +64,27 @@ export const LinkToolbar = (props: LinkToolbarProps) => {
       tippyOptions={{
         maxWidth: 'auto',
         placement: 'bottom-start',
+        popperOptions: {
+          modifiers: [
+            {
+              name: 'preventOverflow',
+              options: {
+                padding: 8,
+              },
+            },
+            {
+              name: 'offset',
+              options: {
+                offset: [0, 8],
+              },
+            },
+          ],
+        },
+        onShown: (instance) => {
+          setTimeout(() => {
+            instance.popperInstance?.update()
+          }, 300)
+        },
         onHidden: () => setShowEdit(false),
       }}
     >
