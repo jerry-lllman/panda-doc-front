@@ -21,11 +21,12 @@ import { LinkInfo } from "./types"
 
 const FormSchema = z.object({
   href: z.string(),
+  text: z.string(),
   target: z.string()
 })
 
 interface LinkEditBlockProps extends React.HTMLAttributes<HTMLDivElement> {
-  defaultValues?: z.infer<typeof FormSchema>
+  defaultValues?: z.infer<typeof FormSchema> | null
   onSave: (value: LinkInfo) => void
 }
 
@@ -35,32 +36,22 @@ export const LinkEditBlock = (props: LinkEditBlockProps) => {
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues,
+    defaultValues: {
+      href: '',
+      text: '',
+      target: '',
+    }
   })
 
   useEffect(() => {
-    form.setValue('href', defaultValues?.href || '')
-    form.setValue('target', defaultValues?.target || '')
+    form.reset(defaultValues || {})
   }, [defaultValues, form])
-
-
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-
-    const { href, target } = data
-
-    const value = {
-      href: href,
-      target
-    }
-
-    onSave(value)
-  }
 
   return (
     <div>
       <div className={cn('space-y-4', className)}>
         <Form  {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+          <form onSubmit={form.handleSubmit(onSave)} className="space-y-3">
             <FormField
               control={form.control}
               name="href"
@@ -69,6 +60,19 @@ export const LinkEditBlock = (props: LinkEditBlockProps) => {
                   <FormLabel>Page or URL</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter URL or search pages" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="text"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Link title</FormLabel>
+                  <FormControl>
+                    <Input placeholder={defaultValues?.href} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

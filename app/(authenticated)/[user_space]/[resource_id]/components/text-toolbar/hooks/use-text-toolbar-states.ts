@@ -14,7 +14,17 @@ export const useTextToolbarStates = (editor: Editor) => {
       isCode: ctx.editor.isActive('code'),
       currentColor: ctx.editor.getAttributes('textStyle').color,
       currentHighlight: ctx.editor.getAttributes('highlight').highlight,
-      currentLink: ctx.editor.getAttributes('link').href ? ctx.editor.getAttributes('link') as LinkInfo : undefined
+      getCurrentLink: () => {
+        if (!ctx.editor.isActive('link')) return null
+        const { from, to } = ctx.editor.state.selection
+        const { href, target } = ctx.editor.getAttributes('link')
+        const text = ctx.editor.state.doc.textBetween(from, to)
+        return {
+          href,
+          target,
+          text
+        } as LinkInfo
+      }
     })
   })
 

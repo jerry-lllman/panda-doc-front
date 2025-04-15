@@ -10,14 +10,25 @@ export const useTextToolbarCommands = (editor: Editor) => {
   const onCode = useCallback(() => editor.chain().focus().toggleCode().run(), [editor])
   const onLink = useCallback(
     (value: LinkInfo) => {
-      const { href, target } = value
+      const { text, href, target } = value
       editor
         .chain()
         .focus()
-        .setLink({
-          href,
-          target
+        .extendMarkRange('link')
+        .insertContent({
+          type: 'text',
+          text: text || href,
+          marks: [
+            {
+              type: 'link',
+              attrs: {
+                href,
+                target
+              }
+            }
+          ]
         })
+        .setLink({ href })
         .run()
     }
     , [editor]

@@ -5,23 +5,29 @@ import { TooltipButton } from "..";
 import { Link } from "lucide-react";
 import { LinkEditBlock } from ".";
 import { LinkInfo } from "./types";
+import { useState } from "react";
 
 interface LinkButtonProps extends VariantProps<typeof toggleVariants> {
-  linkInfo?: LinkInfo
+  getCurrentLink: () => LinkInfo | null
   onLink: (value: LinkInfo) => void
 }
 
 export const LinkButton = (props: LinkButtonProps) => {
 
-  const { variant, linkInfo, onLink } = props
+  const { variant, getCurrentLink, onLink } = props
+
+  const [linkInfo, setLinkInfo] = useState<LinkInfo | null>()
+
+  const onOpenChange = () => {
+    setLinkInfo(getCurrentLink())
+  }
 
   return (
-    <Popover>
+    <Popover onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>
         <TooltipButton
           tooltip="Link"
           aria-label="Insert link"
-          isActive={!!linkInfo?.href}
           variant={variant}
         >
           <Link />

@@ -108,7 +108,7 @@ export const TextToolbar = (props: TextToolbarProps) => {
         >
           <Code />
         </TooltipButton>
-        <LinkButton linkInfo={states.currentLink} onLink={commands.onLink} />
+        <LinkButton getCurrentLink={states.getCurrentLink} onLink={commands.onLink} />
       </div>
     </BubbleMenu>
   )
