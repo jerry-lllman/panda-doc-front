@@ -7,6 +7,9 @@ import { useEditorContentTypes } from "../../hooks/use-editor-content-types"
 import { ContentTypePicker } from "./components/content-type-picker"
 import { useEffect, useState } from "react"
 import { LinkButton } from "../link"
+import { getShortcutKey } from "../../utils"
+
+const getShortcut = (keys: string[]) => keys.map(s => getShortcutKey(s).symbol).join('')
 
 interface TextToolbarProps {
   editor: Editor
@@ -84,31 +87,61 @@ export const TextToolbar = (props: TextToolbarProps) => {
           options={options}
         />
         <TooltipButton
-          tooltip="Bold"
+          tooltip={
+            <div>
+              <div>Bold</div>
+              <div>{getShortcut(['mod', 'B'])}</div>
+            </div>
+          }
+          isActive={states.isBold}
           onClick={commands.onBold}
         >
           <Bold />
         </TooltipButton>
         <TooltipButton
-          tooltip="Italic"
+          tooltip={
+            <div>
+              <div>Italicize</div>
+              <div>{getShortcut(['mod', 'I'])}</div>
+            </div>
+          }
+          isActive={states.isItalic}
           onClick={commands.onItalic}
         >
           <Italic />
         </TooltipButton>
         <TooltipButton
-          tooltip="Underline"
+          tooltip={
+            <div>
+              <div>Underline</div>
+              <div>{getShortcut(['mod', 'U'])}</div>
+            </div>
+          }
+          isActive={states.isUnderline}
           onClick={commands.onUnderline}
         >
           <Underline />
         </TooltipButton>
         <TooltipButton
-          tooltip="Bold"
+          tooltip={
+            <div>
+              <div>Strike-through</div>
+              <div>{getShortcut(['mod', 'shift', 'S'])}</div>
+            </div>
+          }
+          isActive={states.isStrike}
           onClick={commands.onStrike}
         >
           <Strikethrough />
         </TooltipButton>
         <TooltipButton
-          tooltip="Code"
+          tooltip={
+            <div>
+              <div>Code</div>
+              <div>{getShortcut(['mod', 'E'])}</div>
+            </div>
+          }
+          isActive={states.isCode}
           onClick={commands.onCode}
         >
           <Code />
