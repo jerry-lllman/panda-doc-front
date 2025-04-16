@@ -33,6 +33,12 @@ export const useEditorCommands = (editor: Editor) => {
     }
     , [editor]
   )
+  const onColor = useCallback((color: string) => {
+    editor.chain().setColor(color).run()
+  }, [editor])
+  const onHighlight = useCallback((color: string) => {
+    editor.chain().focus().setHighlight({ color }).run()
+  }, [editor])
 
   return {
     onBold,
@@ -40,6 +46,8 @@ export const useEditorCommands = (editor: Editor) => {
     onUnderline,
     onStrike,
     onCode,
-    onLink
+    onLink,
+    onColor,
+    onHighlight
   }
 }

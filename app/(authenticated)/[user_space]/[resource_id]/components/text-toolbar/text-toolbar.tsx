@@ -149,7 +149,10 @@ export const TextToolbar = (props: TextToolbarProps) => {
         </TooltipButton>
         <LinkButton getCurrentLink={states.getCurrentLink} onLink={commands.onLink} />
         <ColorPicker
-          editor={editor}
+          currentColor={states.currentColor}
+          currentHighlight={states.currentHighlight}
+          onColor={commands.onColor}
+          onHighlight={commands.onHighlight}
         />
       </div>
     </BubbleMenu>
