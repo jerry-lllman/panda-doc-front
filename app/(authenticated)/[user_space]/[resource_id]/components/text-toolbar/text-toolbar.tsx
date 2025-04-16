@@ -8,6 +8,7 @@ import { ContentTypePicker } from "./components/content-type-picker"
 import { useEffect, useState } from "react"
 import { LinkButton } from "../link"
 import { getShortcutKey } from "../../utils"
+import { ColorPicker } from "../color-picker"
 
 const getShortcut = (keys: string[]) => keys.map(s => getShortcutKey(s).symbol).join('')
 
@@ -147,6 +148,9 @@ export const TextToolbar = (props: TextToolbarProps) => {
           <Code />
         </TooltipButton>
         <LinkButton getCurrentLink={states.getCurrentLink} onLink={commands.onLink} />
+        <ColorPicker
+          editor={editor}
+        />
       </div>
     </BubbleMenu>
   )
