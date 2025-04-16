@@ -59,9 +59,9 @@
 
   .selection,
   *::selection {
-    @apply inline;
-    background-color: #3b83f6;
-    color: #fff;
+    @apply inline bg-black/10;
+    /* background-color: #3b83f6;
+    color: #fff; */
   }
 
 
