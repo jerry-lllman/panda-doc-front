@@ -14,7 +14,7 @@ export const useEditorContentStates = (editor: Editor) => {
       isStrike: ctx.editor.isActive('strike'),
       isCode: ctx.editor.isActive('code'),
       currentColor: ctx.editor.getAttributes('textStyle').color,
-      currentHighlight: ctx.editor.getAttributes('highlight').highlight,
+      currentHighlight: ctx.editor.getAttributes('highlight').color,
       getCurrentLink: () => {
         if (!ctx.editor.isActive('link')) return null
         const { from, to } = ctx.editor.state.selection
