@@ -1,12 +1,17 @@
+import { useEffect } from 'react'
 
 import { useEditor } from '@tiptap/react'
 import { StarterKit } from '@tiptap/starter-kit'
 import { TextStyle } from '@tiptap/extension-text-style'
 import { Underline } from '@tiptap/extension-underline'
+import { TaskList } from '@tiptap/extension-task-list'
+import { TaskItem } from '@tiptap/extension-task-item'
 import Highlight from '@tiptap/extension-highlight'
 
 import { Color, Link, ResetMarksOnEnter, Selection } from '../extensions'
-import { useEffect } from 'react'
+
+import '@/components/tiptap-node/list-node/list-node.scss'
+
 export const usePandaEditor = () => {
 
   const editor = useEditor({
@@ -27,6 +32,8 @@ export const usePandaEditor = () => {
       Selection,
       Underline,
       TextStyle,
+      TaskList,
+      TaskItem.configure({ nested: true }),
       Color,
       Link,
       ResetMarksOnEnter

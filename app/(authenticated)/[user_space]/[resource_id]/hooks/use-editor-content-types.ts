@@ -1,5 +1,5 @@
 import { Editor, useEditorState } from "@tiptap/react"
-import { Heading1, Heading2, Heading3, Type } from 'lucide-react'
+import { Heading1, Heading2, Heading3, List, ListOrdered, Type } from 'lucide-react'
 
 export interface TextToolbarContentTypes {
   id: string
@@ -52,6 +52,24 @@ export const useEditorContentTypes = (editor: Editor) => {
         isActive: () => ctx.editor.isActive('heading', { level: 3 }),
         isDisabled: () => !ctx.editor.can().toggleHeading({ level: 3 }),
       },
+      {
+        icon: List,
+        id: 'bulleted-list',
+        type: 'option',
+        label: 'Bulleted list',
+        onClick: () => editor.chain().focus().toggleBulletList().run(),
+        isActive: () => ctx.editor.isActive('bulletList'),
+        isDisabled: () => !ctx.editor.can().toggleBulletList(),
+      },
+      {
+        icon: ListOrdered,
+        id: 'numbered-list',
+        type: 'option',
+        label: 'Numbered list',
+        onClick: () => editor.chain().focus().toggleOrderedList().run(),
+        isActive: () => ctx.editor.isActive('orderedList'),
+        isDisabled: () => !ctx.editor.can().toggleOrderedList(),
+      }
     ]
   })
 }
