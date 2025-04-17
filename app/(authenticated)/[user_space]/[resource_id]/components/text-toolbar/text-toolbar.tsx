@@ -5,10 +5,15 @@ import { useEditorCommands } from "../../hooks/use-editor-commands"
 import { TooltipButton } from "../tooltip-button"
 import { useEditorContentTypes } from "../../hooks/use-editor-content-types"
 import { ContentTypePicker } from "./components/content-type-picker"
-import { useEffect, useState } from "react"
+import { memo, useEffect, useState } from "react"
 import { LinkButton } from "../link"
 import { getShortcutKey } from "../../utils"
-import { ColorPicker } from "../color-picker"
+import { ColorPicker } from "./components/color-picker"
+
+const MemoTooltipButton = memo(TooltipButton)
+const MemoContentTypePicker = memo(ContentTypePicker)
+const MemoLinkButton = memo(LinkButton)
+const MemoColorPicker = memo(ColorPicker)
 
 const getShortcut = (keys: string[]) => keys.map(s => getShortcutKey(s).symbol).join('')
 
@@ -84,10 +89,10 @@ export const TextToolbar = (props: TextToolbarProps) => {
       <div className="grid grid-flow-col bg-background rounded-xl shadow-md px-2 py-1" style={{
         boxShadow: `rgba(0, 0, 0, 0.1) 0px 14px 28px -6px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px, rgba(84, 72, 49, 0.08) 0px 0px 0px 1px`
       }}>
-        <ContentTypePicker
+        <MemoContentTypePicker
           options={options}
         />
-        <TooltipButton
+        <MemoTooltipButton
           tooltip={
             <div>
               <div>Bold</div>
@@ -98,8 +103,8 @@ export const TextToolbar = (props: TextToolbarProps) => {
           onClick={commands.onBold}
         >
           <Bold />
-        </TooltipButton>
-        <TooltipButton
+        </MemoTooltipButton>
+        <MemoTooltipButton
           tooltip={
             <div>
               <div>Italicize</div>
@@ -110,8 +115,8 @@ export const TextToolbar = (props: TextToolbarProps) => {
           onClick={commands.onItalic}
         >
           <Italic />
-        </TooltipButton>
-        <TooltipButton
+        </MemoTooltipButton>
+        <MemoTooltipButton
           tooltip={
             <div>
               <div>Underline</div>
@@ -122,8 +127,8 @@ export const TextToolbar = (props: TextToolbarProps) => {
           onClick={commands.onUnderline}
         >
           <Underline />
-        </TooltipButton>
-        <TooltipButton
+        </MemoTooltipButton>
+        <MemoTooltipButton
           tooltip={
             <div>
               <div>Strike-through</div>
@@ -134,8 +139,8 @@ export const TextToolbar = (props: TextToolbarProps) => {
           onClick={commands.onStrike}
         >
           <Strikethrough />
-        </TooltipButton>
-        <TooltipButton
+        </MemoTooltipButton>
+        <MemoTooltipButton
           tooltip={
             <div>
               <div>Code</div>
@@ -146,9 +151,9 @@ export const TextToolbar = (props: TextToolbarProps) => {
           onClick={commands.onCode}
         >
           <Code />
-        </TooltipButton>
-        <LinkButton getCurrentLink={states.getCurrentLink} onLink={commands.onLink} />
-        <ColorPicker
+        </MemoTooltipButton>
+        <MemoLinkButton getCurrentLink={states.getCurrentLink} onLink={commands.onLink} />
+        <MemoColorPicker
           currentColor={states.currentColor}
           currentHighlight={states.currentHighlight}
           onColor={commands.onColor}

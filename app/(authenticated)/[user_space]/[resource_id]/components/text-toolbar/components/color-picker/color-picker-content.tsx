@@ -1,5 +1,5 @@
 import { useCallback } from "react"
-import { TooltipButton } from "../tooltip-button"
+import { TooltipButton } from "../../../tooltip-button"
 import { COLORS } from "./constants"
 import { Editor } from "@tiptap/react"
 

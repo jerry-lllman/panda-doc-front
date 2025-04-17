@@ -1,5 +1,5 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { TooltipButton } from ".."
+import { TooltipButton } from "../../../"
 import { Palette } from "lucide-react"
 import { COLORS } from "./constants"
 import { useState } from "react"
