@@ -1,5 +1,5 @@
 import { Editor, useEditorState } from "@tiptap/react"
-import { Heading1, Heading2, Heading3, List, ListOrdered, Type } from 'lucide-react'
+import { Heading1, Heading2, Heading3, List, ListOrdered, ListTodo, Type } from 'lucide-react'
 
 export interface TextToolbarContentTypes {
   id: string
@@ -69,6 +69,15 @@ export const useEditorContentTypes = (editor: Editor) => {
         onClick: () => editor.chain().focus().toggleOrderedList().run(),
         isActive: () => ctx.editor.isActive('orderedList'),
         isDisabled: () => !ctx.editor.can().toggleOrderedList(),
+      },
+      {
+        icon: ListTodo,
+        id: 'todo-list',
+        type: 'option',
+        label: 'Todo list',
+        onClick: () => editor.chain().focus().toggleTaskList().run(),
+        isActive: () => ctx.editor.isActive('taskList'),
+        isDisabled: () => !ctx.editor.can().toggleTaskList(),
       }
     ]
   })

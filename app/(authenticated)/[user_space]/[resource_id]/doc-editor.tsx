@@ -1,10 +1,12 @@
 import { Editor, EditorContent } from '@tiptap/react'
 
 import { TextToolbar } from './components'
-import './styles.css'
 import { LinkToolbar } from './components/link'
 import { useEditorContentStates } from './hooks/use-editor-states'
 import { useEditorCommands } from './hooks/use-editor-commands'
+import '@/styles/_variables.scss'
+import '@/styles/_keyframe-animations.scss'
+import './styles.css'
 
 interface DocEditorProps {
   editor: Editor

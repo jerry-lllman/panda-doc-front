@@ -133,12 +133,18 @@
        Radius variables 
     **************************************************/
 
-  --tt-radius-xxs: 0.125rem; /* 2px */
-  --tt-radius-xs: 0.25rem; /* 4px */
-  --tt-radius-sm: 0.375rem; /* 6px */
-  --tt-radius-md: 0.5rem; /* 8px */
-  --tt-radius-lg: 0.75rem; /* 12px */
-  --tt-radius-xl: 1rem; /* 16px */
+  --tt-radius-xxs: 0.125rem;
+  /* 2px */
+  --tt-radius-xs: 0.25rem;
+  /* 4px */
+  --tt-radius-sm: 0.375rem;
+  /* 6px */
+  --tt-radius-md: 0.5rem;
+  /* 8px */
+  --tt-radius-lg: 0.75rem;
+  /* 12px */
+  --tt-radius-xl: 1rem;
+  /* 16px */
 
   /************************************************** 
        Transition variables 
@@ -166,8 +172,7 @@
   ::before,
   ::after {
     box-sizing: border-box;
-    transition: none var(--tt-transition-duration-default)
-      var(--tt-transition-easing-default);
+    transition: none var(--tt-transition-duration-default) var(--tt-transition-easing-default);
   }
 }
 
