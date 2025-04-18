@@ -3,27 +3,19 @@ import { toggleVariants } from "@/components/ui/toggle";
 import { VariantProps } from "class-variance-authority";
 import { TooltipButton } from "..";
 import { Link } from "lucide-react";
-import { LinkEditBlock } from ".";
+import { LinkEditPanel } from ".";
 import { LinkInfo } from "./types";
-import { useState } from "react";
 
 interface LinkButtonProps extends VariantProps<typeof toggleVariants> {
-  getCurrentLink: () => LinkInfo | null
   onLink: (value: LinkInfo) => void
 }
 
-export const LinkButton = (props: LinkButtonProps) => {
+export const LinkPopover = (props: LinkButtonProps) => {
 
-  const { variant, getCurrentLink, onLink } = props
-
-  const [linkInfo, setLinkInfo] = useState<LinkInfo | null>()
-
-  const onOpenChange = () => {
-    setLinkInfo(getCurrentLink())
-  }
+  const { variant, onLink } = props
 
   return (
-    <Popover onOpenChange={onOpenChange}>
+    <Popover>
       <PopoverTrigger asChild>
         <TooltipButton
           tooltip="Link"
@@ -34,7 +26,7 @@ export const LinkButton = (props: LinkButtonProps) => {
         </TooltipButton>
       </PopoverTrigger>
       <PopoverContent>
-        <LinkEditBlock defaultValues={linkInfo} onSave={onLink} />
+        <LinkEditPanel onSave={onLink} />
       </PopoverContent>
     </Popover>
   )

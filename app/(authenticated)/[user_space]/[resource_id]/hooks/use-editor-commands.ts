@@ -10,25 +10,11 @@ export const useEditorCommands = (editor: Editor) => {
   const onCode = useCallback(() => editor.chain().focus().toggleCode().run(), [editor])
   const onLink = useCallback(
     (value: LinkInfo) => {
-      const { text, href, target } = value
+      const { href, target } = value
       editor
         .chain()
         .focus()
-        .extendMarkRange('link')
-        .insertContent({
-          type: 'text',
-          text: text || href,
-          marks: [
-            {
-              type: 'link',
-              attrs: {
-                href,
-                target
-              }
-            }
-          ]
-        })
-        .setLink({ href })
+        .setLink({ href, target })
         .run()
     }
     , [editor]

@@ -7,6 +7,7 @@ import { useEditorCommands } from './hooks/use-editor-commands'
 import '@/styles/_variables.scss'
 import '@/styles/_keyframe-animations.scss'
 import './styles.css'
+import { useRef } from 'react'
 
 interface DocEditorProps {
   editor: Editor
@@ -17,9 +18,10 @@ export function DocEditor(props: DocEditorProps) {
 
   const states = useEditorContentStates(editor)
   const commands = useEditorCommands(editor)
+  const menuContainerRef = useRef<HTMLDivElement>(null)
 
   return (
-    <div className='tiptap relative'>
+    <div className='tiptap relative' ref={menuContainerRef}>
       {/* <TopToolbar
         editor={editor}
         className='px-4'
@@ -40,8 +42,8 @@ export function DocEditor(props: DocEditorProps) {
         commands={commands}
       />
       <LinkToolbar
+        // appendTo={menuContainerRef}
         editor={editor}
-        states={states}
         commands={commands}
       />
     </div>

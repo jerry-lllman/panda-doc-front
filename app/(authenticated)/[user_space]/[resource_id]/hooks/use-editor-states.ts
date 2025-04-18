@@ -5,6 +5,19 @@ import { isTextSelected } from "../utils";
 import { isCustomTextNode } from "@/lib/utils/is-custom-text-node";
 
 export const useEditorContentStates = (editor: Editor) => {
+
+  // const getCurrentLink = useCallback(() => {
+  //   if (!editor.isActive('link')) return null
+  //   const { from, to } = editor.state.selection
+  //   const { href, target } = editor.getAttributes('link')
+  //   const text = editor.state.doc.textBetween(from, to)
+  //   return {
+  //     href,
+  //     target,
+  //     text
+  //   } as LinkInfo
+  // }, [])
+
   const states = useEditorState({
     editor,
     selector: ctx => ({
@@ -15,17 +28,7 @@ export const useEditorContentStates = (editor: Editor) => {
       isCode: ctx.editor.isActive('code'),
       currentColor: ctx.editor.getAttributes('textStyle').color,
       currentHighlight: ctx.editor.getAttributes('highlight').color,
-      getCurrentLink: () => {
-        if (!ctx.editor.isActive('link')) return null
-        const { from, to } = ctx.editor.state.selection
-        const { href, target } = ctx.editor.getAttributes('link')
-        const text = ctx.editor.state.doc.textBetween(from, to)
-        return {
-          href,
-          target,
-          text
-        } as LinkInfo
-      }
+      // getCurrentLink,
     })
   })
 
@@ -33,6 +36,7 @@ export const useEditorContentStates = (editor: Editor) => {
     ({ view }: ShouldShowProps) => {
       if (!view || editor.view.dragging) return false
 
+      console.log('%c👉  isCustomTextNode(editor): ', 'background:#41b883;padding:1px; border-radius: 0 3px 3px 0;color: #fff', isCustomTextNode(editor)) // 👈
       if (isCustomTextNode(editor)) {
         return false
       }

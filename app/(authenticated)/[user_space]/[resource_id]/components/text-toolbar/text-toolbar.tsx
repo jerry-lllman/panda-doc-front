@@ -6,13 +6,13 @@ import { TooltipButton } from "../tooltip-button"
 import { useEditorContentTypes } from "../../hooks/use-editor-content-types"
 import { ContentTypePicker } from "./components/content-type-picker"
 import { memo, useEffect, useState } from "react"
-import { LinkButton } from "../link"
+import { LinkPopover } from "../link"
 import { getShortcutKey } from "../../utils"
 import { ColorPicker } from "./components/color-picker"
 
 const MemoTooltipButton = memo(TooltipButton)
 const MemoContentTypePicker = memo(ContentTypePicker)
-const MemoLinkButton = memo(LinkButton)
+const MemoLinkPopover = memo(LinkPopover)
 const MemoColorPicker = memo(ColorPicker)
 
 const getShortcut = (keys: string[]) => keys.map(s => getShortcutKey(s).symbol).join('')
@@ -152,7 +152,7 @@ export const TextToolbar = (props: TextToolbarProps) => {
         >
           <Code />
         </MemoTooltipButton>
-        <MemoLinkButton getCurrentLink={states.getCurrentLink} onLink={commands.onLink} />
+        <MemoLinkPopover onLink={commands.onLink} />
         <MemoColorPicker
           currentColor={states.currentColor}
           currentHighlight={states.currentHighlight}

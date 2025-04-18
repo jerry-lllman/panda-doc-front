@@ -1,51 +1,37 @@
-import { BubbleMenu } from "@tiptap/react"
+import { BubbleMenu, useEditorState } from "@tiptap/react"
 import type { Editor } from '@tiptap/react'
 import { useCallback, useState } from "react"
-import { ShouldShowProps, LinkInfo } from "./types"
-import { LinkEditBlock } from "./link-edit-block"
+import { LinkInfo } from "./types"
+import { LinkEditPanel } from "./link-edit-panel"
 import { LinkToolbarContent } from "./link-toolbar-content"
-import { useEditorContentStates } from "../../hooks/use-editor-states"
 import { useEditorCommands } from "../../hooks/use-editor-commands"
 
 interface LinkToolbarProps {
   editor: Editor
-  states: ReturnType<typeof useEditorContentStates>
   commands: ReturnType<typeof useEditorCommands>
+  appendTo?: React.RefObject<HTMLElement | null>
 }
 export const LinkToolbar = (props: LinkToolbarProps) => {
-  const { editor, states, commands } = props
+  const { editor, commands } = props
 
   const [showEdit, setShowEdit] = useState(false)
-  const [linkInfo, setLinkInfo] = useState<LinkInfo>({
-    href: '',
-    text: '',
-    target: ''
+
+  const linkInfo = useEditorState({
+    editor,
+    selector: ctx => {
+      const { href = '', target = '' } = ctx.editor.getAttributes('link')
+      return {
+        href,
+        target
+      }
+    }
   })
 
-  const updateLinkState = useCallback(() => {
-    const { href = '', target = '', text = '' } = states.getCurrentLink() || {}
-    setLinkInfo({ href, target, text })
-  }, [states])
-
-  const shouldShowEdit = useCallback(
-    ({ editor, from, to }: ShouldShowProps) => {
-      if (from === to) {
-        return false
-      }
-
-      const { href } = editor.getAttributes('link')
-
-      if (!editor.isActive('link') || !editor.isEditable) {
-        return false
-      }
-
-      if (href) {
-        updateLinkState()
-        return true
-      }
-      return false
+  const shouldShow = useCallback(
+    () => {
+      return editor.isActive('link')
     },
-    [updateLinkState]
+    [editor]
   )
 
   const onSetLink = useCallback(
@@ -56,14 +42,12 @@ export const LinkToolbar = (props: LinkToolbarProps) => {
     [commands]
   )
 
-
   return (
     <BubbleMenu
       editor={editor}
-      shouldShow={shouldShowEdit}
+      shouldShow={shouldShow}
+
       tippyOptions={{
-        maxWidth: 'auto',
-        placement: 'bottom-start',
         popperOptions: {
           modifiers: [
             {
@@ -91,9 +75,10 @@ export const LinkToolbar = (props: LinkToolbarProps) => {
       <div className="rounded-md bg-background">
         {
           showEdit ? (
-            <LinkEditBlock
+            <LinkEditPanel
               className="w-full min-w-96 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none"
-              defaultValues={linkInfo}
+              initialUrl={linkInfo.href}
+              initialTarget={linkInfo.target}
               onSave={onSetLink}
             />
           ) : (
