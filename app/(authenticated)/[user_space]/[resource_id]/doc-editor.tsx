@@ -21,7 +21,7 @@ export function DocEditor(props: DocEditorProps) {
   const menuContainerRef = useRef<HTMLDivElement>(null)
 
   return (
-    <div className='tiptap relative' ref={menuContainerRef}>
+    <div className=' relative' ref={menuContainerRef}>
       {/* <TopToolbar
         editor={editor}
         className='px-4'
