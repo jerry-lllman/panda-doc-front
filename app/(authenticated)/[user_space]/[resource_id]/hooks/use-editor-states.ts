@@ -1,22 +1,10 @@
 import { Editor, useEditorState } from "@tiptap/react";
 import { useCallback } from "react";
-import { LinkInfo, ShouldShowProps } from "../components/link/types";
+import { ShouldShowProps } from "../components/link/types";
 import { isTextSelected } from "../utils";
 import { isCustomTextNode } from "@/lib/utils/is-custom-text-node";
 
 export const useEditorContentStates = (editor: Editor) => {
-
-  // const getCurrentLink = useCallback(() => {
-  //   if (!editor.isActive('link')) return null
-  //   const { from, to } = editor.state.selection
-  //   const { href, target } = editor.getAttributes('link')
-  //   const text = editor.state.doc.textBetween(from, to)
-  //   return {
-  //     href,
-  //     target,
-  //     text
-  //   } as LinkInfo
-  // }, [])
 
   const states = useEditorState({
     editor,
@@ -28,7 +16,6 @@ export const useEditorContentStates = (editor: Editor) => {
       isCode: ctx.editor.isActive('code'),
       currentColor: ctx.editor.getAttributes('textStyle').color,
       currentHighlight: ctx.editor.getAttributes('highlight').color,
-      // getCurrentLink,
     })
   })
 
