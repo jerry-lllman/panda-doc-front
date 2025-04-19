@@ -4,15 +4,12 @@ import { useCallback, useState } from "react"
 import { LinkInfo } from "./types"
 import { LinkEditPanel } from "./link-edit-panel"
 import { LinkToolbarContent } from "./link-toolbar-content"
-import { useEditorCommands } from "../../hooks/use-editor-commands"
 
 interface LinkToolbarProps {
   editor: Editor
-  commands: ReturnType<typeof useEditorCommands>
-  appendTo?: React.RefObject<HTMLElement | null>
 }
 export const LinkToolbar = (props: LinkToolbarProps) => {
-  const { editor, commands } = props
+  const { editor } = props
 
   const [showEdit, setShowEdit] = useState(false)
 
@@ -36,10 +33,15 @@ export const LinkToolbar = (props: LinkToolbarProps) => {
 
   const onSetLink = useCallback(
     (value: LinkInfo) => {
-      commands.onLink(value)
+      editor
+        .chain()
+        .focus()
+        .extendMarkRange('link')
+        .setLink(value)
+        .run()
       setShowEdit(false)
     },
-    [commands]
+    [editor]
   )
 
   return (
