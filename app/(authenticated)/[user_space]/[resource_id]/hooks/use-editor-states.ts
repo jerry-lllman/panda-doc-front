@@ -23,7 +23,6 @@ export const useEditorContentStates = (editor: Editor) => {
     ({ view }: ShouldShowProps) => {
       if (!view || editor.view.dragging) return false
 
-      console.log('%c👉  isCustomTextNode(editor): ', 'background:#41b883;padding:1px; border-radius: 0 3px 3px 0;color: #fff', isCustomTextNode(editor)) // 👈
       if (isCustomTextNode(editor)) {
         return false
       }
