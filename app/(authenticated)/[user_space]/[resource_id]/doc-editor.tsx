@@ -1,24 +1,21 @@
-import { Editor, EditorContent } from '@tiptap/react'
+import { EditorContent } from '@tiptap/react'
 
 import { TextToolbar } from './components'
 import { LinkToolbar } from './components/link'
-import { useEditorContentStates } from './hooks/use-editor-states'
-import { useEditorCommands } from './hooks/use-editor-commands'
 import '@/styles/_variables.scss'
 import '@/styles/_keyframe-animations.scss'
 import './styles.css'
 import { useRef } from 'react'
+import { usePandaEditor } from './hooks/use-panda-editor'
 
-interface DocEditorProps {
-  editor: Editor
-}
+export function DocEditor() {
+  const { editor } = usePandaEditor()
 
-export function DocEditor(props: DocEditorProps) {
-  const { editor } = props
-
-  const states = useEditorContentStates(editor)
-  const commands = useEditorCommands(editor)
   const menuContainerRef = useRef<HTMLDivElement>(null)
+
+  if (!editor) {
+    return null
+  }
 
   return (
     <div className=' relative' ref={menuContainerRef}>
@@ -38,13 +35,9 @@ export function DocEditor(props: DocEditorProps) {
       />
       <TextToolbar
         editor={editor}
-        states={states}
-        commands={commands}
       />
       <LinkToolbar
-        // appendTo={menuContainerRef}
         editor={editor}
-        commands={commands}
       />
     </div>
   )
