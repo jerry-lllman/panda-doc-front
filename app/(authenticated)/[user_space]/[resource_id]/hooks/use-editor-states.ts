@@ -1,5 +1,5 @@
 import { Editor, useEditorState } from "@tiptap/react";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { ShouldShowProps } from "../components/link/types";
 import { isTextSelected } from "../utils";
 import { isCustomTextNode } from "@/lib/utils/is-custom-text-node";
@@ -19,19 +19,28 @@ export const useEditorContentStates = (editor: Editor) => {
     })
   })
 
+  const [showContent, setShowContent] = useState(false)
+
   const shouldShow = useCallback(
     ({ view }: ShouldShowProps) => {
-      if (!view || editor.view.dragging) return false
-
-      if (isCustomTextNode(editor)) {
+      if (!view || editor.view.dragging) {
+        setShowContent(false)
         return false
       }
 
-      return isTextSelected(editor)
+      if (isCustomTextNode(editor)) {
+        setShowContent(false)
+        return false
+      }
+
+      const isShow = isTextSelected(editor)
+      setShowContent(isShow)
+      return isShow
     }, [editor])
 
   return {
     shouldShow,
+    showContent,
     ...states,
   }
 }

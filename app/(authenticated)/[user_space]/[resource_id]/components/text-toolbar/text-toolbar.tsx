@@ -19,16 +19,16 @@ const getShortcut = (keys: string[]) => keys.map(s => getShortcutKey(s).symbol).
 
 interface TextToolbarProps {
   editor: Editor
-  states: ReturnType<typeof useEditorContentStates>
-  commands: ReturnType<typeof useEditorCommands>
 }
 export const TextToolbar = (props: TextToolbarProps) => {
 
-  const { editor, states, commands } = props
-
-  const options = useEditorContentTypes(editor)
+  const { editor } = props
 
   const [selecting, setSelecting] = useState(false)
+
+  const states = useEditorContentStates(editor)
+  const commands = useEditorCommands(editor)
+  const options = useEditorContentTypes(editor)
 
   useEffect(() => {
     let selectionTimeout: number
@@ -54,10 +54,7 @@ export const TextToolbar = (props: TextToolbarProps) => {
 
   return (
     <BubbleMenu
-      pluginKey='textToolbar'
-      editor={editor}
       className={selecting ? 'hidden' : ''}
-      shouldShow={states.shouldShow}
       tippyOptions={{
         popperOptions: {
           placement: 'top-start',
@@ -79,87 +76,90 @@ export const TextToolbar = (props: TextToolbarProps) => {
         },
         offset: [0, 8],
         maxWidth: 'calc(100vw - 16px)',
-        onShown: (instance) => {
-          setTimeout(() => {
-            instance.popperInstance?.update()
-          }, 300)
-        },
       }}
+      editor={editor}
+      pluginKey="textMenu"
+      shouldShow={states.shouldShow}
+      updateDelay={0}
     >
-      <div className="grid grid-flow-col bg-background rounded-xl shadow-md px-2 py-1" style={{
-        boxShadow: `rgba(0, 0, 0, 0.1) 0px 14px 28px -6px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px, rgba(84, 72, 49, 0.08) 0px 0px 0px 1px`
-      }}>
-        <MemoContentTypePicker
-          options={options}
-        />
-        <MemoTooltipButton
-          tooltip={
-            <div>
-              <div>Bold</div>
-              <div>{getShortcut(['mod', 'B'])}</div>
-            </div>
-          }
-          isActive={states.isBold}
-          onClick={commands.onBold}
+      {states.showContent && (
+        <div
+          className="grid grid-flow-col bg-background rounded-xl shadow-md px-2 py-1"
+          style={{
+            boxShadow: `rgba(0, 0, 0, 0.1) 0px 14px 28px -6px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px, rgba(84, 72, 49, 0.08) 0px 0px 0px 1px`
+          }}
         >
-          <Bold />
-        </MemoTooltipButton>
-        <MemoTooltipButton
-          tooltip={
-            <div>
-              <div>Italicize</div>
-              <div>{getShortcut(['mod', 'I'])}</div>
-            </div>
-          }
-          isActive={states.isItalic}
-          onClick={commands.onItalic}
-        >
-          <Italic />
-        </MemoTooltipButton>
-        <MemoTooltipButton
-          tooltip={
-            <div>
-              <div>Underline</div>
-              <div>{getShortcut(['mod', 'U'])}</div>
-            </div>
-          }
-          isActive={states.isUnderline}
-          onClick={commands.onUnderline}
-        >
-          <Underline />
-        </MemoTooltipButton>
-        <MemoTooltipButton
-          tooltip={
-            <div>
-              <div>Strike-through</div>
-              <div>{getShortcut(['mod', 'shift', 'S'])}</div>
-            </div>
-          }
-          isActive={states.isStrike}
-          onClick={commands.onStrike}
-        >
-          <Strikethrough />
-        </MemoTooltipButton>
-        <MemoTooltipButton
-          tooltip={
-            <div>
-              <div>Code</div>
-              <div>{getShortcut(['mod', 'E'])}</div>
-            </div>
-          }
-          isActive={states.isCode}
-          onClick={commands.onCode}
-        >
-          <Code />
-        </MemoTooltipButton>
-        <MemoLinkPopover onLink={commands.onLink} />
-        <MemoColorPicker
-          currentColor={states.currentColor}
-          currentHighlight={states.currentHighlight}
-          onColor={commands.onColor}
-          onHighlight={commands.onHighlight}
-        />
-      </div>
+          <MemoContentTypePicker
+            options={options}
+          />
+          <MemoTooltipButton
+            tooltip={
+              <div>
+                <div>Bold</div>
+                <div>{getShortcut(['mod', 'B'])}</div>
+              </div>
+            }
+            isActive={states.isBold}
+            onClick={commands.onBold}
+          >
+            <Bold />
+          </MemoTooltipButton>
+          <MemoTooltipButton
+            tooltip={
+              <div>
+                <div>Italicize</div>
+                <div>{getShortcut(['mod', 'I'])}</div>
+              </div>
+            }
+            isActive={states.isItalic}
+            onClick={commands.onItalic}
+          >
+            <Italic />
+          </MemoTooltipButton>
+          <MemoTooltipButton
+            tooltip={
+              <div>
+                <div>Underline</div>
+                <div>{getShortcut(['mod', 'U'])}</div>
+              </div>
+            }
+            isActive={states.isUnderline}
+            onClick={commands.onUnderline}
+          >
+            <Underline />
+          </MemoTooltipButton>
+          <MemoTooltipButton
+            tooltip={
+              <div>
+                <div>Strike-through</div>
+                <div>{getShortcut(['mod', 'shift', 'S'])}</div>
+              </div>
+            }
+            isActive={states.isStrike}
+            onClick={commands.onStrike}
+          >
+            <Strikethrough />
+          </MemoTooltipButton>
+          <MemoTooltipButton
+            tooltip={
+              <div>
+                <div>Code</div>
+                <div>{getShortcut(['mod', 'E'])}</div>
+              </div>
+            }
+            isActive={states.isCode}
+            onClick={commands.onCode}
+          >
+            <Code />
+          </MemoTooltipButton>
+          <MemoLinkPopover onLink={commands.onLink} />
+          <MemoColorPicker
+            currentColor={states.currentColor}
+            currentHighlight={states.currentHighlight}
+            onColor={commands.onColor}
+            onHighlight={commands.onHighlight}
+          />
+        </div>)}
     </BubbleMenu>
   )
 }
