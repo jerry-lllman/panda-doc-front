@@ -8,7 +8,7 @@ import { TaskList } from '@tiptap/extension-task-list'
 import { TaskItem } from '@tiptap/extension-task-item'
 import Highlight from '@tiptap/extension-highlight'
 
-import { Color, Link, ResetMarksOnEnter, Selection } from '../extensions'
+import { CodeBlock, Color, Link, ResetMarksOnEnter, Selection } from '../extensions'
 
 import '@/components/tiptap-node/list-node/list-node.scss'
 
@@ -28,6 +28,7 @@ export const usePandaEditor = () => {
         code: { HTMLAttributes: { class: 'inline inline-code', spellcheck: 'false' } },
         dropcursor: { width: 2, class: 'ProseMirror-dropcursor border' }
       }),
+      CodeBlock,
       Highlight.configure({ multicolor: true }),
       Selection,
       Underline,
