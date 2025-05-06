@@ -8,6 +8,14 @@ const lowlight = createLowlight(all)
 export const CodeBlock = CodeBlockLowlight.extend({
   addNodeView() {
     return ReactNodeViewRenderer(CodeBlockComponent)
+  },
+  addKeyboardShortcuts() {
+    return {
+      Tab: () => {
+        this.editor.commands.insertContent('  ')
+        return true
+      }
+    }
   }
 }).configure({
   lowlight,

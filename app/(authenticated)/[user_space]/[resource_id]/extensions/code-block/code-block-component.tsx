@@ -205,7 +205,6 @@ export const CodeBlockComponent = (props: NodeViewProps) => {
   // 添加语言列表缓存
   const allLanguages = React.useMemo(() => {
     const listLanguages: string[] = extension.options.lowlight.listLanguages()
-    console.log('%c👉  listLanguages: ', 'background:#41b883;padding:1px; border-radius: 0 3px 3px 0;color: #fff', listLanguages) // 👈
     return languages.filter(item => listLanguages.findIndex(lang => lang === item.value))
   }, [extension.options.lowlight])
 
@@ -238,7 +237,7 @@ export const CodeBlockComponent = (props: NodeViewProps) => {
           </SelectContent>
         </Select>
       </div>
-      <div onKeyDown={e => { e.stopPropagation(); e.preventDefault() }}>
+      <div>
         <pre>
           <NodeViewContent as="code" />
         </pre>
