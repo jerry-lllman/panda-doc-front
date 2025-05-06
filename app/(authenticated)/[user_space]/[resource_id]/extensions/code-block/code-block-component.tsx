@@ -4,6 +4,9 @@ import { Select, SelectTrigger, SelectContent, SelectItem } from '@/components/u
 import React from 'react'
 import { SelectGroup } from '@radix-ui/react-select'
 import { Input } from '@/components/ui/input'
+import { Copy } from 'lucide-react'
+import copy from 'copy-to-clipboard'
+import { toast } from 'sonner'
 
 const languages = [
   {
@@ -212,9 +215,17 @@ export const CodeBlockComponent = (props: NodeViewProps) => {
     return allLanguages.filter(item => item.label.toLowerCase().includes(searchLanguage.toLowerCase()))
   }, [allLanguages, searchLanguage])
 
+  const copyCode = () => {
+    const code = props.node.textContent
+    copy(code)
+    toast.success('Copy Success', {
+      position: 'bottom-center'
+    })
+  }
+
   return (
     <NodeViewWrapper className="code-block">
-      <div>
+      <div className='flex justify-between items-center'>
         <Select onValueChange={language => updateAttributes({ language })}>
           <SelectTrigger>
             {defaultLanguage}
@@ -236,6 +247,9 @@ export const CodeBlockComponent = (props: NodeViewProps) => {
             </SelectGroup>
           </SelectContent>
         </Select>
+        <div className='px-2'>
+          <Copy className=' cursor-pointer' onClick={copyCode} />
+        </div>
       </div>
       <div>
         <pre>
