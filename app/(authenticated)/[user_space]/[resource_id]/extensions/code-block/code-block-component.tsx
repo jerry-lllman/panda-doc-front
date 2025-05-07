@@ -222,22 +222,6 @@ export const CodeBlockComponent = (props: NodeViewProps) => {
     })
   }
 
-  const exitCodeBlock = () => {
-    // Get the current position
-    const pos = editor.state.selection.$from.pos
-
-    // Find the end of the current node
-    const nodeEndPos = pos + props.node.nodeSize
-
-    // Insert a paragraph at the end of this node
-    editor.chain()
-      .insertContentAt(nodeEndPos, {
-        type: 'paragraph'
-      })
-      .focus(nodeEndPos + 1)
-      .run()
-  }
-
   return (
     <NodeViewWrapper className="code-block">
       <div className='flex justify-between items-center'>
