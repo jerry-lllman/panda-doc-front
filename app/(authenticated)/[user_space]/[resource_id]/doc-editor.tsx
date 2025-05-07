@@ -5,6 +5,8 @@ import { LinkToolbar } from './components/link'
 import '@/styles/_variables.scss'
 import '@/styles/_keyframe-animations.scss'
 import './styles.css'
+import 'highlight.js/styles/atom-one-dark.css';
+
 import { useRef } from 'react'
 import { usePandaEditor } from './hooks/use-panda-editor'
 
