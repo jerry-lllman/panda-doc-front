@@ -89,7 +89,7 @@
   }
 
   .code-block {
-    @apply rounded-sm shadow-lg font-mono;
+    @apply rounded-sm font-mono mb-2;
     background-color: rgb(247, 246, 243);
 
     code {
