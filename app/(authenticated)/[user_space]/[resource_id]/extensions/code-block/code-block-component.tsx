@@ -1,10 +1,9 @@
-
 import { NodeViewContent, NodeViewProps, NodeViewWrapper } from '@tiptap/react'
 import { Select, SelectTrigger, SelectContent, SelectItem } from '@/components/ui/select'
 import React from 'react'
 import { SelectGroup } from '@radix-ui/react-select'
 import { Input } from '@/components/ui/input'
-import { Copy } from 'lucide-react'
+import { Copy, CornerDownRight } from 'lucide-react'
 import copy from 'copy-to-clipboard'
 import { toast } from 'sonner'
 
@@ -201,7 +200,7 @@ const languages = [
 
 
 export const CodeBlockComponent = (props: NodeViewProps) => {
-  const { node: { attrs: { language: defaultLanguage } }, updateAttributes, extension } = props
+  const { node: { attrs: { language: defaultLanguage } }, updateAttributes, extension, editor } = props
 
   const [searchLanguage, setSearchLanguage] = React.useState<string>('')
 
@@ -221,6 +220,22 @@ export const CodeBlockComponent = (props: NodeViewProps) => {
     toast.success('Copy Success', {
       position: 'bottom-center'
     })
+  }
+
+  const exitCodeBlock = () => {
+    // Get the current position
+    const pos = editor.state.selection.$from.pos
+
+    // Find the end of the current node
+    const nodeEndPos = pos + props.node.nodeSize
+
+    // Insert a paragraph at the end of this node
+    editor.chain()
+      .insertContentAt(nodeEndPos, {
+        type: 'paragraph'
+      })
+      .focus(nodeEndPos + 1)
+      .run()
   }
 
   return (

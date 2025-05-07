@@ -84,7 +84,10 @@ export const useEditorContentTypes = (editor: Editor) => {
         id: 'code-block',
         type: 'option',
         label: 'Code block',
-        onClick: () => editor.chain().focus().toggleCodeBlock().run(),
+        onClick: () => {
+          // @ts-expect-error Custom command added to CodeBlock extension
+          editor.chain().focus().insertCodeBlockWithParagraph().run()
+        },
         isActive: () => ctx.editor.isActive('codeBlock'),
         isDisabled: () => !ctx.editor.can().toggleCodeBlock(),
       }
