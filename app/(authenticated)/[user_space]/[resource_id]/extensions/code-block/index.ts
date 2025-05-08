@@ -38,6 +38,17 @@ export const CodeBlock = CodeBlockLowlight.extend({
 
         // 如果当前位置之前没有换行符，说明在第一行
         if (!parentText.substring(0, parentOffset).includes('\n')) {
+          // 如果不在第一行的开始位置（不是位置0），移动到开始位置
+          if (parentOffset > 0) {
+            const startPos = $from.start()
+            const newSelection = Selection.near(state.doc.resolve(startPos))
+            editor.view.dispatch(
+              state.tr.setSelection(newSelection).scrollIntoView()
+            )
+            return true
+          }
+
+          // 如果已经在第一行开始位置，则移动到上一个节点
           // 查找代码块之前的节点位置
           const nodePos = $from.before($from.depth)
 

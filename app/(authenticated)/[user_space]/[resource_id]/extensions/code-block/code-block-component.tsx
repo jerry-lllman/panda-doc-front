@@ -3,7 +3,7 @@ import { Select, SelectTrigger, SelectContent, SelectItem } from '@/components/u
 import React from 'react'
 import { SelectGroup } from '@radix-ui/react-select'
 import { Input } from '@/components/ui/input'
-import { Copy, CornerDownRight } from 'lucide-react'
+import { Copy } from 'lucide-react'
 import copy from 'copy-to-clipboard'
 import { toast } from 'sonner'
 
