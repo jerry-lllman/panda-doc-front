@@ -29,9 +29,9 @@ export default function Layout() {
   };
 
   return (
-    <AntLayout style={{ minHeight: '100vh' }}>
+    <AntLayout className='h-screen'  >
       <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="demo-logo-vertical" style={{ height: 32, margin: 16, background: 'rgba(255, 255, 255, 0.2)' }} />
+        <div className="demo-logo-vertical h-8 m-4" style={{ background: 'rgba(255, 255, 255, 0.2)' }} />
         <Menu
           theme="dark"
           mode="inline"
@@ -71,9 +71,8 @@ export default function Layout() {
         </Header>
         <Content
           style={{
-            margin: '24px auto',
-            padding: 24,
-            minHeight: 280,
+            margin: '16px auto',
+            padding: 16,
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
           }}
