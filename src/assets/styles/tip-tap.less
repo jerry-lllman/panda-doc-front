@@ -1,0 +1,93 @@
+@reference 'tailwindcss';
+@reference 'tw-animate-css';
+
+
+/* Basic editor styles */
+.tiptap.ProseMirror {
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  h1 {
+    @apply font-semibold text-5xl leading-tight;
+  }
+
+  h2 {
+    @apply mt-8 mb-1 font-semibold text-4xl leading-tight;
+  }
+
+  h3 {
+    @apply mt-6 mb-1 font-semibold text-3xl leading-tight;
+  }
+
+  h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+
+  h5 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+
+  h6 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+  }
+
+  /* Code and preformatted text styles */
+  .inline-code {
+    @apply rounded-sm px-1 py-0.5;
+    background-color: var(--inline-code-background);
+  }
+
+  /* Link styles */
+  a {
+    color: var(--link-text);
+    opacity: 0.7;
+    border-bottom: 0.05em solid var(--link-text);
+  }
+
+  .selection {
+    @apply inline;
+  }
+
+  .selection,
+  *::selection {
+    @apply inline bg-black/10;
+    /* background-color: #3b83f6;
+    color: #fff; */
+  }
+
+  .code-block {
+    @apply rounded-sm font-mono mb-2;
+    background-color: rgb(247, 246, 243);
+
+    code {
+      /* @apply caret-white text-white bg-neutral-900 rounded-sm shadow-lg font-mono; */
+
+      &::selection {
+        @apply bg-white/30;
+      }
+    }
+
+    pre {
+      @apply rounded p-4;
+
+      *::selection {
+        @apply bg-white/20;
+      }
+
+      code {
+        @apply bg-inherit text-inherit p-0 shadow-none;
+      }
+
+
+    }
+  }
+}

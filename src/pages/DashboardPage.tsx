@@ -1,48 +1,33 @@
-import { Typography, Card, Row, Col, Statistic, Space } from 'antd';
-import { FileOutlined, UserOutlined, TeamOutlined } from '@ant-design/icons';
+import { EditorContent } from '@tiptap/react'
+import { usePandaEditor } from './hooks/use-panda-editor'
+import { TextToolbar, LinkToolbar } from './components'
 
-const { Title, Paragraph } = Typography;
+import '@/assets/styles/tip-tap.less'
+import '@/assets/styles/variables.less'
+import '@/assets/styles/keyframe-animations.less'
 
 export default function DashboardPage() {
+
+  const { editor } = usePandaEditor()
+
+
+  if (!editor) {
+    return null
+  }
+
+
   return (
-    <Space direction="vertical" size="large" style={{ width: '100%' }}>
-      <Title level={2}>Dashboard</Title>
-
-      <Row gutter={16}>
-        <Col span={8}>
-          <Card>
-            <Statistic
-              title="Documents"
-              value={112}
-              prefix={<FileOutlined />}
-            />
-          </Card>
-        </Col>
-        <Col span={8}>
-          <Card>
-            <Statistic
-              title="Users"
-              value={24}
-              prefix={<UserOutlined />}
-            />
-          </Card>
-        </Col>
-        <Col span={8}>
-          <Card>
-            <Statistic
-              title="Teams"
-              value={8}
-              prefix={<TeamOutlined />}
-            />
-          </Card>
-        </Col>
-      </Row>
-
-      <Card title="Recent Activity" style={{ width: '100%' }}>
-        <Paragraph>
-          Your recent document activity will appear here.
-        </Paragraph>
-      </Card>
-    </Space>
+    <div className='relative' >
+      <EditorContent
+        className='px-10'
+        editor={editor}
+      />
+      <TextToolbar
+        editor={editor}
+      />
+      <LinkToolbar
+        editor={editor}
+      />
+    </div>
   );
 } 

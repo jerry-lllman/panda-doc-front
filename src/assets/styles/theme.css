@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-inline-code-background: var(--inline-code-background);
+}
+
+:root {
+  --background: light-dark(#ffffff, #121212);
+  --inline-code-background: light-dark(#e2eaf3, #e8f2f6);
+
+  /* text colors */
+  --default-text-color: light-dark(#37352f, rgba(255, 255, 255, 0.81));
+  --inverse-text-color: light-dark(rgba(255, 255, 255, 0.81), #37352f);
+  --gray-text-color: light-dark(#787774, #9b9b9b);
+  --brown-text-color: light-dark(#9f6b53, ##ba856f);
+  --orange-text-color: light-dark(#d9730d, #c77d48);
+  --yellow-text-color: light-dark(#cb912f, #ca984d);
+  --green-text-color: light-dark(#448361, #529e72);
+  --blue-text-color: light-dark(#337ea9, #379ad3);
+  --purple-text-color: light-dark(#9065b0, #9d68d3);
+  --pink-text-color: light-dark(#c14c8a, #d15796);
+  --red-text-color: light-dark(#d44c47, #df5452);
+
+  /* background colors */
+  --default-background-color: light-dark(#fafafa, #121212);
+  --inverse-background-color: light-dark(#121212, #fafafa);
+  --gray-background-color: light-dark(#f8f8f7, #2f2f2f);
+  --brown-background-color: light-dark(#f4eeee, #4a3228);
+  --orange-background-color: light-dark(#fbecdd, #5c3b23);
+  --yellow-background-color: light-dark(#fbf3bd, #564328);
+  --green-background-color: light-dark(#edf3ec, #243d30);
+  --blue-background-color: light-dark(#e7f3f8, #143a4e);
+  --purple-background-color: light-dark(#f8f3fc, #3c2d49);
+  --pink-background-color: light-dark(#fcf1f6, #4e2c3c);
+  --red-background-color: light-dark(#fdebec, #522e2a);
+
+}
