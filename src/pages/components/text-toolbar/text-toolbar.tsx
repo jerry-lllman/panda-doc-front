@@ -1,6 +1,6 @@
 import { BubbleMenu, Editor } from "@tiptap/react"
 import { useEditorContentStates } from "../../hooks/use-editor-states"
-import { Bold, Code, Italic, Strikethrough, Underline } from "lucide-react"
+import { BoldOutlined, CodeOutlined, ItalicOutlined, StrikethroughOutlined, UnderlineOutlined } from "@ant-design/icons"
 import { useEditorCommands } from "../../hooks/use-editor-commands"
 import { TooltipButton } from "../tooltip-button"
 import { useEditorContentTypes } from "../../hooks/use-editor-content-types"
@@ -102,7 +102,7 @@ export const TextToolbar = (props: TextToolbarProps) => {
             isActive={states.isBold}
             onClick={commands.onBold}
           >
-            <Bold />
+            <BoldOutlined />
           </MemoTooltipButton>
           <MemoTooltipButton
             tooltip={
@@ -114,7 +114,7 @@ export const TextToolbar = (props: TextToolbarProps) => {
             isActive={states.isItalic}
             onClick={commands.onItalic}
           >
-            <Italic />
+            <ItalicOutlined />
           </MemoTooltipButton>
           <MemoTooltipButton
             tooltip={
@@ -126,7 +126,7 @@ export const TextToolbar = (props: TextToolbarProps) => {
             isActive={states.isUnderline}
             onClick={commands.onUnderline}
           >
-            <Underline />
+            <UnderlineOutlined />
           </MemoTooltipButton>
           <MemoTooltipButton
             tooltip={
@@ -138,7 +138,7 @@ export const TextToolbar = (props: TextToolbarProps) => {
             isActive={states.isStrike}
             onClick={commands.onStrike}
           >
-            <Strikethrough />
+            <StrikethroughOutlined />
           </MemoTooltipButton>
           <MemoTooltipButton
             tooltip={
@@ -150,7 +150,7 @@ export const TextToolbar = (props: TextToolbarProps) => {
             isActive={states.isCode}
             onClick={commands.onCode}
           >
-            <Code />
+            <CodeOutlined />
           </MemoTooltipButton>
           <MemoLinkPopover onLink={commands.onLink} />
           <MemoColorPicker

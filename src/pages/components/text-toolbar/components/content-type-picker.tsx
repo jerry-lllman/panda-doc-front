@@ -23,7 +23,7 @@ export const ContentTypePicker = (props: ContentTypePickerProps) => {
       onClick: option.onClick,
       label: (
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Icon />
+          <Icon size={14} />
           {option.label}
         </div>
       )

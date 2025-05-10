@@ -19,7 +19,7 @@ export const TooltipButton = React.forwardRef<HTMLButtonElement, ToolbarButtonPr
         ref={ref}
         type="text"
         size="small"
-        className={cn('size-8 w-auto p-0', className)}
+        className={cn('size-3.5 w-auto p-0', className)}
         style={buttonStyle}
         {...restProps}
       >

@@ -88,7 +88,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
         }}
         onClick={() => setOpen(!open)}
       >
-        <Palette />
+        <Palette size={14} />
       </TooltipButton>
     </Popover>
   )
