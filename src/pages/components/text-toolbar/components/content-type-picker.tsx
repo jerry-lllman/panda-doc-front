@@ -17,7 +17,7 @@ export const ContentTypePicker = (props: ContentTypePickerProps) => {
   }, [options])
 
   const menuItems: MenuProps['items'] = options.map(option => {
-    const Icon = option.icon
+    const Icon = option.icon as React.ComponentType<{ size: number }>
     return {
       key: option.id,
       onClick: option.onClick,
