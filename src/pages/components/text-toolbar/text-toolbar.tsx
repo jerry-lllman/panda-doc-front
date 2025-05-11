@@ -9,6 +9,7 @@ import { memo, useEffect, useState } from "react"
 import { LinkPopover } from "../link"
 import { getShortcutKey } from "@/utils/keyboard"
 import { ColorPicker } from "./components/color-picker"
+import { cn } from "@/utils/cn"
 
 const MemoTooltipButton = memo(TooltipButton)
 const MemoContentTypePicker = memo(ContentTypePicker)
@@ -52,9 +53,11 @@ export const TextToolbar = (props: TextToolbarProps) => {
 
   }, [editor])
 
+  const [transparent, setTransparent] = useState(true)
+
   return (
     <BubbleMenu
-      className={selecting ? 'hidden' : ''}
+      className={cn(selecting ? 'hidden' : '', transparent ? 'opacity-0' : 'opacity-100')}
       tippyOptions={{
         popperOptions: {
           placement: 'top-start',
@@ -76,11 +79,21 @@ export const TextToolbar = (props: TextToolbarProps) => {
         },
         offset: [0, 8],
         maxWidth: 'calc(100vw - 16px)',
+        onShown: (instance) => {
+          setTimeout(() => {
+            setTransparent(false)
+            instance.popperInstance?.update()
+          }, 500)
+        },
+        onHidden: () => {
+          setTransparent(true)
+        },
       }}
       editor={editor}
       pluginKey="textMenu"
       shouldShow={states.shouldShow}
       updateDelay={0}
+
     >
       {states.showContent && (
         <div

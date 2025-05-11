@@ -61,9 +61,12 @@ export const LinkToolbar = (props: LinkToolbarProps) => {
     [editor, onSetShowEdit]
   )
 
+  const [transparent, setTransparent] = useState(true)
+
 
   return (
     <BubbleMenu
+      className={transparent ? 'opacity-0' : 'opacity-100'}
       editor={editor}
       shouldShow={shouldShow}
       tippyOptions={{
@@ -86,10 +89,14 @@ export const LinkToolbar = (props: LinkToolbarProps) => {
         onShown: (instance) => {
           menuRef.current = instance as TippyInstance
           setTimeout(() => {
+            setTransparent(false)
             instance.popperInstance?.update()
           }, 500)
         },
-        onHidden: () => setShowEdit(false),
+        onHidden: () => {
+          setTransparent(true)
+          setShowEdit(false)
+        },
       }}
     >
       <Card size='small' className="bg-background bg-white !max-w-[350px]">
