@@ -1,10 +1,10 @@
 import { NodeViewContent, NodeViewWrapper } from '@tiptap/react'
 import type { NodeViewProps as NodeViewPropsType } from '@tiptap/react'
-import { Divider, Dropdown, Input, Space, message, theme } from 'antd'
+import { App, Divider, Dropdown, Input, Space, theme } from 'antd'
 import React from 'react'
-import { CopyOutlined } from '@ant-design/icons'
 import copy from 'copy-to-clipboard'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Copy } from 'lucide-react'
+import { TooltipButton } from '@/pages/components'
 
 const languages = [
   {
@@ -201,6 +201,8 @@ const languages = [
 export const CodeBlockComponent = (props: NodeViewPropsType) => {
   const { node: { attrs: { language: defaultLanguage } }, updateAttributes, extension } = props
 
+  const { message } = App.useApp();
+
   const [searchLanguage, setSearchLanguage] = React.useState<string>('')
 
   // 添加语言列表缓存
@@ -223,7 +225,7 @@ export const CodeBlockComponent = (props: NodeViewPropsType) => {
   const copyCode = () => {
     const code = props.node.textContent
     copy(code)
-    message.success('Copy Success')
+    message.success('Copied code to clipboard')
   }
 
 
@@ -262,8 +264,14 @@ export const CodeBlockComponent = (props: NodeViewPropsType) => {
             <ChevronDown size={14} />
           </Space>
         </Dropdown>
-        <div className='px-2'>
-          <CopyOutlined className=' cursor-pointer' onClick={copyCode} />
+        <div className='px-2 '>
+          <TooltipButton
+            className='!p-1'
+            tooltip='Copy'
+            onClick={copyCode}
+          >
+            <Copy size={14} />
+          </TooltipButton>
         </div>
       </div>
       <div className='p-2'>
