@@ -206,6 +206,11 @@ export const CodeBlockComponent = (props: NodeViewPropsType) => {
 
   const [searchLanguage, setSearchLanguage] = React.useState<string>('')
 
+  const onLanguageChange = (value: string) => {
+    updateAttributes({ language: value })
+    setSearchLanguage('')
+  }
+
   // get enabled languages
   const allLanguages = React.useMemo(() => {
     const listLanguages: string[] = extension.options.lowlight.listLanguages()
@@ -233,7 +238,7 @@ export const CodeBlockComponent = (props: NodeViewPropsType) => {
         <Select
           options={filteredLanguages}
           value={defaultLanguage}
-          onChange={(value) => updateAttributes({ language: value })}
+          onChange={onLanguageChange}
           popupMatchSelectWidth={300}
           variant='borderless'
           popupRender={(menu) => (
