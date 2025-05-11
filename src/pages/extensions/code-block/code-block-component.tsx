@@ -1,8 +1,10 @@
-import { NodeViewContent, NodeViewProps, NodeViewWrapper } from '@tiptap/react'
-import { Select, message } from 'antd'
+import { NodeViewContent, NodeViewWrapper } from '@tiptap/react'
+import type { NodeViewProps as NodeViewPropsType } from '@tiptap/react'
+import { Divider, Dropdown, Input, Space, message, theme } from 'antd'
 import React from 'react'
 import { CopyOutlined } from '@ant-design/icons'
 import copy from 'copy-to-clipboard'
+import { ChevronDown } from 'lucide-react'
 
 const languages = [
   {
@@ -196,8 +198,8 @@ const languages = [
 ]
 
 
-export const CodeBlockComponent = (props: NodeViewProps) => {
-  const { node: { attrs: { language: defaultLanguage } }, updateAttributes, extension, editor } = props
+export const CodeBlockComponent = (props: NodeViewPropsType) => {
+  const { node: { attrs: { language: defaultLanguage } }, updateAttributes, extension } = props
 
   const [searchLanguage, setSearchLanguage] = React.useState<string>('')
 
@@ -208,8 +210,15 @@ export const CodeBlockComponent = (props: NodeViewProps) => {
   }, [extension.options.lowlight])
 
   const filteredLanguages = React.useMemo(() => {
-    return allLanguages.filter(item => item.label.toLowerCase().includes(searchLanguage.toLowerCase()))
-  }, [allLanguages, searchLanguage])
+    return allLanguages.filter(item => item.label.toLowerCase().includes(searchLanguage.toLowerCase())).map(item => ({
+      key: item.value,
+      label: item.label,
+      onClick: () => {
+        updateAttributes({ language: item.value })
+        // editor.commands.focus()
+      }
+    }))
+  }, [allLanguages, searchLanguage, updateAttributes])
 
   const copyCode = () => {
     const code = props.node.textContent
@@ -217,19 +226,47 @@ export const CodeBlockComponent = (props: NodeViewProps) => {
     message.success('Copy Success')
   }
 
+
+  const { token } = theme.useToken()
+
+  const contentStyle: React.CSSProperties = {
+    backgroundColor: token.colorBgElevated,
+    borderRadius: token.borderRadiusLG,
+    boxShadow: token.boxShadowSecondary,
+  };
+
   return (
-    <NodeViewWrapper className="code-block">
-      <div className='flex justify-between items-center'>
-        <Select
-          options={filteredLanguages}
-          value={defaultLanguage}
-          onSelect={language => updateAttributes({ language })}
-        />
+    <NodeViewWrapper className="code-block rounded-md border border-gray-200 p-2 my-2">
+      <div className='flex justify-between items-center border-b border-gray-200 pb-2' contentEditable='false'>
+        <Dropdown
+          trigger={['click']}
+          menu={{ items: filteredLanguages }}
+
+          popupRender={(menu) => (
+            <div style={contentStyle}>
+              <div className='p-2'>
+                <Input placeholder='Search Language' onChange={(e) => setSearchLanguage(e.target.value)} />
+              </div>
+              <Divider style={{ margin: 0 }} />
+              {React.cloneElement(
+                menu as React.ReactElement<{
+                  style: React.CSSProperties;
+                }>,
+                { style: { boxShadow: 'none', maxHeight: 520, overflow: 'auto' } },
+              )}
+            </div>
+          )}
+        >
+          <Space size="small" className='cursor-pointer text-gray-500 hover:bg-gray-200 duration-300 rounded-md px-2'>
+            {defaultLanguage}
+            <ChevronDown size={14} />
+          </Space>
+        </Dropdown>
         <div className='px-2'>
           <CopyOutlined className=' cursor-pointer' onClick={copyCode} />
         </div>
       </div>
-      <div>
+      <div className='p-2'>
         <pre>
           <NodeViewContent as="code" />
         </pre>
