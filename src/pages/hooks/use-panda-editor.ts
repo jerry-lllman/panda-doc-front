@@ -8,7 +8,7 @@ import { TaskList } from '@tiptap/extension-task-list'
 import { TaskItem } from '@tiptap/extension-task-item'
 import Highlight from '@tiptap/extension-highlight'
 
-import { CodeBlock, Color, Link, ResetMarksOnEnter, Selection } from '../extensions'
+import { CodeBlock, Color, Link, ResetMarksOnEnter, Selection, TrailingNode } from '../extensions'
 
 import '@/assets/styles/list-node.less'
 
@@ -37,7 +37,8 @@ export const usePandaEditor = () => {
       TaskItem.configure({ nested: true }),
       Color,
       Link,
-      ResetMarksOnEnter
+      ResetMarksOnEnter,
+      TrailingNode
     ],
     content: `
       <p>
