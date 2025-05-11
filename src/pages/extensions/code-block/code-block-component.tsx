@@ -205,14 +205,10 @@ export const CodeBlockComponent = (props: NodeViewPropsType) => {
 
   const [searchLanguage, setSearchLanguage] = React.useState<string>('')
 
-  // 添加语言列表缓存
+  // get enabled languages
   const allLanguages = React.useMemo(() => {
     const listLanguages: string[] = extension.options.lowlight.listLanguages()
-    return languages.filter(item => listLanguages.findIndex(lang => lang === item.value))
-  }, [extension.options.lowlight])
-
-  const filteredLanguages = React.useMemo(() => {
-    return allLanguages.filter(item => item.label.toLowerCase().includes(searchLanguage.toLowerCase())).map(item => ({
+    return languages.filter(item => listLanguages.findIndex(lang => lang === item.value)).map(item => ({
       key: item.value,
       label: item.label,
       onClick: () => {
@@ -220,7 +216,11 @@ export const CodeBlockComponent = (props: NodeViewPropsType) => {
         // editor.commands.focus()
       }
     }))
-  }, [allLanguages, searchLanguage, updateAttributes])
+  }, [extension.options.lowlight, updateAttributes])
+
+  const filteredLanguages = React.useMemo(() => {
+    return allLanguages.filter(item => item.label.toLowerCase().includes(searchLanguage.toLowerCase()))
+  }, [allLanguages, searchLanguage])
 
   const copyCode = () => {
     const code = props.node.textContent
