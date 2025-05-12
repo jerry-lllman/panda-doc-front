@@ -9,12 +9,15 @@ import {
   MenuUnfoldOutlined,
   UserOutlined,
 } from '@ant-design/icons';
+import { ThemeToggle } from './ThemeToggle';
+import { useTheme } from './ThemeProvider';
 
 const { Header, Sider, Content } = AntLayout;
 
 export default function Layout() {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const { themeMode } = useTheme();
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -30,10 +33,10 @@ export default function Layout() {
 
   return (
     <AntLayout className='h-screen'  >
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+      <Sider trigger={null} collapsible collapsed={collapsed} theme={themeMode}>
         <div className="demo-logo-vertical h-8 m-4" style={{ background: 'rgba(255, 255, 255, 0.2)' }} />
         <Menu
-          theme="dark"
+          theme={themeMode}
           mode="inline"
           selectedKeys={getSelectedKey()}
           items={[
@@ -64,6 +67,7 @@ export default function Layout() {
               <MenuFoldOutlined onClick={() => setCollapsed(!collapsed)} />
             )}
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <ThemeToggle />
               <span>Panda Doc</span>
               <Avatar icon={<UserOutlined />} />
             </div>
