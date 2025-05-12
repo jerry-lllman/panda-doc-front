@@ -20,7 +20,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
       trigger={['click']}
       placement="bottomLeft"
       content={
-        <div className="bg-background bg-white">
+        <div className="bg-background">
           <div className="grid grid-cols-1 gap-4">
             <div>
               <div className="text-xs">Text color</div>

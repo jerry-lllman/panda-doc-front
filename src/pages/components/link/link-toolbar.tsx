@@ -98,7 +98,7 @@ export const LinkToolbar = (props: LinkToolbarProps) => {
         },
       }}
     >
-      <Card size='small' className="bg-background bg-white !max-w-[350px]">
+      <Card size='small' className="bg-background !max-w-[350px]">
         {
           showEdit ? (
             <LinkEditPanel
