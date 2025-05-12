@@ -2,7 +2,6 @@ import { Popover } from "antd"
 import { TooltipButton } from "../../../"
 import { Palette } from "lucide-react"
 import { COLORS } from "./constants"
-import { useState } from "react"
 
 interface ColorPickerProps {
   currentColor?: string
@@ -15,10 +14,11 @@ export const ColorPicker = (props: ColorPickerProps) => {
 
   const { currentColor, currentHighlight, onColor, onHighlight } = props
 
-  const [open, setOpen] = useState(false)
 
   return (
-    <Popover open={open}
+    <Popover
+      trigger={['click']}
+      placement="bottomLeft"
       content={
         <div className="bg-background bg-white">
           <div className="grid grid-cols-1 gap-4">
@@ -86,7 +86,6 @@ export const ColorPicker = (props: ColorPickerProps) => {
           color: currentColor,
           backgroundColor: currentHighlight
         }}
-        onClick={() => setOpen(!open)}
       >
         <Palette size={14} />
       </TooltipButton>
