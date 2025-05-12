@@ -1,4 +1,4 @@
-import { Button, Input, Switch } from "antd"
+import { Button, Form, Input, Switch } from "antd"
 import { useState } from "react"
 import { cn } from "@/utils"
 import type { LinkInfo } from "./types"
@@ -18,14 +18,13 @@ export const LinkEditPanel = (props: LinkEditBlockProps) => {
     target: initialTarget || ''
   })
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const handleSubmit = () => {
     onSave(formValue)
   }
 
   return (
     <div className={cn('space-y-4 min-w-80', className)}>
-      <form onSubmit={handleSubmit} className="space-y-3">
+      <Form onFinish={handleSubmit} className="space-y-3">
         <div className="flex items-center gap-2">
           <Input
             className="flex-1"
@@ -42,9 +41,9 @@ export const LinkEditPanel = (props: LinkEditBlockProps) => {
           />
         </div>
         <div>
-          <Button type="primary" size="small">Submit</Button>
+          <Button type="primary" htmlType="submit" size="small">Submit</Button>
         </div>
-      </form>
+      </Form>
     </div>
   )
 }
