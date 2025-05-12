@@ -10,11 +10,11 @@ export const useEditorCommands = (editor: Editor) => {
   const onCode = useCallback(() => editor.chain().focus().toggleCode().run(), [editor])
   const onLink = useCallback(
     (value: LinkInfo) => {
-      const { href, target } = value
+      const { href } = value
       editor
         .chain()
         .focus()
-        .setLink({ href, target })
+        .setLink({ href })
         .run()
     }
     , [editor]

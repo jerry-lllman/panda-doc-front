@@ -1,9 +1,12 @@
 
-import TipTapLink, { LinkOptions } from '@tiptap/extension-link'
-import { DOMOutputSpec } from '@tiptap/pm/model'
+import TipTapLink from '@tiptap/extension-link'
 import { getMarkRange, mergeAttributes } from '@tiptap/react'
-import type { HTMLAttributes } from 'react'
 import { Plugin, TextSelection } from '@tiptap/pm/state'
+
+import type { DOMOutputSpec } from '@tiptap/pm/model'
+import type { HTMLAttributes } from 'react'
+import type { LinkOptions } from '@tiptap/extension-link'
+
 
 // 自定义 Link 扩展
 export const Link = TipTapLink.extend<LinkOptions & { renderHTML: (props: { HTMLAttributes: HTMLAttributes<HTMLAnchorElement> }) => DOMOutputSpec }>({

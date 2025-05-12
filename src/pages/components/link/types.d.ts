@@ -5,5 +5,5 @@ export type ShouldShowProps = Parameters<BubbleMenuProps['shouldShow']>[0]
 
 export interface LinkInfo {
   href: string
-  target: string
+  // target: string
 }

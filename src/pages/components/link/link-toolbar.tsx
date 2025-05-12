@@ -25,10 +25,9 @@ export const LinkToolbar = (props: LinkToolbarProps) => {
   const linkInfo = useEditorState({
     editor,
     selector: ctx => {
-      const { href = '', target = '' } = ctx.editor.getAttributes('link')
+      const { href = '' } = ctx.editor.getAttributes('link')
       return {
         href,
-        target
       }
     }
   })
@@ -105,7 +104,7 @@ export const LinkToolbar = (props: LinkToolbarProps) => {
             <LinkEditPanel
               className="w-full bg-popover text-popover-foreground outline-none"
               initialUrl={linkInfo.href}
-              initialTarget={linkInfo.target}
+              // initialTarget={linkInfo.target}
               onSave={onSetLink}
             />
           ) : (

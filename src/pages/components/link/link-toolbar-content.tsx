@@ -27,7 +27,7 @@ export const LinkToolbarContent = (props: LinkToolbarProps) => {
     <div className="inline-flex items-center gap-1 text-sm  ">
       <div className="grid grid-flow-col items-center space-x-1 text-gray-600">
         {/* <LinkIcon className="size-4 mt-0.5" /> */}
-        <Link to={linkInfo.href} target={linkInfo.target} className=' break-all underline'>{linkInfo.href}</Link>
+        <Link to={linkInfo.href} target="_blank" rel="noopener noreferrer" className=' break-all underline'>{linkInfo.href}</Link>
       </div>
       {/* <Separator orientation="vertical" className='h-4' /> */}
       <TooltipButton tooltip="Copy" onClick={handleCopy}>
