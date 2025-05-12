@@ -10,14 +10,12 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { ThemeToggle } from './ThemeToggle';
-import { useTheme } from './ThemeProvider';
 
 const { Header, Sider, Content } = AntLayout;
 
 export default function Layout() {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
-  const { themeMode } = useTheme();
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -33,11 +31,11 @@ export default function Layout() {
 
   return (
     <AntLayout className='h-screen'  >
-      <Sider trigger={null} collapsible collapsed={collapsed} theme={themeMode}>
+      <Sider trigger={null} collapsible collapsed={collapsed} >
         <div className="demo-logo-vertical h-8 m-4" style={{ background: 'rgba(255, 255, 255, 0.2)' }} />
         <Menu
-          theme={themeMode}
           mode="inline"
+          style={{ borderInlineEnd: 'none' }}
           selectedKeys={getSelectedKey()}
           items={[
             {

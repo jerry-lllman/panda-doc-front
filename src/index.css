@@ -18,3 +18,7 @@
 :focus-visible {
   outline: none;
 }
+
+::selection {
+  background: #2383e247;
+}

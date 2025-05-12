@@ -16,11 +16,23 @@ const ThemeContext = createContext<ThemeContextType>({
 
 export const useTheme = () => useContext(ThemeContext);
 
+const getComponentTheme = () => {
+  return {
+    Layout: {
+      siderBg: 'var(--background)',
+    },
+    Menu: {
+      colorBgContainer: 'var(--background)',
+    }
+  }
+}
+
 const lightTheme: ThemeConfig = {
   algorithm: theme.defaultAlgorithm,
   token: {
     // colorPrimary: '#337ea9',
   },
+  components: getComponentTheme()
 };
 
 const darkTheme: ThemeConfig = {
@@ -28,6 +40,7 @@ const darkTheme: ThemeConfig = {
   token: {
     // colorPrimary: '#379ad3',
   },
+  components: getComponentTheme()
 };
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
