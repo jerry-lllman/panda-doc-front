@@ -78,6 +78,11 @@ export default function Layout() {
             padding: 16,
             // background: colorBgContainer,
             borderRadius: borderRadiusLG,
+            /**
+             * That's how we'll handle it for now
+             * The optimise it later when we want to show the catalogue 
+             */
+            maxWidth: '708px',
           }}
         >
           <Outlet />

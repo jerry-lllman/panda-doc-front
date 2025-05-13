@@ -53,6 +53,24 @@ export const CodeBlock = CodeBlockLowlight.extend({
   addNodeView() {
     return ReactNodeViewRenderer(CodeBlockComponent)
   },
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      isWrap: {
+        default: false,
+        parseHTML: element => element.getAttribute('data-is-wrap') === 'true',
+        renderHTML: attributes => {
+          if (!attributes.isWrap) {
+            return {}
+          }
+
+          return {
+            'data-is-wrap': 'true',
+          }
+        },
+      },
+    }
+  },
   addKeyboardShortcuts() {
     return {
       Tab: () => {

@@ -1,11 +1,12 @@
 import { NodeViewContent, NodeViewWrapper } from '@tiptap/react'
 import type { NodeViewProps as NodeViewPropsType } from '@tiptap/react'
-import { App, Divider, Input, Select } from 'antd'
+import { App, Button, Divider, Input, Select } from 'antd'
 import React from 'react'
 import copy from 'copy-to-clipboard'
 import { Copy } from 'lucide-react'
 import { TooltipButton } from '@/pages/components'
 import { trim } from 'lodash-es'
+import { cn } from '@/utils'
 
 const languages = [
   {
@@ -200,7 +201,7 @@ const languages = [
 
 
 export const CodeBlockComponent = (props: NodeViewPropsType) => {
-  const { node: { attrs: { language: defaultLanguage } }, updateAttributes, extension } = props
+  const { node: { attrs: { language: defaultLanguage, isWrap } }, updateAttributes, extension } = props
 
   const { message } = App.useApp();
 
@@ -232,6 +233,11 @@ export const CodeBlockComponent = (props: NodeViewPropsType) => {
     message.success('Copied code to clipboard')
   }
 
+  const wrapCode = () => {
+    // 将 isWrap 属性设置为 true/false
+    updateAttributes({ isWrap: !isWrap })
+  }
+
   return (
     <NodeViewWrapper className="code-block rounded-md border border-gray-200 p-2 my-2">
       <div className='flex justify-between items-center border-b border-gray-200 pb-2' contentEditable='false'>
@@ -259,12 +265,17 @@ export const CodeBlockComponent = (props: NodeViewPropsType) => {
           >
             <Copy size={14} />
           </TooltipButton>
+          <Button type='link' onClick={wrapCode}>
+            {isWrap ? 'Unwrap code' : 'Wrap code'}
+          </Button>
         </div>
       </div>
-      <div className='p-2'>
-        <pre>
-          <NodeViewContent as="code" />
-        </pre>
+      <div className='px-2'>
+        <div className={cn('py-4', !isWrap && 'overflow-x-auto')}>
+          <pre>
+            <NodeViewContent as="code" style={isWrap ? { whiteSpace: 'break-spaces', wordBreak: 'break-all' } : { whiteSpace: 'nowrap' }} />
+          </pre>
+        </div>
       </div>
     </NodeViewWrapper>
   )
