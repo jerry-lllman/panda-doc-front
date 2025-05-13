@@ -15,6 +15,7 @@ export const LinkPopover = (props: LinkButtonProps) => {
   return (
     <Popover
       trigger="click"
+      placement="bottomLeft"
       content={<LinkEditPanel onSave={onLink} />}
     >
       <TooltipButton

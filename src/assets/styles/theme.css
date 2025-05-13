@@ -2,12 +2,11 @@
 
 @theme inline {
   --color-background: var(--background);
-  --color-inline-code-background: var(--inline-code-background);
 }
 
 :root {
   --background: #ffffff;
-  --inline-code-background: #e2eaf3;
+  --inline-code-background: rgb(135 131 120 / 15%);
 
   /* text colors */
   --default-text-color: #37352f;
@@ -38,7 +37,7 @@
 
 .dark {
   --background: #1f1f1f;
-  --inline-code-background: #e8f2f6;
+  --inline-code-background: rgba(135, 131, 120, 15%);
 
   /* text colors */
   --default-text-color: rgba(255, 255, 255, 0.81);
