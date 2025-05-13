@@ -6,6 +6,7 @@
 
 :root {
   --background: #ffffff;
+  --sider-background: #f8f8f7;
   --inline-code-background: rgb(135 131 120 / 15%);
 
   /* text colors */
@@ -37,6 +38,7 @@
 
 .dark {
   --background: #1f1f1f;
+  --sider-background: #1f1f1f;
   --inline-code-background: rgba(135, 131, 120, 15%);
 
   /* text colors */

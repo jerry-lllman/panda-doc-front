@@ -19,11 +19,12 @@ export const useTheme = () => useContext(ThemeContext);
 const getComponentTheme = () => {
   return {
     Layout: {
-      siderBg: 'var(--background)',
+      siderBg: 'var(--sider-background)',
+      bodyBg: 'var(--background)',
     },
     Menu: {
-      colorBgContainer: 'var(--background)',
-    }
+      colorBgContainer: 'var(--sider-background)',
+    },
   }
 }
 
