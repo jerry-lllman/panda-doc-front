@@ -4,6 +4,7 @@ import { CodeBlockComponent } from './code-block-component'
 import { ReactNodeViewRenderer, Editor } from '@tiptap/react'
 import { Selection } from '@tiptap/pm/state'
 import { ResolvedPos } from '@tiptap/pm/model'
+import 'highlight.js/styles/atom-one-dark.css'
 
 const lowlight = createLowlight(all)
 
