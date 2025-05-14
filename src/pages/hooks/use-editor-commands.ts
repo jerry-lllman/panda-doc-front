@@ -8,6 +8,7 @@ export const useEditorCommands = (editor: Editor) => {
   const onUnderline = useCallback(() => editor.chain().focus().toggleUnderline().run(), [editor])
   const onStrike = useCallback(() => editor.chain().focus().toggleStrike().run(), [editor])
   const onCode = useCallback(() => editor.chain().focus().toggleCode().run(), [editor])
+  const onBlockquote = useCallback(() => editor.chain().focus().toggleBlockquote().run(), [editor])
   const onLink = useCallback(
     (value: LinkInfo) => {
       const { href } = value
@@ -34,6 +35,7 @@ export const useEditorCommands = (editor: Editor) => {
     onCode,
     onLink,
     onColor,
-    onHighlight
+    onHighlight,
+    onBlockquote
   }
 }

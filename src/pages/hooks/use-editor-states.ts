@@ -13,6 +13,7 @@ export const useEditorContentStates = (editor: Editor) => {
       isUnderline: ctx.editor.isActive('underline'),
       isStrike: ctx.editor.isActive('strike'),
       isCode: ctx.editor.isActive('code'),
+      isBlockquote: ctx.editor.isActive('blockquote'),
       currentColor: ctx.editor.getAttributes('textStyle').color,
       currentHighlight: ctx.editor.getAttributes('highlight').color,
     })

@@ -1,5 +1,5 @@
 import { Editor, useEditorState } from "@tiptap/react"
-import { CodeXml, Heading1, Heading2, Heading3, List, ListOrdered, ListTodo, Type } from 'lucide-react'
+import { Heading1, Heading2, Heading3, List, ListOrdered, ListTodo, Quote, SquareCode, Type } from 'lucide-react'
 
 export interface TextToolbarContentTypes {
   id: string
@@ -80,7 +80,7 @@ export const useEditorContentTypes = (editor: Editor) => {
         isDisabled: () => !ctx.editor.can().toggleTaskList(),
       },
       {
-        icon: CodeXml,
+        icon: SquareCode,
         id: 'code-block',
         type: 'option',
         label: 'Code block',
@@ -90,6 +90,15 @@ export const useEditorContentTypes = (editor: Editor) => {
         },
         isActive: () => ctx.editor.isActive('codeBlock'),
         isDisabled: () => !ctx.editor.can().toggleCodeBlock(),
+      },
+      {
+        icon: Quote,
+        id: 'blockquote',
+        type: 'option',
+        label: 'Blockquote',
+        onClick: () => ctx.editor.chain().focus().toggleBlockquote().run(),
+        isActive: () => ctx.editor.isActive('blockquote'),
+        isDisabled: () => !ctx.editor.can().toggleBlockquote(),
       }
     ]
   })

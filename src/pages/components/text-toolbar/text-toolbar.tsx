@@ -1,6 +1,7 @@
 import { BubbleMenu, Editor } from "@tiptap/react"
 import { useEditorContentStates } from "../../hooks/use-editor-states"
-import { BoldOutlined, CodeOutlined, ItalicOutlined, StrikethroughOutlined, UnderlineOutlined } from "@ant-design/icons"
+import { BoldOutlined, ItalicOutlined, StrikethroughOutlined, UnderlineOutlined } from "@ant-design/icons"
+import { Code } from "lucide-react"
 import { useEditorCommands } from "../../hooks/use-editor-commands"
 import { TooltipButton } from "../tooltip-button"
 import { useEditorContentTypes } from "../../hooks/use-editor-content-types"
@@ -163,7 +164,7 @@ export const TextToolbar = (props: TextToolbarProps) => {
             isActive={states.isCode}
             onClick={commands.onCode}
           >
-            <CodeOutlined />
+            <Code size={14} />
           </MemoTooltipButton>
           <MemoLinkPopover onLink={commands.onLink} />
           <MemoColorPicker
