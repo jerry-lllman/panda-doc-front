@@ -24,7 +24,7 @@ export const ContentTypePicker = (props: ContentTypePickerProps) => {
       label: (
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Icon size={14} />
-          {option.label}
+          <span>{option.label}</span>
         </div>
       )
     }
@@ -32,6 +32,7 @@ export const ContentTypePicker = (props: ContentTypePickerProps) => {
 
   return (
     <Dropdown
+      arrow
       menu={{ items: menuItems }}
       trigger={['click']}
       placement="bottomLeft"
