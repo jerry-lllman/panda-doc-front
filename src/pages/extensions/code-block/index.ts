@@ -153,6 +153,12 @@ export const CodeBlock = CodeBlockLowlight.extend({
         const startPos = $from.start()
         const endPos = $from.end()
 
+        // 检查当前选区是否已经完全选中了代码块
+        // 如果是，则允许默认全选行为（选中全文）
+        if (selection.from === startPos && selection.to === endPos) {
+          return false
+        }
+
         // 创建一个从代码块开始到结束的选区
         const $start = state.doc.resolve(startPos)
         const $end = state.doc.resolve(endPos)
