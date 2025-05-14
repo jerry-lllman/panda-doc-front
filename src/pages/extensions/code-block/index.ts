@@ -121,6 +121,22 @@ export const CodeBlock = CodeBlockLowlight.extend({
         }
 
         return false
+      },
+      Backspace: ({ editor }) => {
+        const { selection } = editor.state
+        const { $from } = selection
+
+        // 检查是否在代码块中
+        if ($from.parent.type.name !== 'codeBlock') {
+          return false
+        }
+
+        // 检查是否在第一行第0个位置，直接阻止默认行为，保持光标在当前位置
+        if (isFirstLine($from) && $from.parentOffset === 0) {
+          return true
+        }
+
+        return false
       }
     }
   },
