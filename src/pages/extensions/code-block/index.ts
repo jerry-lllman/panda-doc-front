@@ -2,7 +2,7 @@ import { CodeBlockLowlight } from '@tiptap/extension-code-block-lowlight'
 import { all, createLowlight } from 'lowlight'
 import { CodeBlockComponent } from './code-block-component'
 import { ReactNodeViewRenderer, Editor } from '@tiptap/react'
-import { Selection } from '@tiptap/pm/state'
+import { Selection, TextSelection } from '@tiptap/pm/state'
 import { ResolvedPos } from '@tiptap/pm/model'
 import 'highlight.js/styles/atom-one-dark.css'
 
@@ -137,6 +137,33 @@ export const CodeBlock = CodeBlockLowlight.extend({
         }
 
         return false
+      },
+      // 处理全选键(Cmd+A/Ctrl+A)，在代码块中只选中代码块内容
+      'Mod-a': ({ editor }) => {
+        const { state } = editor
+        const { selection } = state
+        const { $from } = selection
+
+        // 检查是否在代码块中
+        if ($from.parent.type.name !== 'codeBlock') {
+          return false
+        }
+
+        // 获取代码块的开始和结束位置
+        const startPos = $from.start()
+        const endPos = $from.end()
+
+        // 创建一个从代码块开始到结束的选区
+        const $start = state.doc.resolve(startPos)
+        const $end = state.doc.resolve(endPos)
+        const newSelection = new TextSelection($start, $end)
+
+        // 应用选区
+        editor.view.dispatch(
+          state.tr.setSelection(newSelection).scrollIntoView()
+        )
+
+        return true
       }
     }
   },
