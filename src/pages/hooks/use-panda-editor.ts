@@ -9,7 +9,7 @@ import { TaskItem } from '@tiptap/extension-task-item'
 import Highlight from '@tiptap/extension-highlight'
 import Blockquote from '@tiptap/extension-blockquote'
 
-import { CodeBlock, Color, Link, ResetMarksOnEnter, Selection, TrailingNode } from '../extensions'
+import { CodeBlock, Color, HorizontalRule, Link, ResetMarksOnEnter, Selection, TrailingNode } from '../extensions'
 
 import '@/assets/styles/list-node.less'
 
@@ -40,7 +40,8 @@ export const usePandaEditor = () => {
       Color,
       Link,
       ResetMarksOnEnter,
-      TrailingNode
+      TrailingNode,
+      HorizontalRule
     ],
     content: `
       <p>

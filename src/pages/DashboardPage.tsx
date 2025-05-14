@@ -2,9 +2,8 @@ import { EditorContent } from '@tiptap/react'
 import { usePandaEditor } from './hooks/use-panda-editor'
 import { TextToolbar, LinkToolbar } from './components'
 
-import '@/assets/styles/tip-tap.less'
-import '@/assets/styles/variables.less'
 import '@/assets/styles/keyframe-animations.less'
+import '@/assets/styles/tip-tap.less'
 
 export default function DashboardPage() {
 

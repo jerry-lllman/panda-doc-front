@@ -78,9 +78,33 @@
       }
     }
 
+    // blockquote
     blockquote {
       @apply border-l-4 pl-3 py-2;
       border-color: var(--inverse-background-color);
     }
+
+
+    // horizontal rule
+    [data-type='horizontalRule'] {
+      @apply my-1 py-2 transition-all duration-100 ease-in-out cursor-pointer;
+
+      &.ProseMirror-selectednode {
+        @apply bg-black/5;
+
+        hr {
+          @apply border-t-black/30;
+        }
+      }
+
+      &:hover:not(&.ProseMirror-selectednode) {
+        @apply bg-black/5;
+      }
+
+      hr {
+        @apply border-0 border-t border-black/20;
+      }
+    }
+
   }
 }
