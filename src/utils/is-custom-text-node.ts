@@ -1,7 +1,6 @@
 import { Editor } from "@tiptap/react";
-import { Link } from "@/pages/extensions"
 
-const CUSTOM_NODES = [Link.name]
+const CUSTOM_NODES = ['link']
 
 export const isCustomTextNode = (editor: Editor) => {
 

@@ -1,15 +1,17 @@
+import { TaskList, TaskItem } from "@tiptap/extension-list";
+import { TextStyle } from "@tiptap/extension-text-style";
 import { useEffect } from 'react'
-
 import { useEditor } from '@tiptap/react'
 import { StarterKit } from '@tiptap/starter-kit'
-import { TextStyle } from '@tiptap/extension-text-style'
-import { Underline } from '@tiptap/extension-underline'
-import { TaskList } from '@tiptap/extension-task-list'
-import { TaskItem } from '@tiptap/extension-task-item'
 import Highlight from '@tiptap/extension-highlight'
-import Blockquote from '@tiptap/extension-blockquote'
-
-import { CodeBlock, Color, HorizontalRule, Link, ResetMarksOnEnter, Selection, TrailingNode } from '../extensions'
+import {
+  CodeBlock,
+  Color,
+  HorizontalRule,
+  linkConfig,
+  ResetMarksOnEnter,
+  Selection,
+} from '../extensions'
 
 import '@/assets/styles/list-node.less'
 
@@ -27,20 +29,17 @@ export const usePandaEditor = () => {
         bulletList: { HTMLAttributes: { class: 'list-node' } },
         orderedList: { HTMLAttributes: { class: 'list-node' } },
         code: { HTMLAttributes: { class: 'inline inline-code', spellcheck: 'false' } },
-        dropcursor: { width: 2, class: 'ProseMirror-dropcursor border' }
+        dropcursor: { width: 2, class: 'ProseMirror-dropcursor border' },
+        link: linkConfig
       }),
-      Blockquote,
       CodeBlock,
       Highlight.configure({ multicolor: true }),
       Selection,
-      Underline,
       TextStyle,
       TaskList,
       TaskItem.configure({ nested: true }),
       Color,
-      Link,
       ResetMarksOnEnter,
-      TrailingNode,
       HorizontalRule
     ],
     content: `

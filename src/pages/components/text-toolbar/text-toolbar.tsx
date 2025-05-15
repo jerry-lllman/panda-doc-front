@@ -1,4 +1,5 @@
-import { BubbleMenu, Editor } from "@tiptap/react"
+import { Editor } from "@tiptap/react";
+import { BubbleMenu } from "@tiptap/react/menus";
 import { useEditorContentStates } from "../../hooks/use-editor-states"
 import { BoldOutlined, ItalicOutlined, StrikethroughOutlined, UnderlineOutlined } from "@ant-design/icons"
 import { Code } from "lucide-react"
@@ -11,6 +12,7 @@ import { LinkPopover } from "../link"
 import { getShortcutKey } from "@/utils/keyboard"
 import { ColorPicker } from "./components/color-picker"
 import { cn } from "@/utils/cn"
+// import { offset } from '@floating-ui/dom'
 
 const MemoTooltipButton = memo(TooltipButton)
 const MemoContentTypePicker = memo(ContentTypePicker)
@@ -54,47 +56,16 @@ export const TextToolbar = (props: TextToolbarProps) => {
 
   }, [editor])
 
-  const [transparent, setTransparent] = useState(true)
 
   return (
     <BubbleMenu
-      className={cn(selecting ? 'hidden' : '', transparent ? 'opacity-0' : 'opacity-100')}
-      tippyOptions={{
-        popperOptions: {
-          placement: 'top-start',
-          modifiers: [
-            {
-              name: 'preventOverflow',
-              options: {
-                boundary: 'viewport',
-                padding: 8,
-              },
-            },
-            {
-              name: 'flip',
-              options: {
-                fallbackPlacements: ['bottom-start', 'top-end', 'bottom-end'],
-              },
-            },
-          ],
-        },
-        offset: [0, 8],
-        maxWidth: 'calc(100vw - 16px)',
-        onShown: (instance) => {
-          setTimeout(() => {
-            setTransparent(false)
-            instance.popperInstance?.update()
-          }, 500)
-        },
-        onHidden: () => {
-          setTransparent(true)
-        },
+      className={cn(selecting ? 'hidden' : '',)}
+      options={{
+        autoPlacement: true,
       }}
       editor={editor}
       pluginKey="textMenu"
       shouldShow={states.shouldShow}
-      updateDelay={0}
-
     >
       {states.showContent && (
         <div

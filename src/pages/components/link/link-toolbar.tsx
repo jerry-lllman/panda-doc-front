@@ -1,4 +1,5 @@
-import { BubbleMenu, useEditorState } from "@tiptap/react"
+import { useEditorState } from "@tiptap/react";
+import { BubbleMenu } from "@tiptap/react/menus";
 import type { Editor } from '@tiptap/react'
 import { useCallback, useRef, useState } from "react"
 import type { LinkInfo } from "./types"
@@ -60,43 +61,13 @@ export const LinkToolbar = (props: LinkToolbarProps) => {
     [editor, onSetShowEdit]
   )
 
-  const [transparent, setTransparent] = useState(true)
 
 
   return (
     <BubbleMenu
-      className={transparent ? 'opacity-0' : 'opacity-100'}
       editor={editor}
       shouldShow={shouldShow}
-      tippyOptions={{
-        popperOptions: {
-          modifiers: [
-            {
-              name: 'preventOverflow',
-              options: {
-                padding: 8,
-              },
-            },
-            {
-              name: 'offset',
-              options: {
-                offset: [0, 8],
-              },
-            },
-          ],
-        },
-        onShown: (instance) => {
-          menuRef.current = instance as TippyInstance
-          setTimeout(() => {
-            setTransparent(false)
-            instance.popperInstance?.update()
-          }, 500)
-        },
-        onHidden: () => {
-          setTransparent(true)
-          setShowEdit(false)
-        },
-      }}
+
     >
       <Card size='small' className="bg-background !max-w-[350px]">
         {

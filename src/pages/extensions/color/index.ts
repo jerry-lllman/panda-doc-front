@@ -1,22 +1,20 @@
-import { Color as TiptapColor } from '@tiptap/extension-color';
+import { Color as TipTapColor } from '@tiptap/extension-text-style'
 import { Plugin } from '@tiptap/pm/state';
 
-export const Color = TiptapColor.extend({
+export const Color = TipTapColor.extend({
   addProseMirrorPlugins() {
     return [
-      ...this.parent?.() || [],
+      ...(this.parent?.() || []),
       new Plugin({
         props: {
           handleKeyDown: (_, event) => {
             if (event.key === 'Enter') {
-              this.editor.commands.unsetColor()
-              this.editor.commands.unsetHighlight()
               this.editor.commands.unsetAllMarks()
             }
             return false
           }
         }
       })
-    ]
+    ];
   }
 })

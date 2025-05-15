@@ -1,79 +1,66 @@
 
-import TipTapLink from '@tiptap/extension-link'
-import { getMarkRange, mergeAttributes } from '@tiptap/react'
-import { Plugin, TextSelection } from '@tiptap/pm/state'
-
-import type { DOMOutputSpec } from '@tiptap/pm/model'
-import type { HTMLAttributes } from 'react'
 import type { LinkOptions } from '@tiptap/extension-link'
 
+export const linkConfig: Partial<LinkOptions> = {
+  openOnClick: false,
+  autolink: true,
+  defaultProtocol: 'https',
+  protocols: ['http', 'https'],
+  isAllowedUri: (url, ctx) => {
+    try {
+      // construct URL
+      const parsedUrl = url.includes(':') ? new URL(url) : new URL(`${ctx.defaultProtocol}://${url}`)
 
-// 自定义 Link 扩展
-export const Link = TipTapLink.extend<LinkOptions & { renderHTML: (props: { HTMLAttributes: HTMLAttributes<HTMLAnchorElement> }) => DOMOutputSpec }>({
-  /*
- * Determines whether typing next to a link automatically becomes part of the link.
- * In this case, we dont want any characters to be included as part of the link.
- */
-  inclusive: false,
-
-  /*
-   * Match all <a> elements that have an href attribute, except for:
-   * - <a> elements with a data-type attribute set to button
-   * - <a> elements with an href attribute that contains 'javascript:'
-   */
-  parseHTML() {
-    return [{ tag: 'a[href]:not([data-type="button"]):not([href *= "javascript:" i])' }]
-  },
-
-  renderHTML({ HTMLAttributes }) {
-    return ['a', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
-  },
-
-  addOptions() {
-    return {
-      ...this.parent?.(),
-      openOnClick: false,
-      HTMLAttributes: {
-        class: 'link'
+      // use default validation
+      if (!ctx.defaultValidate(parsedUrl.href)) {
+        return false
       }
+
+      // disallowed protocols
+      const disallowedProtocols = ['ftp', 'file', 'mailto']
+      const protocol = parsedUrl.protocol.replace(':', '')
+
+      if (disallowedProtocols.includes(protocol)) {
+        return false
+      }
+
+      // only allow protocols specified in ctx.protocols
+      const allowedProtocols = ctx.protocols.map(p => (typeof p === 'string' ? p : p.scheme))
+
+      if (!allowedProtocols.includes(protocol)) {
+        return false
+      }
+
+      // disallowed domains
+      const disallowedDomains: string[] = [
+        // 'example-phishing.com', 'malicious-site.net'
+      ]
+      const domain = parsedUrl.hostname
+
+      if (disallowedDomains.includes(domain)) {
+        return false
+      }
+
+      // all checks have passed
+      return true
+    } catch {
+      return false
     }
   },
+  shouldAutoLink: url => {
+    try {
+      // construct URL
+      const parsedUrl = url.includes(':') ? new URL(url) : new URL(`https://${url}`)
 
-  addProseMirrorPlugins() {
-    // const { editor } = this
+      // only auto-link if the domain is not in the disallowed list
+      const disallowedDomains: string[] = [
+        // 'example-no-autolink.com', 'another-no-autolink.com'
+      ]
+      const domain = parsedUrl.hostname
 
-    return [
-      ...(this.parent?.() || []),
-      new Plugin({
-        props: {
-          handleClick(view, pos) {
-            /*
-            * Marks the entire link when the user clicks on it.
-            */
-
-            const { schema, doc, tr } = view.state
-            const range = getMarkRange(doc.resolve(pos), schema.marks.link)
-
-            if (!range) {
-              return
-            }
-
-            const { from, to } = range
-            const start = Math.min(from, to)
-            const end = Math.max(from, to)
-
-            if (pos < start || pos > end) {
-              return
-            }
-
-            const $start = doc.resolve(start)
-            const $end = doc.resolve(end)
-            const transaction = tr.setSelection(new TextSelection($start, $end))
-
-            view.dispatch(transaction)
-          }
-        }
-      })
-    ]
-  }
-}) 
+      return !disallowedDomains.includes(domain)
+    } catch {
+      return false
+    }
+  },
+}

@@ -15,7 +15,7 @@ export const ColorPickerContent = (props: ColorPickerContentProps) => {
   const handlerColorChange = useCallback((e: React.MouseEvent<HTMLButtonElement>, value: string) => {
     e.preventDefault()
     e.stopPropagation()
-    editor.chain().setColor(value).run()
+    editor.chain().focus().setColor(value).run()
   }, [editor])
 
   const handlerBackgroundChange = useCallback((e: React.MouseEvent<HTMLButtonElement>, value: string) => {
