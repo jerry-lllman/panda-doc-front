@@ -273,7 +273,7 @@ export const CodeBlockComponent = (props: NodeViewPropsType) => {
       <div className='px-2'>
         <div className={cn('py-4', !isWrap && 'overflow-x-auto')}>
           <pre>
-            <NodeViewContent as="code" style={isWrap ? { whiteSpace: 'break-spaces', wordBreak: 'break-all' } : { whiteSpace: 'pre' }} />
+            <NodeViewContent style={isWrap ? { whiteSpace: 'break-spaces', wordBreak: 'break-all' } : { whiteSpace: 'pre' }} />
           </pre>
         </div>
       </div>
