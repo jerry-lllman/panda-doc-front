@@ -14,7 +14,6 @@ import {
 } from '../extensions'
 
 import '@/assets/styles/list-node.less'
-
 export const usePandaEditor = () => {
 
   const editor = useEditor({
@@ -40,7 +39,7 @@ export const usePandaEditor = () => {
       TaskItem.configure({ nested: true }),
       Color,
       ResetMarksOnEnter,
-      HorizontalRule
+      HorizontalRule,
     ],
     content: `
       <p>

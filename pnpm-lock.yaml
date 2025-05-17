@@ -14,6 +14,15 @@ importers:
       '@ant-design/v5-patch-for-react-19':
         specifier: ^1.0.3
         version: 1.0.3(antd@5.25.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@dnd-kit/core':
+        specifier: ^6.3.1
+        version: 6.3.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@dnd-kit/sortable':
+        specifier: ^10.0.0
+        version: 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
+      '@dnd-kit/utilities':
+        specifier: ^3.2.2
+        version: 3.2.2(react@19.1.0)
       '@floating-ui/dom':
         specifier: ^1.6.0
         version: 1.7.0
@@ -32,6 +41,9 @@ importers:
       '@tiptap/extension-code-block-lowlight':
         specifier: ^2.11.7
         version: 2.12.0(@tiptap/core@3.0.0-beta.5(@tiptap/pm@3.0.0-beta.5))(@tiptap/extension-code-block@2.12.0(@tiptap/core@3.0.0-beta.5(@tiptap/pm@3.0.0-beta.5))(@tiptap/pm@3.0.0-beta.5))(@tiptap/pm@3.0.0-beta.5)(highlight.js@11.11.1)(lowlight@3.3.0)
+      '@tiptap/extension-collaboration':
+        specifier: ^2.12.0
+        version: 2.12.0(@tiptap/core@3.0.0-beta.5(@tiptap/pm@3.0.0-beta.5))(@tiptap/pm@3.0.0-beta.5)(y-prosemirror@1.3.5(prosemirror-model@1.25.1)(prosemirror-state@1.4.3)(prosemirror-view@1.39.2)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))
       '@tiptap/extension-color':
         specifier: ^2.11.7
         version: 2.12.0(@tiptap/core@3.0.0-beta.5(@tiptap/pm@3.0.0-beta.5))(@tiptap/extension-text-style@3.0.0-beta.5(@tiptap/core@3.0.0-beta.5(@tiptap/pm@3.0.0-beta.5)))
@@ -104,6 +116,12 @@ importers:
       react:
         specifier: ^19.1.0
         version: 19.1.0
+      react-dnd:
+        specifier: ^16.0.1
+        version: 16.0.1(@types/node@22.15.17)(@types/react@19.1.3)(react@19.1.0)
+      react-dnd-html5-backend:
+        specifier: ^16.0.1
+        version: 16.0.1
       react-dom:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
@@ -116,9 +134,15 @@ importers:
       tailwindcss:
         specifier: ^4.1.6
         version: 4.1.6
+      tippy.js:
+        specifier: ^6.3.7
+        version: 6.3.7
       tw-animate-css:
         specifier: ^1.2.9
         version: 1.2.9
+      y-prosemirror:
+        specifier: ^1.3.5
+        version: 1.3.5(prosemirror-model@1.25.1)(prosemirror-state@1.4.3)(prosemirror-view@1.39.2)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)
     devDependencies:
       '@eslint/js':
         specifier: ^9.25.0
@@ -238,6 +262,28 @@ packages:
   '@babel/runtime@7.27.1':
     resolution: {integrity: sha512-1x3D2xEk2fRo3PAhwQwu5UubzgiVWSXTBfWpVd2Mx2AzRqJuDJCsgaDVZ7HB5iGzDW1Hl1sWN2mFyKjmR9uAog==, tarball: https://registry.npmmirror.com/@babel/runtime/-/runtime-7.27.1.tgz}
     engines: {node: '>=6.9.0'}
+
+  '@dnd-kit/accessibility@3.1.1':
+    resolution: {integrity: sha512-2P+YgaXF+gRsIihwwY1gCsQSYnu9Zyj2py8kY5fFvUM1qm2WA2u639R6YNVfU4GWr+ZM5mqEsfHZZLoRONbemw==, tarball: https://registry.npmmirror.com/@dnd-kit/accessibility/-/accessibility-3.1.1.tgz}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@dnd-kit/core@6.3.1':
+    resolution: {integrity: sha512-xkGBRQQab4RLwgXxoqETICr6S5JlogafbhNsidmrkVv2YRs5MLwpjoF2qpiGjQt8S9AoxtIV603s0GIUpY5eYQ==, tarball: https://registry.npmmirror.com/@dnd-kit/core/-/core-6.3.1.tgz}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+
+  '@dnd-kit/sortable@10.0.0':
+    resolution: {integrity: sha512-+xqhmIIzvAYMGfBYYnbKuNicfSsk4RksY2XdmJhT+HAC01nix6fHCztU68jooFiMUB01Ky3F0FyOvhG/BZrWkg==, tarball: https://registry.npmmirror.com/@dnd-kit/sortable/-/sortable-10.0.0.tgz}
+    peerDependencies:
+      '@dnd-kit/core': ^6.3.0
+      react: '>=16.8.0'
+
+  '@dnd-kit/utilities@3.2.2':
+    resolution: {integrity: sha512-+MKAJEOfaBe5SmV6t34p80MMKhjvUz0vRrvVJbPT0WElzaOJ/1xs+D+KDv+tD/NE5ujfrChEcshd4fLn0wpiqg==, tarball: https://registry.npmmirror.com/@dnd-kit/utilities/-/utilities-3.2.2.tgz}
+    peerDependencies:
+      react: '>=16.8.0'
 
   '@emotion/hash@0.8.0':
     resolution: {integrity: sha512-kBJtf7PH6aWwZ6fka3zQ0p6SBYzx4fl1LoZXE2RrnYST9Xljm7WfKJrU4g/Xr3Beg72MLrp1AWNUmuYJTL7Cow==, tarball: https://registry.npmmirror.com/@emotion/hash/-/hash-0.8.0.tgz}
@@ -500,6 +546,9 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==, tarball: https://registry.npmmirror.com/@nodelib/fs.walk/-/fs.walk-1.2.8.tgz}
     engines: {node: '>= 8'}
 
+  '@popperjs/core@2.11.8':
+    resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==, tarball: https://registry.npmmirror.com/@popperjs/core/-/core-2.11.8.tgz}
+
   '@rc-component/async-validator@5.0.4':
     resolution: {integrity: sha512-qgGdcVIF604M9EqjNF0hbUTz42bz/RDtxWdWuU5EQe3hi7M8ob54B6B35rOsvX5eSvIHIzT9iH1R3n+hk3CGfg==, tarball: https://registry.npmmirror.com/@rc-component/async-validator/-/async-validator-5.0.4.tgz}
     engines: {node: '>=14.x'}
@@ -560,6 +609,15 @@ packages:
     peerDependencies:
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
+
+  '@react-dnd/asap@5.0.2':
+    resolution: {integrity: sha512-WLyfoHvxhs0V9U+GTsGilGgf2QsPl6ZZ44fnv0/b8T3nQyvzxidxsg/ZltbWssbsRDlYW8UKSQMTGotuTotZ6A==, tarball: https://registry.npmmirror.com/@react-dnd/asap/-/asap-5.0.2.tgz}
+
+  '@react-dnd/invariant@4.0.2':
+    resolution: {integrity: sha512-xKCTqAK/FFauOM9Ta2pswIyT3D8AQlfrYdOi/toTPEhqCuAs1v5tcJ3Y08Izh1cJ5Jchwy9SeAXmMg6zrKs2iw==, tarball: https://registry.npmmirror.com/@react-dnd/invariant/-/invariant-4.0.2.tgz}
+
+  '@react-dnd/shallowequal@4.0.2':
+    resolution: {integrity: sha512-/RVXdLvJxLg4QKvMoM5WlwNR9ViO9z8B/qPcc+C0Sa/teJY7QG7kJ441DwzOjMYEY7GmU4dj5EcGHIkKZiQZCA==, tarball: https://registry.npmmirror.com/@react-dnd/shallowequal/-/shallowequal-4.0.2.tgz}
 
   '@remirror/core-constants@3.0.0':
     resolution: {integrity: sha512-42aWfPrimMfDKDi4YegyS7x+/0tlzaqwPQCULLanv3DMIlu96KTJR0fM5isWX2UViOqlGnX6YFgqWepcX+XMNg==, tarball: https://registry.npmmirror.com/@remirror/core-constants/-/core-constants-3.0.0.tgz}
@@ -912,6 +970,13 @@ packages:
     resolution: {integrity: sha512-Nypi1lDCT45Fb2y/hwb+p8CoNdy7q/GZAgrqmE0vor/UJTKIoa8nLKcVxSPhK2s6ShN3ULFtX221fcpm8IgWgA==, tarball: https://registry.npmmirror.com/@tiptap/extension-code/-/extension-code-3.0.0-beta.5.tgz}
     peerDependencies:
       '@tiptap/core': 3.0.0-beta.5
+
+  '@tiptap/extension-collaboration@2.12.0':
+    resolution: {integrity: sha512-eWY/3rQaOxEolZv7E4sGa2Z3xbWlIyCxL+bU5KyDbcMAZuQSqmjoGU+Q/3eAUYD9Ixwd6YPwMIKeEJP8bkxFnA==, tarball: https://registry.npmmirror.com/@tiptap/extension-collaboration/-/extension-collaboration-2.12.0.tgz}
+    peerDependencies:
+      '@tiptap/core': ^2.7.0
+      '@tiptap/pm': ^2.7.0
+      y-prosemirror: ^1.2.11
 
   '@tiptap/extension-color@2.12.0':
     resolution: {integrity: sha512-tb3KDhH2Hf3Pwm7pIEH80TKBOLmHU+T/0seR3R+6flamPC7t9S4mcehDX35qvTQTqDU9v429Rw5SL40FRW7AMg==, tarball: https://registry.npmmirror.com/@tiptap/extension-color/-/extension-color-2.12.0.tgz}
@@ -1356,6 +1421,9 @@ packages:
   devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==, tarball: https://registry.npmmirror.com/devlop/-/devlop-1.1.0.tgz}
 
+  dnd-core@16.0.1:
+    resolution: {integrity: sha512-HK294sl7tbw6F6IeuK16YSBUoorvHpY8RHO+9yFfaJyCDVb6n7PRcezrOEOa2SBCqiYpemh5Jx20ZcjKdFAVng==, tarball: https://registry.npmmirror.com/dnd-core/-/dnd-core-16.0.1.tgz}
+
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==, tarball: https://registry.npmmirror.com/dunder-proto/-/dunder-proto-1.0.1.tgz}
     engines: {node: '>= 0.4'}
@@ -1601,6 +1669,9 @@ packages:
     resolution: {integrity: sha512-Xwwo44whKBVCYoliBQwaPvtd/2tYFkRQtXDWj1nackaV2JPXx3L0+Jvd8/qCJ2p+ML0/XVkJ2q+Mr+UVdpJK5w==, tarball: https://registry.npmmirror.com/highlight.js/-/highlight.js-11.11.1.tgz}
     engines: {node: '>=12.0.0'}
 
+  hoist-non-react-statics@3.3.2:
+    resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==, tarball: https://registry.npmmirror.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz}
+
   http-errors@2.0.0:
     resolution: {integrity: sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==, tarball: https://registry.npmmirror.com/http-errors/-/http-errors-2.0.0.tgz}
     engines: {node: '>= 0.8'}
@@ -1654,6 +1725,9 @@ packages:
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==, tarball: https://registry.npmmirror.com/isexe/-/isexe-2.0.0.tgz}
 
+  isomorphic.js@0.2.5:
+    resolution: {integrity: sha512-PIeMbHqMt4DnUP3MA/Flc0HElYjMXArsw1qwJZcm9sqR8mq3l8NYizFMty0pWwE/tzIGH3EKK5+jes5mAr85yw==, tarball: https://registry.npmmirror.com/isomorphic.js/-/isomorphic.js-0.2.5.tgz}
+
   jiti@2.4.2:
     resolution: {integrity: sha512-rg9zJN+G4n2nfJl5MW3BMygZX56zKPNVEYYqq7adpmMh4Jn2QNEwhvQlFy6jPVdcod7txZtKHWnyZiA3a0zP7A==, tarball: https://registry.npmmirror.com/jiti/-/jiti-2.4.2.tgz}
     hasBin: true
@@ -1685,6 +1759,11 @@ packages:
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==, tarball: https://registry.npmmirror.com/levn/-/levn-0.4.1.tgz}
     engines: {node: '>= 0.8.0'}
+
+  lib0@0.2.108:
+    resolution: {integrity: sha512-+3eK/B0SqYoZiQu9fNk4VEc6EX8cb0Li96tPGKgugzoGj/OdRdREtuTLvUW+mtinoB2mFiJjSqOJBIaMkAGhxQ==, tarball: https://registry.npmmirror.com/lib0/-/lib0-0.2.108.tgz}
+    engines: {node: '>=16'}
+    hasBin: true
 
   lightningcss-darwin-arm64@1.29.2:
     resolution: {integrity: sha512-cK/eMabSViKn/PG8U/a7aCorpeKLMlK0bQeNHmdb7qUnBkNPnL+oV5DjJUo0kqWsJUapZsM4jCfYItbqBDvlcA==, tarball: https://registry.npmmirror.com/lightningcss-darwin-arm64/-/lightningcss-darwin-arm64-1.29.2.tgz}
@@ -2272,10 +2351,31 @@ packages:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
 
+  react-dnd-html5-backend@16.0.1:
+    resolution: {integrity: sha512-Wu3dw5aDJmOGw8WjH1I1/yTH+vlXEL4vmjk5p+MHxP8HuHJS1lAGeIdG/hze1AvNeXWo/JgULV87LyQOr+r5jw==, tarball: https://registry.npmmirror.com/react-dnd-html5-backend/-/react-dnd-html5-backend-16.0.1.tgz}
+
+  react-dnd@16.0.1:
+    resolution: {integrity: sha512-QeoM/i73HHu2XF9aKksIUuamHPDvRglEwdHL4jsp784BgUuWcg6mzfxT0QDdQz8Wj0qyRKx2eMg8iZtWvU4E2Q==, tarball: https://registry.npmmirror.com/react-dnd/-/react-dnd-16.0.1.tgz}
+    peerDependencies:
+      '@types/hoist-non-react-statics': '>= 3.3.1'
+      '@types/node': '>= 12'
+      '@types/react': '>= 16'
+      react: '>= 16.14'
+    peerDependenciesMeta:
+      '@types/hoist-non-react-statics':
+        optional: true
+      '@types/node':
+        optional: true
+      '@types/react':
+        optional: true
+
   react-dom@19.1.0:
     resolution: {integrity: sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g==, tarball: https://registry.npmmirror.com/react-dom/-/react-dom-19.1.0.tgz}
     peerDependencies:
       react: ^19.1.0
+
+  react-is@16.13.1:
+    resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==, tarball: https://registry.npmmirror.com/react-is/-/react-is-16.13.1.tgz}
 
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==, tarball: https://registry.npmmirror.com/react-is/-/react-is-18.3.1.tgz}
@@ -2300,6 +2400,9 @@ packages:
   react@19.1.0:
     resolution: {integrity: sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg==, tarball: https://registry.npmmirror.com/react/-/react-19.1.0.tgz}
     engines: {node: '>=0.10.0'}
+
+  redux@4.2.1:
+    resolution: {integrity: sha512-LAUYz4lc+Do8/g7aeRa8JkyDErK6ekstQaqWQrNRW//MY1TvCEpMtpTWvlQ+FPbWCx+Xixu/6SHt5N0HR+SB4w==, tarball: https://registry.npmmirror.com/redux/-/redux-4.2.1.tgz}
 
   resize-observer-polyfill@1.5.1:
     resolution: {integrity: sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==, tarball: https://registry.npmmirror.com/resize-observer-polyfill/-/resize-observer-polyfill-1.5.1.tgz}
@@ -2437,6 +2540,9 @@ packages:
     resolution: {integrity: sha512-mEwzpUgrLySlveBwEVDMKk5B57bhLPYovRfPAXD5gA/98Opn0rCDj3GtLwFvCvH5RK9uPCExUROW5NjDwvqkxw==, tarball: https://registry.npmmirror.com/tinyglobby/-/tinyglobby-0.2.13.tgz}
     engines: {node: '>=12.0.0'}
 
+  tippy.js@6.3.7:
+    resolution: {integrity: sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==, tarball: https://registry.npmmirror.com/tippy.js/-/tippy.js-6.3.7.tgz}
+
   to-regex-range@5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==, tarball: https://registry.npmmirror.com/to-regex-range/-/to-regex-range-5.0.1.tgz}
     engines: {node: '>=8.0'}
@@ -2563,9 +2669,29 @@ packages:
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==, tarball: https://registry.npmmirror.com/wrappy/-/wrappy-1.0.2.tgz}
 
+  y-prosemirror@1.3.5:
+    resolution: {integrity: sha512-qW8fXCb72L6H2BWiuhZdSJ6hiShHUog08gh6KvBqLjhK6Et9DxfDnMDvx6yyO3iCdnEhDfUJviRvaMAAXb0dNg==, tarball: https://registry.npmmirror.com/y-prosemirror/-/y-prosemirror-1.3.5.tgz}
+    engines: {node: '>=16.0.0', npm: '>=8.0.0'}
+    peerDependencies:
+      prosemirror-model: ^1.7.1
+      prosemirror-state: ^1.2.3
+      prosemirror-view: ^1.9.10
+      y-protocols: ^1.0.1
+      yjs: ^13.5.38
+
+  y-protocols@1.0.6:
+    resolution: {integrity: sha512-vHRF2L6iT3rwj1jub/K5tYcTT/mEYDUppgNPXwp8fmLpui9f7Yeq3OEtTLVF012j39QnV+KEQpNqoN7CWU7Y9Q==, tarball: https://registry.npmmirror.com/y-protocols/-/y-protocols-1.0.6.tgz}
+    engines: {node: '>=16.0.0', npm: '>=8.0.0'}
+    peerDependencies:
+      yjs: ^13.0.0
+
   yallist@5.0.0:
     resolution: {integrity: sha512-YgvUTfwqyc7UXVMrB+SImsVYSmTS8X/tSrtdNZMImM+n7+QTriRXyXim0mBrTXNeqzVF0KWGgHPeiyViFFrNDw==, tarball: https://registry.npmmirror.com/yallist/-/yallist-5.0.0.tgz}
     engines: {node: '>=18'}
+
+  yjs@13.6.27:
+    resolution: {integrity: sha512-OIDwaflOaq4wC6YlPBy2L6ceKeKuF7DeTxx+jPzv1FHn9tCZ0ZwSRnUBxD05E3yed46fv/FWJbvR+Ud7x0L7zw==, tarball: https://registry.npmmirror.com/yjs/-/yjs-13.6.27.tgz}
+    engines: {node: '>=16.0.0', npm: '>=8.0.0'}
 
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==, tarball: https://registry.npmmirror.com/yocto-queue/-/yocto-queue-0.1.0.tgz}
@@ -2659,6 +2785,31 @@ snapshots:
       react-dom: 19.1.0(react@19.1.0)
 
   '@babel/runtime@7.27.1': {}
+
+  '@dnd-kit/accessibility@3.1.1(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+      tslib: 2.8.1
+
+  '@dnd-kit/core@6.3.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@dnd-kit/accessibility': 3.1.1(react@19.1.0)
+      '@dnd-kit/utilities': 3.2.2(react@19.1.0)
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
+      tslib: 2.8.1
+
+  '@dnd-kit/sortable@10.0.0(@dnd-kit/core@6.3.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)':
+    dependencies:
+      '@dnd-kit/core': 6.3.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@dnd-kit/utilities': 3.2.2(react@19.1.0)
+      react: 19.1.0
+      tslib: 2.8.1
+
+  '@dnd-kit/utilities@3.2.2(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+      tslib: 2.8.1
 
   '@emotion/hash@0.8.0': {}
 
@@ -2855,6 +3006,8 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
+  '@popperjs/core@2.11.8': {}
+
   '@rc-component/async-validator@5.0.4':
     dependencies:
       '@babel/runtime': 7.27.1
@@ -2929,6 +3082,12 @@ snapshots:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       react-is: 18.3.1
+
+  '@react-dnd/asap@5.0.2': {}
+
+  '@react-dnd/invariant@4.0.2': {}
+
+  '@react-dnd/shallowequal@4.0.2': {}
 
   '@remirror/core-constants@3.0.0': {}
 
@@ -3175,6 +3334,12 @@ snapshots:
   '@tiptap/extension-code@3.0.0-beta.5(@tiptap/core@3.0.0-beta.5(@tiptap/pm@3.0.0-beta.5))':
     dependencies:
       '@tiptap/core': 3.0.0-beta.5(@tiptap/pm@3.0.0-beta.5)
+
+  '@tiptap/extension-collaboration@2.12.0(@tiptap/core@3.0.0-beta.5(@tiptap/pm@3.0.0-beta.5))(@tiptap/pm@3.0.0-beta.5)(y-prosemirror@1.3.5(prosemirror-model@1.25.1)(prosemirror-state@1.4.3)(prosemirror-view@1.39.2)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27))':
+    dependencies:
+      '@tiptap/core': 3.0.0-beta.5(@tiptap/pm@3.0.0-beta.5)
+      '@tiptap/pm': 3.0.0-beta.5
+      y-prosemirror: 1.3.5(prosemirror-model@1.25.1)(prosemirror-state@1.4.3)(prosemirror-view@1.39.2)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27)
 
   '@tiptap/extension-color@2.12.0(@tiptap/core@3.0.0-beta.5(@tiptap/pm@3.0.0-beta.5))(@tiptap/extension-text-style@3.0.0-beta.5(@tiptap/core@3.0.0-beta.5(@tiptap/pm@3.0.0-beta.5)))':
     dependencies:
@@ -3712,6 +3877,12 @@ snapshots:
     dependencies:
       dequal: 2.0.3
 
+  dnd-core@16.0.1:
+    dependencies:
+      '@react-dnd/asap': 5.0.2
+      '@react-dnd/invariant': 4.0.2
+      redux: 4.2.1
+
   dunder-proto@1.0.1:
     dependencies:
       call-bind-apply-helpers: 1.0.2
@@ -4011,6 +4182,10 @@ snapshots:
 
   highlight.js@11.11.1: {}
 
+  hoist-non-react-statics@3.3.2:
+    dependencies:
+      react-is: 16.13.1
+
   http-errors@2.0.0:
     dependencies:
       depd: 2.0.0
@@ -4053,6 +4228,8 @@ snapshots:
 
   isexe@2.0.0: {}
 
+  isomorphic.js@0.2.5: {}
+
   jiti@2.4.2: {}
 
   js-yaml@4.1.0:
@@ -4091,6 +4268,10 @@ snapshots:
     dependencies:
       prelude-ls: 1.2.1
       type-check: 0.4.0
+
+  lib0@0.2.108:
+    dependencies:
+      isomorphic.js: 0.2.5
 
   lightningcss-darwin-arm64@1.29.2:
     optional: true
@@ -4753,10 +4934,28 @@ snapshots:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
+  react-dnd-html5-backend@16.0.1:
+    dependencies:
+      dnd-core: 16.0.1
+
+  react-dnd@16.0.1(@types/node@22.15.17)(@types/react@19.1.3)(react@19.1.0):
+    dependencies:
+      '@react-dnd/invariant': 4.0.2
+      '@react-dnd/shallowequal': 4.0.2
+      dnd-core: 16.0.1
+      fast-deep-equal: 3.1.3
+      hoist-non-react-statics: 3.3.2
+      react: 19.1.0
+    optionalDependencies:
+      '@types/node': 22.15.17
+      '@types/react': 19.1.3
+
   react-dom@19.1.0(react@19.1.0):
     dependencies:
       react: 19.1.0
       scheduler: 0.26.0
+
+  react-is@16.13.1: {}
 
   react-is@18.3.1: {}
 
@@ -4775,6 +4974,10 @@ snapshots:
       react-dom: 19.1.0(react@19.1.0)
 
   react@19.1.0: {}
+
+  redux@4.2.1:
+    dependencies:
+      '@babel/runtime': 7.27.1
 
   resize-observer-polyfill@1.5.1: {}
 
@@ -4944,6 +5147,10 @@ snapshots:
       fdir: 6.4.4(picomatch@4.0.2)
       picomatch: 4.0.2
 
+  tippy.js@6.3.7:
+    dependencies:
+      '@popperjs/core': 2.11.8
+
   to-regex-range@5.0.1:
     dependencies:
       is-number: 7.0.0
@@ -5029,7 +5236,25 @@ snapshots:
 
   wrappy@1.0.2: {}
 
+  y-prosemirror@1.3.5(prosemirror-model@1.25.1)(prosemirror-state@1.4.3)(prosemirror-view@1.39.2)(y-protocols@1.0.6(yjs@13.6.27))(yjs@13.6.27):
+    dependencies:
+      lib0: 0.2.108
+      prosemirror-model: 1.25.1
+      prosemirror-state: 1.4.3
+      prosemirror-view: 1.39.2
+      y-protocols: 1.0.6(yjs@13.6.27)
+      yjs: 13.6.27
+
+  y-protocols@1.0.6(yjs@13.6.27):
+    dependencies:
+      lib0: 0.2.108
+      yjs: 13.6.27
+
   yallist@5.0.0: {}
+
+  yjs@13.6.27:
+    dependencies:
+      lib0: 0.2.108
 
   yocto-queue@0.1.0: {}
 
