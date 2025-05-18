@@ -2,6 +2,7 @@ import type { Editor } from "@tiptap/react"
 import { DragHandle } from "./drag-react"
 import { useData } from "@/pages/hooks/useData"
 import { GripVertical } from "lucide-react"
+import { Button } from "antd"
 
 export const DragHandleComponent = (props: {
   editor: Editor
@@ -20,7 +21,10 @@ export const DragHandleComponent = (props: {
         zIndex: 99,
       }}
     >
-      <GripVertical className="select-none cursor-pointer" />
+      {/* <div className="h-8 flex items-center">
+        <GripVertical className="select-none cursor-pointer" size={16} />
+      </div> */}
+      <Button type="text" icon={<GripVertical className="select-none cursor-pointer" size={16} />} />
     </DragHandle>
   )
 }
