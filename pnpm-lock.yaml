@@ -92,6 +92,9 @@ importers:
       '@tiptap/starter-kit':
         specifier: 3.0.0-beta.5
         version: 3.0.0-beta.5
+      '@tiptap/suggestion':
+        specifier: 3.0.0-beta.5
+        version: 3.0.0-beta.5(@tiptap/core@3.0.0-beta.5(@tiptap/pm@3.0.0-beta.5))(@tiptap/pm@3.0.0-beta.5)
       antd:
         specifier: ^5.25.1
         version: 5.25.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -1151,6 +1154,12 @@ packages:
 
   '@tiptap/starter-kit@3.0.0-beta.5':
     resolution: {integrity: sha512-2dLa/A4dKYeqCwS2+9agJrpjbpq9ZkLMetEf+wVWLGXahdvmlzIR68AqOVQbvwNsMzscji3tPOEJxuq7uTBVnQ==, tarball: https://registry.npmmirror.com/@tiptap/starter-kit/-/starter-kit-3.0.0-beta.5.tgz}
+
+  '@tiptap/suggestion@3.0.0-beta.5':
+    resolution: {integrity: sha512-aGhU5Sz48JvDA2R0uY7nM4/0bVj1gnBM7prVLazJq4u3YdE6rRiylzNnK2nKhryJCgNFQQQUW4kvgLvuvbdVuA==, tarball: https://registry.npmmirror.com/@tiptap/suggestion/-/suggestion-3.0.0-beta.5.tgz}
+    peerDependencies:
+      '@tiptap/core': 3.0.0-beta.5
+      '@tiptap/pm': 3.0.0-beta.5
 
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==, tarball: https://registry.npmmirror.com/@types/estree/-/estree-1.0.7.tgz}
@@ -3534,6 +3543,11 @@ snapshots:
       '@tiptap/extension-text': 3.0.0-beta.5(@tiptap/core@3.0.0-beta.5(@tiptap/pm@3.0.0-beta.5))
       '@tiptap/extension-underline': 3.0.0-beta.5(@tiptap/core@3.0.0-beta.5(@tiptap/pm@3.0.0-beta.5))
       '@tiptap/extensions': 3.0.0-beta.5(@tiptap/core@3.0.0-beta.5(@tiptap/pm@3.0.0-beta.5))(@tiptap/pm@3.0.0-beta.5)
+      '@tiptap/pm': 3.0.0-beta.5
+
+  '@tiptap/suggestion@3.0.0-beta.5(@tiptap/core@3.0.0-beta.5(@tiptap/pm@3.0.0-beta.5))(@tiptap/pm@3.0.0-beta.5)':
+    dependencies:
+      '@tiptap/core': 3.0.0-beta.5(@tiptap/pm@3.0.0-beta.5)
       '@tiptap/pm': 3.0.0-beta.5
 
   '@types/estree@1.0.7': {}

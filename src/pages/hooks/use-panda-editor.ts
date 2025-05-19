@@ -11,6 +11,7 @@ import {
   linkConfig,
   ResetMarksOnEnter,
   Selection,
+  SlashCommand
 } from '../extensions'
 
 import '@/assets/styles/list-node.less'
@@ -40,6 +41,7 @@ export const usePandaEditor = () => {
       Color,
       ResetMarksOnEnter,
       HorizontalRule,
+      SlashCommand,
     ],
     content: `
       <p>
