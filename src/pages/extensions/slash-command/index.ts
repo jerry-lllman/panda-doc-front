@@ -10,6 +10,7 @@ import { MenuList } from './menu-list'
 
 const extensionName = 'slashCommand'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let popup: any
 
 export const SlashCommand = Extension.create({
@@ -61,6 +62,7 @@ export const SlashCommand = Extension.create({
             isValidAfterContent
           )
         },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         command: ({ editor, props }: { editor: Editor; props: any }) => {
           const { view, state } = editor
           const { $head, $from } = view.state.selection
@@ -127,16 +129,20 @@ export const SlashCommand = Extension.create({
 
               const { view } = props.editor
 
-              const editorNode = view.dom as HTMLElement
+              // const editorNode = view.dom as HTMLElement
 
               const getReferenceClientRect = () => {
                 if (!props.clientRect) {
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-expect-error
                   return props.editor.storage[extensionName].rect
                 }
 
                 const rect = props.clientRect()
 
                 if (!rect) {
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-expect-error
                   return props.editor.storage[extensionName].rect
                 }
 
@@ -176,12 +182,16 @@ export const SlashCommand = Extension.create({
 
               const getReferenceClientRect = () => {
                 if (!props.clientRect) {
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-expect-error
                   return props.editor.storage[extensionName].rect
                 }
 
                 const rect = props.clientRect()
 
                 if (!rect) {
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-expect-error
                   return props.editor.storage[extensionName].rect
                 }
 
@@ -195,7 +205,7 @@ export const SlashCommand = Extension.create({
                 return new DOMRect(rect.x, yPos, rect.width, rect.height)
               }
 
-              let scrollHandler = () => {
+              const scrollHandler = () => {
                 popup?.[0].setProps({
                   getReferenceClientRect,
                 })
@@ -203,7 +213,8 @@ export const SlashCommand = Extension.create({
 
               view.dom.parentElement?.addEventListener('scroll', scrollHandler)
 
-              // eslint-disable-next-line no-param-reassign
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error
               props.editor.storage[extensionName].rect = props.clientRect
                 ? getReferenceClientRect()
                 : {
