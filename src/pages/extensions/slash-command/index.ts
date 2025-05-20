@@ -116,6 +116,8 @@ export const SlashCommand = Extension.create({
           return withEnabledSettings
         },
         render: () => {
+
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           let component: any
 
           let scrollHandler: (() => void) | null = null
