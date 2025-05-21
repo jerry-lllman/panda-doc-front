@@ -7,6 +7,8 @@ import Highlight from '@tiptap/extension-highlight'
 import {
   CodeBlock,
   Color,
+  Emoji,
+  emojiSuggestion,
   HorizontalRule,
   linkConfig,
   ResetMarksOnEnter,
@@ -15,6 +17,7 @@ import {
 } from '../extensions'
 
 import '@/assets/styles/list-node.less'
+// import emojiSuggestion from "../extensions/emoji-mart/emoji-suggestion";
 export const usePandaEditor = () => {
 
   const editor = useEditor({
@@ -42,6 +45,10 @@ export const usePandaEditor = () => {
       ResetMarksOnEnter,
       HorizontalRule,
       SlashCommand,
+      Emoji.configure({
+        enableEmoticons: true,
+        suggestion: emojiSuggestion,
+      }),
     ],
     content: `
       <p>
