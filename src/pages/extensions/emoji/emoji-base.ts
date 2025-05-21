@@ -7,18 +7,6 @@ import type { EmojiItem, EmojiOptions, EmojiStorage } from "./types";
 import emojiData from "@emoji-mart/data";
 import type { EmojiMartData } from "@emoji-mart/data";
 
-
-declare module '@tiptap/react' {
-  interface Commands<ReturnType> {
-    emoji: {
-      /**
-       * Add an emoji
-       */
-      setEmoji: (shortcode: string) => ReturnType;
-    };
-  }
-}
-
 // Convert emoji-mart data to our EmojiItem format
 function parseEmojiMartData(): EmojiItem[] {
   const emojiList: EmojiItem[] = [];

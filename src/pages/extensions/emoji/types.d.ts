@@ -2,6 +2,21 @@ import { Node } from '@tiptap/react';
 import { PluginKey } from '@tiptap/pm/state';
 import { SuggestionOptions } from '@tiptap/suggestion';
 
+declare module '@tiptap/react' {
+    interface Commands<ReturnType> {
+        emoji: {
+            /**
+             * Add an emoji
+             */
+            setEmoji: (shortcode: string) => ReturnType;
+        };
+    }
+
+    interface Storage {
+        emoji: EmojiStorage;
+    }
+}
+
 export type EmojiItem = {
     /**
      * A unique name of the emoji which will be stored as attribute
