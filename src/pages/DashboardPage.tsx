@@ -17,7 +17,7 @@ export default function DashboardPage() {
 
 
   return (
-    <div className='relative flex flex-col flex-1 h-full overflow-hidden' >
+    <div className='relative flex flex-col flex-1 h-full overflow-hidden min-w-4xl' >
       <EditorContent
         className='flex-1 overflow-y-auto'
         editor={editor}
