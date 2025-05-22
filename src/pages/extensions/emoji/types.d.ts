@@ -60,7 +60,7 @@ export interface Command {
     name: string
 }
 
-export interface EmojiListProps {
+export interface EmojiPlaneProps {
     command: (command: Command) => void
     items: EmojiItem[]
 }
