@@ -32,6 +32,7 @@ const lightTheme: ThemeConfig = {
   algorithm: theme.defaultAlgorithm,
   token: {
     // colorPrimary: '#337ea9',
+    fontSize: 16,
   },
   components: getComponentTheme()
 };

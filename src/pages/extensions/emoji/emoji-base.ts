@@ -116,7 +116,7 @@ const Emoji = Node.create<EmojiOptions, EmojiStorage>({
     name: {
       default: null,
       parseHTML: element => element.dataset.name,
-      renderHTML: attributes => ({ "data-name": attributes.name })
+      renderHTML: attributes => ({ "data-name": attributes.name, style: `font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"` })
     }
   }),
   parseHTML() {
