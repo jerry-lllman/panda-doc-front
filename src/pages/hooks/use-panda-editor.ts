@@ -7,6 +7,7 @@ import Highlight from '@tiptap/extension-highlight'
 
 
 import Collaboration from '@tiptap/extension-collaboration'
+import CollaborationCaret from '@tiptap/extension-collaboration-caret'
 import * as Y from 'yjs'
 import { WebsocketProvider } from 'y-websocket'
 
@@ -23,14 +24,52 @@ import {
 } from '../extensions'
 
 import '@/assets/styles/list-node.less'
+
+
+const USER_COLORS = [
+  "#1a1c2c",
+  "#5d275d",
+  "#b13e53",
+  "#ef7d57",
+  "#ffcd75",
+  "#a7f070",
+  "#38b764",
+  "#257179",
+  "#29366f",
+  "#3b5dc9",
+  "#41a6f6",
+  "#73eff7",
+  "#f4f4f4",
+  "#94b0c2",
+  "#566c86",
+  "#333c57"
+];
+
+
+const defaultContent = `
+      <p>
+        Wow, this editor has support for links to the whole <a href="https://en.wikipedia.org/wiki/World_Wide_Web">world wide web</a>. We tested a lot of URLs and I think you can add *every URL* you want. Isn't that cool? Let's try <a href="https://statamic.com/">another one!</a> Yep, seems to work.
+      </p>
+      <p>
+        By default every link will get a <code>rel="noopener noreferrer nofollow"</code> attribute. It's configurable though.
+      </p>
+    `
+
 // import emojiSuggestion from "../extensions/emoji-mart/emoji-suggestion";
-export const usePandaEditor = (docId = '123') => {
+export const usePandaEditor = (docId = '123', userName: string) => {
   // Create document and provider inside the hook for better lifecycle management
   const ydoc = useMemo(() => new Y.Doc(), []);
   const provider = useMemo(() => new WebsocketProvider(`ws`, `/doc-room?docId=${docId}`, ydoc), [docId, ydoc]);
 
   const editor = useEditor({
     editable: true,
+    onCreate: ({ editor: currentEditor }) => {
+      provider.on('sync', () => {
+        if (currentEditor.isEmpty) {
+          currentEditor.commands.setContent(defaultContent)
+        }
+      })
+    },
     extensions: [
       StarterKit.configure({
         horizontalRule: false,
@@ -59,17 +98,16 @@ export const usePandaEditor = (docId = '123') => {
         suggestion: emojiSuggestion,
       }),
       Collaboration.configure({
-        document: ydoc, // Use the ydoc created in the hook
+        document: ydoc,
+      }),
+      CollaborationCaret.configure({
+        provider,
+        user: {
+          name: userName,
+          color: USER_COLORS[Math.floor(Math.random() * USER_COLORS.length)],
+        }
       }),
     ],
-    content: `
-      <p>
-        Wow, this editor has support for links to the whole <a href="https://en.wikipedia.org/wiki/World_Wide_Web">world wide web</a>. We tested a lot of URLs and I think you can add *every URL* you want. Isn't that cool? Let's try <a href="https://statamic.com/">another one!</a> Yep, seems to work.
-      </p>
-      <p>
-        By default every link will get a <code>rel="noopener noreferrer nofollow"</code> attribute. It's configurable though.
-      </p>
-    `,
   })
 
   useEffect(() => {

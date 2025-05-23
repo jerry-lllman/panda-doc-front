@@ -5,11 +5,19 @@ import { TextToolbar, LinkToolbar } from './components'
 import '@/assets/styles/keyframe-animations.less'
 import '@/assets/styles/tip-tap.less'
 import { DragHandleComponent } from './extensions/draggable/drag-handle'
+import { useSearchParams } from 'react-router-dom'
+
+const getRandomName = () => {
+  return Math.random().toString(36).substring(2, 15)
+}
 
 export default function DashboardPage() {
 
-  const { editor } = usePandaEditor()
+  const userName = getRandomName()
+  const [searchParams] = useSearchParams()
+  const docId = searchParams.get('docId') || ''
 
+  const { editor } = usePandaEditor(docId, userName)
 
   if (!editor) {
     return null
