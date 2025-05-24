@@ -11,13 +11,18 @@ const getRandomName = () => {
   return Math.random().toString(36).substring(2, 15)
 }
 
+const getRandomAvatar = () => {
+  return `https://ui-avatars.com/api/?name=${getRandomName()}&background=random&color=fff`
+}
+
 export default function DashboardPage() {
 
   const userName = getRandomName()
+  const userAvatar = getRandomAvatar()
   const [searchParams] = useSearchParams()
   const docId = searchParams.get('docId') || ''
 
-  const { editor } = usePandaEditor(docId, userName)
+  const { editor } = usePandaEditor(docId, userName, userAvatar)
 
   if (!editor) {
     return null

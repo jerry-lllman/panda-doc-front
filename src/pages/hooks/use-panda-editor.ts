@@ -56,7 +56,7 @@ const defaultContent = `
     `
 
 // import emojiSuggestion from "../extensions/emoji-mart/emoji-suggestion";
-export const usePandaEditor = (docId = '123', userName: string) => {
+export const usePandaEditor = (docId = '123', userName: string, userAvatar: string) => {
   // Create document and provider inside the hook for better lifecycle management
   const ydoc = useMemo(() => new Y.Doc(), []);
   const provider = useMemo(() => new WebsocketProvider(`ws`, `/doc-room?docId=${docId}`, ydoc), [docId, ydoc]);
@@ -105,6 +105,38 @@ export const usePandaEditor = (docId = '123', userName: string) => {
         user: {
           name: userName,
           color: USER_COLORS[Math.floor(Math.random() * USER_COLORS.length)],
+          avatar: userAvatar,
+        },
+        render: user => {
+          const cursor = document.createElement('span')
+          cursor.classList.add('collaboration-cursor')
+          cursor.setAttribute('style', `border-color: ${user.color}`)
+
+          const label = document.createElement('div')
+          label.classList.add('collaboration-label')
+          label.setAttribute('style', `background-color: ${user.color}`)
+
+          if (user.avatar) {
+            const avatar = document.createElement('img')
+            avatar.classList.add('collaboration-avatar')
+            avatar.src = user.avatar
+            label.appendChild(avatar)
+          }
+
+          const name = document.createElement('span')
+          name.textContent = user.name
+
+          label.appendChild(name)
+          cursor.appendChild(label)
+          return cursor
+        },
+        selectionRender: user => {
+          return {
+            nodeName: 'span',
+            class: 'collaboration-selection',
+            style: `background-color: ${user.color}40;`,
+            'data-user': user.name,
+          }
         }
       }),
     ],
