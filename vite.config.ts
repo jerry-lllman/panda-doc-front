@@ -31,6 +31,11 @@ export default defineConfig({
   },
   server: {
     proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      },
       '/ws': {
         target: 'ws://localhost:4000', // 替换为你的后端WebSocket服务地址和端口
         ws: true, // 启用WebSocket代理
