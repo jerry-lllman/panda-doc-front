@@ -46,20 +46,14 @@ export default function Layout() {
   }, []);
 
   // Prepare menu items including static routes and dynamic document routes
-  const menuItems: MenuItem[] = useMemo(() => {
-    return [
-      {
-        key: 'dashboard',
-        icon: <DashboardOutlined />,
-        label: <Link to="/dashboard">Dashboard</Link>,
-      },
-      ...documents.map(doc => ({
-        key: doc.id,
-        icon: <span>{getEmojiNative(doc.icon)}</span>,
-        label: <Link to={`/${doc.id}`}>{doc.title}</Link>,
-      })),
-    ]
-  }, [documents])
+  const menuItems: MenuItem[] = useMemo(() =>
+    documents.map(doc => ({
+      key: doc.id,
+      icon: <span>{getEmojiNative(doc.icon)}</span>,
+      label: <Link to={`/${doc.id}`}>{doc.title}</Link>,
+    })),
+    [documents]
+  )
 
   // Determine which menu item should be selected based on the current path
   const getSelectedKey = () => {

@@ -45,18 +45,7 @@ const USER_COLORS = [
   "#333c57"
 ];
 
-
-const defaultContent = `
-      <p>
-        Wow, this editor has support for links to the whole <a href="https://en.wikipedia.org/wiki/World_Wide_Web">world wide web</a>. We tested a lot of URLs and I think you can add *every URL* you want. Isn't that cool? Let's try <a href="https://statamic.com/">another one!</a> Yep, seems to work.
-      </p>
-      <p>
-        By default every link will get a <code>rel="noopener noreferrer nofollow"</code> attribute. It's configurable though.
-      </p>
-    `
-
-// import emojiSuggestion from "../extensions/emoji-mart/emoji-suggestion";
-export const usePandaEditor = (docId = '123', userName: string, userAvatar: string) => {
+export const usePandaEditor = (docId: string, userName: string, userAvatar: string) => {
   // Create document and provider inside the hook for better lifecycle management
   const ydoc = useMemo(() => new Y.Doc(), []);
   const provider = useMemo(() => new WebsocketProvider(`ws`, `/doc-room?docId=${docId}`, ydoc), [docId, ydoc]);
@@ -66,7 +55,7 @@ export const usePandaEditor = (docId = '123', userName: string, userAvatar: stri
     onCreate: ({ editor: currentEditor }) => {
       provider.on('sync', () => {
         if (currentEditor.isEmpty) {
-          currentEditor.commands.setContent(defaultContent)
+          currentEditor.commands.setContent('')
         }
       })
     },
