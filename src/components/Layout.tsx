@@ -1,33 +1,69 @@
-import { useState } from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Layout as AntLayout, Menu, Avatar, theme } from 'antd';
+import { useState, useEffect } from 'react';
+import { Outlet, Link, useLocation, useParams } from 'react-router-dom';
+import { Layout as AntLayout, Menu } from 'antd';
+import type { MenuProps } from 'antd';
 import {
   HomeOutlined,
   InfoCircleOutlined,
   DashboardOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UserOutlined,
+  FileOutlined,
 } from '@ant-design/icons';
-import { ThemeToggle } from './ThemeToggle';
+import type { Document } from '@/types/document';
+import { toString } from 'lodash-es';
 
-const { Header, Sider, Content } = AntLayout;
+const { Sider, Content } = AntLayout;
+
+type MenuItem = Required<MenuProps>['items'][number];
 
 export default function Layout() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed] = useState(false);
   const location = useLocation();
-  const {
-    token: { borderRadiusLG },
-  } = theme.useToken();
+  const [documents, setDocuments] = useState<Document[]>([]);
+  const { id } = useParams<{ id: string }>();
+
+  useEffect(() => {
+    const fetchDocuments = async () => {
+      try {
+        const response = await fetch('/api/documents');
+        if (!response.ok) {
+          throw new Error('Failed to fetch documents');
+        }
+        const data = await response.json();
+        setDocuments(data);
+      } catch {
+        console.log('Error fetching documents, using mock data instead');
+      }
+    };
+
+    fetchDocuments();
+  }, []);
+
+  // Prepare menu items including static routes and dynamic document routes
+  const menuItems: MenuItem[] = [
+    {
+      key: 'dashboard',
+      icon: <DashboardOutlined />,
+      label: <Link to="/dashboard">Dashboard</Link>,
+    },
+  ];
+
+  // Add document menu items as top-level items
+  documents.forEach(doc => {
+    menuItems.push({
+      key: doc.id,
+      icon: <FileOutlined />,
+      label: <Link to={`/${doc.id}`}>{doc.title}</Link>,
+    });
+  });
+
 
   // Determine which menu item should be selected based on the current path
   const getSelectedKey = () => {
     const path = location.pathname;
-    if (path === '/') return ['home'];
-    if (path === '/about') return ['about'];
-    if (path === '/dashboard') return ['dashboard'];
-    return ['home'];
+    const key = toString(menuItems.find(item => `/${item!.key}` === path)?.key)
+    return [key];
   };
+
 
   return (
     <AntLayout className='h-screen'  >
@@ -37,47 +73,15 @@ export default function Layout() {
           mode="inline"
           style={{ borderInlineEnd: 'none' }}
           selectedKeys={getSelectedKey()}
-          items={[
-            {
-              key: 'home',
-              icon: <HomeOutlined />,
-              label: <Link to="/">Home</Link>,
-            },
-            {
-              key: 'about',
-              icon: <InfoCircleOutlined />,
-              label: <Link to="/about">About</Link>,
-            },
-            {
-              key: 'dashboard',
-              icon: <DashboardOutlined />,
-              label: <Link to="/dashboard">Dashboard</Link>,
-            },
-          ]}
+          items={menuItems}
         />
       </Sider>
       <AntLayout>
-        {/* <Header style={{ padding: 0, }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingInline: 16 }}>
-            {collapsed ? (
-              <MenuUnfoldOutlined onClick={() => setCollapsed(!collapsed)} />
-            ) : (
-              <MenuFoldOutlined onClick={() => setCollapsed(!collapsed)} />
-            )}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <ThemeToggle />
-              <span>Panda Doc</span>
-              <Avatar icon={<UserOutlined />} />
-            </div>
-          </div>
-        </Header> */}
         <Content
           id='layout-content'
           style={{
             margin: '16px auto',
             padding: 16,
-            // // background: colorBgContainer,
-            // borderRadius: borderRadiusLG,
           }}
         >
           <Outlet />

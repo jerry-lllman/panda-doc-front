@@ -46,11 +46,18 @@ export default function DashboardPage() {
       })
   }
 
-
+  const handleGetDocs = () => {
+    fetch('/api/documents')
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+      })
+  }
   return (
     <div className='relative flex flex-col flex-1 h-full overflow-hidden min-w-4xl' >
       <div>
         <Button type='primary' onClick={handleCreateDoc}>创建文档</Button>
+        <Button onClick={handleGetDocs}>获取文档</Button>
       </div>
       <EditorContent
         className='flex-1 overflow-y-auto'

@@ -4,6 +4,7 @@ import HomePage from '../pages/HomePage';
 import AboutPage from '../pages/AboutPage';
 import DashboardPage from '../pages/DashboardPage';
 import NotFoundPage from '../pages/NotFoundPage';
+import DocumentPage from '@/pages/DocumentPage';
 
 // Define the router with all routes
 const router = createBrowserRouter([
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: 'dashboard',
         element: <DashboardPage />,
+      },
+      {
+        path: ':id',
+        element: <DocumentPage />,
       },
     ],
   },
