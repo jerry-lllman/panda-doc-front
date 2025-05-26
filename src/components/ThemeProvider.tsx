@@ -21,6 +21,7 @@ const getComponentTheme = () => {
     Layout: {
       siderBg: 'var(--sider-background)',
       bodyBg: 'var(--background)',
+      headerBg: 'var(--background)',
     },
     Menu: {
       colorBgContainer: 'var(--sider-background)',

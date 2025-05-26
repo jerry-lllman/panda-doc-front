@@ -1,13 +1,14 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { Layout as AntLayout, Button, Menu } from 'antd';
+import { Layout as AntLayout, Avatar, Button, Menu } from 'antd';
 import type { MenuProps } from 'antd';
-import { DashboardOutlined } from '@ant-design/icons';
 import type { Document } from '@/types/document';
+import { UserOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { toString } from 'lodash-es';
 import emojiData, { type EmojiMartData } from '@emoji-mart/data'
+import { ThemeToggle } from './ThemeToggle';
 
-const { Sider, Content } = AntLayout;
+const { Sider, Content, Header } = AntLayout;
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -23,7 +24,7 @@ const getEmojiNative = (key: string) => {
 }
 
 export default function Layout() {
-  const [collapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
   const [documents, setDocuments] = useState<Document[]>([]);
   const navigate = useNavigate();
@@ -97,6 +98,21 @@ export default function Layout() {
         />
       </Sider>
       <AntLayout>
+        <Header style={{ padding: 0, }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingInline: 16 }}>
+            {collapsed ? (
+              <MenuUnfoldOutlined onClick={() => setCollapsed(!collapsed)} />
+            ) : (
+              <MenuFoldOutlined onClick={() => setCollapsed(!collapsed)} />
+            )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <ThemeToggle />
+              <span>Panda Doc</span>
+              <Avatar icon={<UserOutlined />} />
+            </div>
+          </div>
+        </Header>
+
         <Content
           id='layout-content'
           style={{

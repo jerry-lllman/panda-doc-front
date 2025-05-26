@@ -59,6 +59,17 @@ export const usePandaEditor = (docId: string, userName: string, userAvatar: stri
         }
       })
     },
+    onSelectionUpdate: ({ editor: currentEditor }) => {
+      fetch(`/api/documents/${docId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          content: JSON.stringify(currentEditor.getJSON())
+        })
+      })
+    },
     extensions: [
       StarterKit.configure({
         horizontalRule: false,
