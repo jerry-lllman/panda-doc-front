@@ -24,7 +24,11 @@ export const useEditorCommands = (editor: Editor) => {
     editor.chain().setColor(color).run()
   }, [editor])
   const onHighlight = useCallback((color: string) => {
-    editor.chain().focus().setHighlight({ color }).run()
+    if (color) {
+      editor.chain().focus().setHighlight({ color }).run()
+    } else {
+      editor.chain().focus().unsetHighlight().run()
+    }
   }, [editor])
 
   return {
