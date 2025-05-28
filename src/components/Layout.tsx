@@ -35,8 +35,8 @@ export default function Layout() {
       if (!response.ok) {
         throw new Error('Failed to fetch documents');
       }
-      const data = await response.json();
-      setDocuments(data);
+      const res = await response.json();
+      setDocuments(res.data);
     } catch {
       console.log('Error fetching documents, using mock data instead');
     }

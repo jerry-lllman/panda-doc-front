@@ -44,8 +44,8 @@ const DocumentPage: React.FC = () => {
           throw new Error('Failed to fetch document');
         }
 
-        const data = await response.json();
-        setDocument(data);
+        const res = await response.json();
+        setDocument(res.data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred');
       } finally {
