@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { EditorContent } from '@tiptap/react'
 import { usePandaEditor } from './hooks/use-panda-editor'
@@ -7,15 +7,6 @@ import { TextToolbar, LinkToolbar } from './components'
 import '@/assets/styles/keyframe-animations.less'
 import '@/assets/styles/tip-tap.less'
 import { DragHandleComponent } from './extensions/draggable/drag-handle'
-
-interface Document {
-  id: string;
-  title: string;
-  content: string;
-  createdBy: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
 
 
 const getRandomName = () => {
@@ -28,43 +19,16 @@ const getRandomAvatar = () => {
 
 const DocumentPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [document, setDocument] = useState<Document | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   const userName = getRandomName()
   const userAvatar = getRandomAvatar()
-  const { editor } = usePandaEditor(id, userName, userAvatar)
-
-  useEffect(() => {
-    const fetchDocument = async () => {
-      try {
-        const response = await fetch(`/api/documents/${id}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch document');
-        }
-
-        const res = await response.json();
-        setDocument(res.data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (id) {
-      fetchDocument();
-    }
-  }, [id]);
+  const { editor, loading } = usePandaEditor(id!, userName, userAvatar)
 
   if (!editor) {
     return null
   }
 
   if (loading) return <div>Loading document...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!document) return <div>Document not found</div>;
 
   return (
     <div className='relative flex flex-col flex-1 h-full overflow-hidden min-w-4xl' >

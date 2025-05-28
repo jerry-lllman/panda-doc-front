@@ -1,10 +1,9 @@
 import { TaskList, TaskItem } from "@tiptap/extension-list";
 import { TextStyle } from "@tiptap/extension-text-style";
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useEditor } from '@tiptap/react'
 import { StarterKit } from '@tiptap/starter-kit'
 import Highlight from '@tiptap/extension-highlight'
-
 
 import Collaboration from '@tiptap/extension-collaboration'
 import CollaborationCaret from '@tiptap/extension-collaboration-caret'
@@ -50,9 +49,32 @@ export const usePandaEditor = (docId: string, userName: string, userAvatar: stri
   const ydoc = useMemo(() => new Y.Doc(), []);
   const provider = useMemo(() => new WebsocketProvider(`ws`, `/doc-room?docId=${docId}`, ydoc), [docId, ydoc]);
 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  // const [documentData, setDocumentData] = useState<Document | null>(null);
+
   const editor = useEditor({
     editable: true,
     onCreate: ({ editor: currentEditor }) => {
+
+      const fetchDocument = async () => {
+        try {
+          if (!docId) return
+
+          const response = await fetch(`/api/documents/${docId}`);
+          const res = await response.json();
+
+          const content = JSON.parse(res.data?.content || '');
+          currentEditor.commands.setContent(content);
+
+        } catch (err) {
+          setError(err instanceof Error ? err.message : 'An unknown error occurred');
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchDocument()
+
       provider.on('sync', () => {
         if (currentEditor.isEmpty) {
           currentEditor.commands.setContent('')
@@ -140,7 +162,7 @@ export const usePandaEditor = (docId: string, userName: string, userAvatar: stri
         }
       }),
     ],
-  })
+  }, [docId])
 
   useEffect(() => {
     // Stop editor shortcuts from bubbling up to the document
@@ -169,5 +191,5 @@ export const usePandaEditor = (docId: string, userName: string, userAvatar: stri
     }
   }, [provider])
 
-  return { editor, provider }
+  return { editor, provider, loading, error }
 }
