@@ -1,34 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useEditor } from '@tiptap/react'
 
-
 import Collaboration from '@tiptap/extension-collaboration'
-import CollaborationCaret from '@tiptap/extension-collaboration-caret'
 import * as Y from 'yjs'
 import { WebsocketProvider } from 'y-websocket'
 
 import '@/assets/styles/list-node.less'
 import { ExtensionKit } from "../extensions/extension-kit";
-
-
-const USER_COLORS = [
-  "#1a1c2c",
-  "#5d275d",
-  "#b13e53",
-  "#ef7d57",
-  "#ffcd75",
-  "#a7f070",
-  "#38b764",
-  "#257179",
-  "#29366f",
-  "#3b5dc9",
-  "#41a6f6",
-  "#73eff7",
-  "#f4f4f4",
-  "#94b0c2",
-  "#566c86",
-  "#333c57"
-];
+import { createCollaborationCaret } from "../extensions";
 
 export const usePandaEditor = (docId: string, userName: string, userAvatar: string) => {
   // Create document and provider inside the hook for better lifecycle management
@@ -83,44 +62,10 @@ export const usePandaEditor = (docId: string, userName: string, userAvatar: stri
       Collaboration.configure({
         document: ydoc,
       }),
-      CollaborationCaret.configure({
+      createCollaborationCaret({
         provider,
-        user: {
-          name: userName,
-          color: USER_COLORS[Math.floor(Math.random() * USER_COLORS.length)],
-          avatar: userAvatar,
-        },
-        render: user => {
-          const cursor = document.createElement('span')
-          cursor.classList.add('collaboration-cursor')
-          cursor.setAttribute('style', `border-color: ${user.color}`)
-
-          const label = document.createElement('div')
-          label.classList.add('collaboration-label')
-          label.setAttribute('style', `background-color: ${user.color}`)
-
-          if (user.avatar) {
-            const avatar = document.createElement('img')
-            avatar.classList.add('collaboration-avatar')
-            avatar.src = user.avatar
-            label.appendChild(avatar)
-          }
-
-          const name = document.createElement('span')
-          name.textContent = user.name
-
-          label.appendChild(name)
-          cursor.appendChild(label)
-          return cursor
-        },
-        selectionRender: user => {
-          return {
-            nodeName: 'span',
-            class: 'collaboration-selection',
-            style: `background-color: ${user.color}40;`,
-            'data-user': user.name,
-          }
-        }
+        userName,
+        userAvatar,
       }),
     ],
   }, [docId])
