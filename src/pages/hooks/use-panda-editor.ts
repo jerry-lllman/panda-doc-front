@@ -33,7 +33,7 @@ const USER_COLORS = [
 export const usePandaEditor = (docId: string, userName: string, userAvatar: string) => {
   // Create document and provider inside the hook for better lifecycle management
   const ydoc = useMemo(() => new Y.Doc(), []);
-  const provider = useMemo(() => new WebsocketProvider(`ws`, `/doc-room?docId=${docId}`, ydoc), [docId, ydoc]);
+  const provider = useMemo(() => new WebsocketProvider(`api/ws`, `/doc-room?docId=${docId}`, ydoc), [docId, ydoc]);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
