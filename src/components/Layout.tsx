@@ -74,12 +74,12 @@ export default function Layout() {
       body: JSON.stringify({
         title: '新文档',
         createdBy: 'jerry',
-        icon: randomEmojiKey
+        icon: randomEmojiKey,
       }),
     })
       .then(res => res.json())
-      .then(data => {
-        fetchDocuments()
+      .then(async ({ data }) => {
+        await fetchDocuments()
         navigate(`/${data.id}`)
       })
   }
