@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useRef } from 'react'
 import { useEditor } from '@tiptap/react'
 
 import Collaboration from '@tiptap/extension-collaboration'
@@ -11,41 +11,15 @@ import { createCollaborationCaret } from "../extensions";
 
 export const usePandaEditor = (docId: string, userName: string, userAvatar: string) => {
   // Create document and provider inside the hook for better lifecycle management
-  const ydoc = useMemo(() => new Y.Doc(), []);
+  const ydoc = useMemo(() => new Y.Doc(), [docId]);
   const provider = useMemo(() => new WebsocketProvider(`api/ws`, `/doc-room?docId=${docId}`, ydoc), [docId, ydoc]);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  // const [documentData, setDocumentData] = useState<Document | null>(null);
+  const cleanupRef = useRef<(() => void) | null>(null);
 
   const editor = useEditor({
     editable: true,
-    onCreate: ({ editor: currentEditor }) => {
-
-      const fetchDocument = async () => {
-        try {
-          if (!docId) return
-
-          const response = await fetch(`/api/documents/${docId}`);
-          const res = await response.json();
-
-          const content = JSON.parse(res.data?.content || '');
-          currentEditor.commands.setContent(content);
-
-        } catch (err) {
-          setError(err instanceof Error ? err.message : 'An unknown error occurred');
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchDocument()
-
-      provider.on('sync', () => {
-        if (currentEditor.isEmpty) {
-          currentEditor.commands.setContent('')
-        }
-      })
-    },
     onSelectionUpdate: ({ editor: currentEditor }) => {
       fetch(`/api/documents/${docId}`, {
         method: 'PUT',
@@ -70,6 +44,45 @@ export const usePandaEditor = (docId: string, userName: string, userAvatar: stri
     ],
   }, [docId])
 
+  // Handle document fetching and editor setup when docId or editor changes
+  useEffect(() => {
+    if (!editor || !docId) return;
+
+    const fetchDocument = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch(`/api/documents/${docId}`);
+        const res = await response.json();
+
+        const content = JSON.parse(res.data?.content || '');
+        editor.commands.setContent(content);
+
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDocument();
+
+    // Set up provider sync listener
+    const handleSync = () => {
+      if (editor.isEmpty) {
+        editor.commands.setContent('')
+      }
+    };
+
+    provider.on('sync', handleSync);
+
+    // Cleanup function for this effect
+    return () => {
+      provider.off('sync', handleSync);
+    };
+  }, [editor, docId, provider]);
+
   useEffect(() => {
     // Stop editor shortcuts from bubbling up to the document
     const stopShortcuts = (e: KeyboardEvent) => {
@@ -91,11 +104,38 @@ export const usePandaEditor = (docId: string, userName: string, userAvatar: stri
       console.log('Collaboration connection status:', event.status)
     })
 
-    return () => {
-      // Clean up WebSocket connection when component unmounts
+    // Store cleanup function
+    cleanupRef.current = () => {
       provider.disconnect()
     }
+
+    return () => {
+      // Clean up WebSocket connection when component unmounts
+      cleanupRef.current?.()
+    }
   }, [provider])
+
+  // Clean up editor and resources when component unmounts or docId changes
+  useEffect(() => {
+    return () => {
+      // Clean up in the correct order: first disconnect, then destroy
+      cleanupRef.current?.()
+
+      if (editor) {
+        // Use setTimeout to ensure DOM operations complete before destruction
+        setTimeout(() => {
+          if (editor && !editor.isDestroyed) {
+            editor.destroy()
+          }
+        }, 0)
+      }
+
+      // Clean up Y.js document
+      if (ydoc) {
+        ydoc.destroy()
+      }
+    }
+  }, [docId, editor, ydoc])
 
   return { editor, provider, loading, error }
 }

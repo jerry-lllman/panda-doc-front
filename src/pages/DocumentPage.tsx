@@ -24,14 +24,15 @@ const DocumentPage: React.FC = () => {
   const userAvatar = getRandomAvatar()
   const { editor, loading } = usePandaEditor(id!, userName, userAvatar)
 
-  if (!editor) {
-    return null
+  if (loading || !editor) {
+    return <div>Loading document...</div>;
   }
 
-  if (loading) return <div>Loading document...</div>;
-
   return (
-    <div className='relative flex flex-col flex-1 h-full overflow-hidden min-w-4xl' >
+    <div
+      key={id}
+      className='relative flex flex-col flex-1 h-full overflow-hidden min-w-4xl'
+    >
       <EditorContent
         className='flex-1 overflow-y-auto'
         editor={editor}
