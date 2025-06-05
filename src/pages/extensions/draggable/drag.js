@@ -1,321 +1,444 @@
-import { Extension as e } from "@tiptap/react";
-import { isChangeOrigin as t } from "@tiptap/extension-collaboration";
-import { PluginKey as n, Plugin as o } from "@tiptap/pm/state";
-import r from "tippy.js";
+import { Extension } from "@tiptap/react";
+import { isChangeOrigin } from "@tiptap/extension-collaboration";
+import { PluginKey, Plugin } from "@tiptap/pm/state";
+import tippy from "tippy.js";
 import {
-  ySyncPluginKey as i,
-  absolutePositionToRelativePosition as s,
-  relativePositionToAbsolutePosition as d
+  ySyncPluginKey,
+  absolutePositionToRelativePosition,
+  relativePositionToAbsolutePosition
 } from "y-prosemirror";
-import { getSelectionRanges as l, NodeRangeSelection as a } from "./extension-node-range";
+import { getSelectionRanges, NodeRangeSelection } from "./extension-node-range";
 
-function p(e) {
-  const t = e.cloneNode(!0),
-    n = [e, ...Array.from(e.getElementsByTagName("*"))],
-    o = [t, ...Array.from(t.getElementsByTagName("*"))];
-  return n.forEach(((e, t) => {
-    o[t].style.cssText = function (e) {
-      let t = "";
-      const n = getComputedStyle(e);
-      for (let e = 0; e < n.length; e += 1)
-        t += `${n[e]}:${n.getPropertyValue(n[e])};`;
-      return t;
-    }(e);
-  })), t;
+function cloneElementWithStyles(element) {
+  const clonedElement = element.cloneNode(true);
+  const originalElements = [element, ...Array.from(element.getElementsByTagName("*"))];
+  const clonedElements = [clonedElement, ...Array.from(clonedElement.getElementsByTagName("*"))];
+
+  // 为每个克隆元素复制原始元素的计算样式
+  originalElements.forEach((originalEl, index) => {
+    const clonedEl = clonedElements[index];
+    clonedEl.style.cssText = getAllComputedStyles(originalEl);
+  });
+
+  return clonedElement;
 }
 
-const c = e => {
-  const { x: t, y: n, direction: o, editor: r } = e;
-  let i = null,
-    s = null,
-    d = null,
-    l = t;
-  for (; null === s && l < window.innerWidth && l > 0;) {
-    const e = document.elementsFromPoint(l, n),
-      t = e.findIndex((e => e.classList.contains("ProseMirror"))),
-      a = e.slice(0, t);
-    if (a.length > 0) {
-      const e = a[0];
-      if (i = e, d = r.view.posAtDOM(e, 0), d >= 0) {
-        s = r.state.doc.nodeAt(Math.max(d - 1, 0)),
-          (null == s ? void 0 : s.isText) && (s = r.state.doc.nodeAt(Math.max(d - 1, 0))),
-          s || (s = r.state.doc.nodeAt(Math.max(d, 0)));
-        break;
+function getAllComputedStyles(element) {
+  let cssText = "";
+  const computedStyle = getComputedStyle(element);
+  for (let i = 0; i < computedStyle.length; i += 1) {
+    const property = computedStyle[i];
+    cssText += `${property}:${computedStyle.getPropertyValue(property)};`;
+  }
+  return cssText;
+}
+
+const findElementAndNode = ({ x, y, direction, editor }) => {
+  const MAX_SEARCH_DISTANCE = 50; // 限制搜索距离，避免无限循环
+  const STEP = direction === "left" ? -1 : 1;
+
+  let currentX = x;
+  const searchBounds = {
+    min: Math.max(0, x - MAX_SEARCH_DISTANCE),
+    max: Math.min(window.innerWidth, x + MAX_SEARCH_DISTANCE)
+  };
+
+  // 在指定范围内搜索
+  while (currentX >= searchBounds.min && currentX <= searchBounds.max) {
+    const searchResult = findNodeAtPosition(currentX, y, editor);
+
+    if (searchResult.resultElement && searchResult.pos >= 0) {
+      const node = findValidNode(editor, searchResult.pos);
+      if (node) {
+        return {
+          resultElement: searchResult.resultElement,
+          resultNode: node,
+          pos: searchResult.pos
+        };
       }
     }
-    "left" === o ? l -= 1 : l += 1;
+
+    currentX += STEP;
   }
-  return { resultElement: i, resultNode: s, pos: null != d ? d : null };
+
+  // 如果没有找到，返回空结果
+  return {
+    resultElement: null,
+    resultNode: null,
+    pos: null
+  };
 };
 
-function u(e, t) {
-  return window.getComputedStyle(e)[t];
-}
+// 辅助函数：在指定位置查找元素
+function findNodeAtPosition(x, y, editor) {
+  const elementsAtPoint = document.elementsFromPoint(x, y);
+  const proseMirrorIndex = elementsAtPoint.findIndex(element =>
+    element.classList.contains("ProseMirror")
+  );
 
-function m(e = 0, t = 0, n = 0) {
-  return Math.min(Math.max(e, t), n);
-}
-
-function g(e) {
-  var t;
-  null === (t = e.parentNode) || void 0 === t || t.removeChild(e);
-}
-
-function f(e, t) {
-  const { doc: n } = t.view.state,
-    o = c({
-      editor: t,
-      x: e.clientX,
-      y: e.clientY,
-      direction: "right"
-    });
-  if (!o.resultNode || null === o.pos) return [];
-  const r = e.clientX,
-    i = function (e, t, n) {
-      const o = parseInt(u(e.dom, "paddingLeft"), 10),
-        r = parseInt(u(e.dom, "paddingRight"), 10),
-        i = parseInt(u(e.dom, "borderLeftWidth"), 10),
-        s = parseInt(u(e.dom, "borderLeftWidth"), 10),
-        d = e.dom.getBoundingClientRect();
-      return {
-        left: m(t, d.left + o + i, d.right - r - s),
-        top: n
-      };
-    }(t.view, r, e.clientY),
-    s = t.view.posAtCoords(i);
-  if (!s) return [];
-  const { pos: d } = s;
-  if (!n.resolve(d).parent) return [];
-  const a = n.resolve(o.pos),
-    p = n.resolve(o.pos + 1);
-  return l(a, p, 0);
-}
-
-const h = (e, t) => {
-  const n = e.resolve(t),
-    { depth: o } = n;
-  if (0 === o) return t;
-  return n.pos - n.parentOffset - 1;
-};
-
-const y = (e, t) => {
-  const n = e.nodeAt(t),
-    o = e.resolve(t);
-  let { depth: r } = o,
-    i = n;
-  for (; r > 0;) {
-    const e = o.node(r);
-    r -= 1, 0 === r && (i = e);
+  if (proseMirrorIndex === -1) {
+    return { resultElement: null, pos: -1 };
   }
-  return i;
+
+  const elementsBeforeProseMirror = elementsAtPoint.slice(0, proseMirrorIndex);
+
+  if (elementsBeforeProseMirror.length === 0) {
+    return { resultElement: null, pos: -1 };
+  }
+
+  const targetElement = elementsBeforeProseMirror[0];
+  const pos = editor.view.posAtDOM(targetElement, 0);
+
+  return {
+    resultElement: targetElement,
+    pos: pos
+  };
+}
+
+// 辅助函数：找到有效的节点
+function findValidNode(editor, pos) {
+  if (pos < 0) return null;
+
+  const doc = editor.state.doc;
+
+  // 尝试获取位置前一个节点
+  let node = doc.nodeAt(Math.max(pos - 1, 0));
+
+  // 如果是文本节点，跳过
+  if (node?.isText) {
+    node = doc.nodeAt(Math.max(pos - 1, 0));
+  }
+
+  // 如果仍然没有找到，尝试当前位置
+  if (!node) {
+    node = doc.nodeAt(Math.max(pos, 0));
+  }
+
+  return node;
+}
+
+function getComputedStyleProperty(element, property) {
+  return window.getComputedStyle(element)[property];
+}
+
+function clamp(value = 0, min = 0, max = 0) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function removeElement(element) {
+  if (element && element.parentNode) {
+    element.parentNode.removeChild(element);
+  }
+}
+
+function getConstrainedCoords(view, x, y) {
+  const style = view.dom.style;
+  const rect = view.dom.getBoundingClientRect();
+
+  // 获取边距和边框
+  const paddingLeft = parseInt(getComputedStyleProperty(view.dom, "paddingLeft"), 10) || 0;
+  const paddingRight = parseInt(getComputedStyleProperty(view.dom, "paddingRight"), 10) || 0;
+  const borderLeftWidth = parseInt(getComputedStyleProperty(view.dom, "borderLeftWidth"), 10) || 0;
+  const borderRightWidth = parseInt(getComputedStyleProperty(view.dom, "borderRightWidth"), 10) || 0;
+
+  return {
+    left: clamp(
+      x,
+      rect.left + paddingLeft + borderLeftWidth,
+      rect.right - paddingRight - borderRightWidth
+    ),
+    top: y
+  };
+}
+
+function getSelectionRangesFromEvent(event, editor) {
+  const { doc } = editor.view.state;
+  const searchResult = findElementAndNode({
+    editor,
+    x: event.clientX,
+    y: event.clientY,
+    direction: "right"
+  });
+
+  if (!searchResult.resultNode || searchResult.pos === null) {
+    return [];
+  }
+
+  // 获取约束后的坐标
+  const constrainedCoords = getConstrainedCoords(editor.view, event.clientX, event.clientY);
+  const coordsPos = editor.view.posAtCoords(constrainedCoords);
+
+  if (!coordsPos) {
+    return [];
+  }
+
+  const { pos } = coordsPos;
+  const resolvedPos = doc.resolve(pos);
+
+  if (!resolvedPos.parent) {
+    return [];
+  }
+
+  const fromResolvedPos = doc.resolve(searchResult.pos);
+  const toResolvedPos = doc.resolve(searchResult.pos + 1);
+
+  return getSelectionRanges(fromResolvedPos, toResolvedPos, 0);
+}
+
+const getBlockStartPos = (doc, pos) => {
+  const resolvedPos = doc.resolve(pos);
+  const { depth } = resolvedPos;
+  if (0 === depth) return pos;
+  return resolvedPos.pos - resolvedPos.parentOffset - 1;
 };
 
-const v = (e, t) => {
-  const n = i.getState(e);
-  return n ? s(t, n.type, n.binding.mapping) : null;
+const getTopLevelNode = (doc, pos) => {
+  const nodeAtPos = doc.nodeAt(pos);
+  const resolvedPos = doc.resolve(pos);
+  let { depth } = resolvedPos;
+  let topLevelNode = nodeAtPos;
+
+  for (; depth > 0;) {
+    const nodeAtDepth = resolvedPos.node(depth);
+    depth -= 1;
+    if (0 === depth) {
+      topLevelNode = nodeAtDepth;
+    }
+  }
+  return topLevelNode;
 };
 
-const E = (e, t) => {
-  let n = t;
-  for (; n && n.parentNode && n.parentNode !== e.dom;)
-    n = n.parentNode;
-  return n;
+const positionToRelativePosition = (state, pos) => {
+  const ySyncState = ySyncPluginKey.getState(state);
+  return ySyncState ? absolutePositionToRelativePosition(pos, ySyncState.type, ySyncState.binding.mapping) : null;
 };
 
-const C = new n("dragHandle");
+const findParentDomNode = (view, element) => {
+  let currentElement = element;
+  for (; currentElement && currentElement.parentNode && currentElement.parentNode !== view.dom;)
+    currentElement = currentElement.parentNode;
+  return currentElement;
+};
 
-const k = ({ pluginKey: e = C, element: s, editor: u, tippyOptions: m, onNodeChange: k }) => {
-  const M = document.createElement("div");
-  let w, D = null, x = !1, O = null, b = -1;
+const dragHandlePluginDefaultKey = new PluginKey("dragHandle");
 
-  return s.addEventListener("dragstart", (e => {
-    !function (e, t) {
-      const { view: n } = t;
-      if (!e.dataTransfer) return;
-      const { empty: o, $from: r, $to: i } = n.state.selection,
-        s = f(e, t),
-        d = l(r, i, 0),
-        c = d.some((e => s.find((t => t.$from === e.$from && t.$to === e.$to)))),
-        u = o || !c ? s : d;
-      if (!u.length) return;
-      const { tr: m } = n.state,
-        h = document.createElement("div"),
-        y = u[0].$from.pos,
-        v = u[u.length - 1].$to.pos,
-        E = a.create(n.state.doc, y, v),
-        C = E.content();
-      u.forEach((e => {
-        const t = p(n.nodeDOM(e.$from.pos));
-        h.append(t);
-      })),
-        h.style.position = "absolute",
-        h.style.top = "-10000px",
-        document.body.append(h),
-        e.dataTransfer.clearData(),
-        e.dataTransfer.setDragImage(h, 0, 0),
-        n.dragging = { slice: C, move: !0 },
-        m.setSelection(E),
-        n.dispatch(m),
-        document.addEventListener("drop", (() => g(h)), { once: !0 });
-    }(e, u),
+const DragHandlePlugin = ({ pluginKey = dragHandlePluginDefaultKey, element, editor, tippyOptions, onNodeChange }) => {
+  const containerDiv = document.createElement("div");
+  let relativePosition, tippyInstance = null, isLocked = false, currentNode = null, currentPos = -1;
+
+  return element.addEventListener("dragstart", (event => {
+    !function (dragEvent, editor) {
+      const { view } = editor;
+      if (!dragEvent.dataTransfer) return;
+
+      const { empty, $from, $to } = view.state.selection;
+      const eventSelectionRanges = getSelectionRangesFromEvent(dragEvent, editor);
+      const currentSelectionRanges = getSelectionRanges($from, $to, 0);
+      const hasOverlappingSelection = currentSelectionRanges.some((currentRange =>
+        eventSelectionRanges.find((eventRange =>
+          eventRange.$from === currentRange.$from && eventRange.$to === currentRange.$to
+        ))
+      ));
+      const finalSelectionRanges = empty || !hasOverlappingSelection ? eventSelectionRanges : currentSelectionRanges;
+
+      if (!finalSelectionRanges.length) return;
+
+      const { tr } = view.state;
+      const dragImageContainer = document.createElement("div");
+      const startPos = finalSelectionRanges[0].$from.pos;
+      const endPos = finalSelectionRanges[finalSelectionRanges.length - 1].$to.pos;
+      const nodeRangeSelection = NodeRangeSelection.create(view.state.doc, startPos, endPos);
+      const sliceContent = nodeRangeSelection.content();
+
+      finalSelectionRanges.forEach((range => {
+        const clonedNode = cloneElementWithStyles(view.nodeDOM(range.$from.pos));
+        dragImageContainer.append(clonedNode);
+      }));
+
+      dragImageContainer.style.position = "absolute";
+      dragImageContainer.style.top = "-10000px";
+      document.body.append(dragImageContainer);
+      dragEvent.dataTransfer.clearData();
+      dragEvent.dataTransfer.setDragImage(dragImageContainer, 0, 0);
+      view.dragging = { slice: sliceContent, move: true };
+      tr.setSelection(nodeRangeSelection);
+      view.dispatch(tr);
+      document.addEventListener("drop", (() => removeElement(dragImageContainer)), { once: true });
+    }(event, editor),
       setTimeout((() => {
-        s && (s.style.pointerEvents = "none");
+        element && (element.style.pointerEvents = "none");
       }), 0);
   })),
-    s.addEventListener("dragend", (() => {
-      s && (s.style.pointerEvents = "auto");
+    element.addEventListener("dragend", (() => {
+      element && (element.style.pointerEvents = "auto");
     })),
-    new o({
-      key: "string" == typeof e ? new n(e) : e,
+    new Plugin({
+      key: "string" == typeof pluginKey ? new PluginKey(pluginKey) : pluginKey,
       state: {
-        init: () => ({ locked: !1 }),
-        apply(e, n, o, r) {
-          const l = e.getMeta("lockDragHandle"),
-            a = e.getMeta("hideDragHandle");
-          if (void 0 !== l && (x = l), a && D)
-            return D.hide(),
-              x = !1,
-              O = null,
-              b = -1,
-              null == k || k({ editor: u, node: null, pos: -1 }),
-              n;
-          if (e.docChanged && -1 !== b && s && D)
-            if (t(e)) {
-              const e = ((e, t) => {
-                const n = i.getState(e);
-                return n ? d(n.doc, n.type, t, n.binding.mapping) || 0 : -1;
-              })(r, w);
-              e !== b && (b = e);
+        init: () => ({ locked: false }),
+        apply(transaction, state, oldState, newState) {
+          const lockMeta = transaction.getMeta("lockDragHandle");
+          const hideMeta = transaction.getMeta("hideDragHandle");
+
+          if (void 0 !== lockMeta && (isLocked = lockMeta), hideMeta && tippyInstance)
+            return tippyInstance.hide(),
+              isLocked = false,
+              currentNode = null,
+              currentPos = -1,
+              null == onNodeChange || onNodeChange({ editor, node: null, pos: -1 }),
+              state;
+
+          if (transaction.docChanged && -1 !== currentPos && element && tippyInstance)
+            if (isChangeOrigin(transaction)) {
+              const newPos = ((state, relativePos) => {
+                const ySyncState = ySyncPluginKey.getState(state);
+                return ySyncState ? relativePositionToAbsolutePosition(ySyncState.doc, ySyncState.type, relativePos, ySyncState.binding.mapping) || 0 : -1;
+              })(newState, relativePosition);
+              newPos !== currentPos && (currentPos = newPos);
             } else {
-              const t = e.mapping.map(b);
-              t !== b && (b = t, w = v(r, b));
+              const mappedPos = transaction.mapping.map(currentPos);
+              mappedPos !== currentPos && (currentPos = mappedPos, relativePosition = positionToRelativePosition(newState, currentPos));
             }
-          return n;
+          return state;
         }
       },
-      view: e => {
-        var t;
-        return s.draggable = !0,
-          s.style.pointerEvents = "auto",
-          null === (t = u.view.dom.parentElement) || void 0 === t || t.appendChild(M),
-          M.appendChild(s),
-          M.style.pointerEvents = "none",
-          M.style.position = "absolute",
-          M.style.top = "0",
-          M.style.left = "0",
+      view: view => {
+        var parentElement;
+        return element.draggable = true,
+          element.style.pointerEvents = "auto",
+          null === (parentElement = editor.view.dom.parentElement) || void 0 === parentElement || parentElement.appendChild(containerDiv),
+          containerDiv.appendChild(element),
+          containerDiv.style.pointerEvents = "none",
+          containerDiv.style.position = "absolute",
+          containerDiv.style.top = "0",
+          containerDiv.style.left = "0",
         {
-          update(t, n) {
-            if (!s) return;
-            if (!u.isEditable)
-              return null == D || D.destroy(), void (D = null);
-            if (D || (D = r(e.dom, {
+          update(view, prevState) {
+            if (!element) return;
+            if (!editor.isEditable)
+              return null == tippyInstance || tippyInstance.destroy(), void (tippyInstance = null);
+
+            if (tippyInstance || (tippyInstance = tippy(view.dom, {
               getReferenceClientRect: null,
-              interactive: !0,
+              interactive: true,
               trigger: "manual",
               placement: "left-start",
-              hideOnClick: !1,
+              hideOnClick: false,
               duration: 100,
               popperOptions: {
                 modifiers: [
-                  { name: "flip", enabled: !1 },
-                  { name: "preventOverflow", options: { rootBoundary: "document", mainAxis: !1 } }
+                  { name: "flip", enabled: false },
+                  { name: "preventOverflow", options: { rootBoundary: "document", mainAxis: false } }
                 ]
               },
-              ...m,
-              appendTo: M,
-              content: s
-            })), s.draggable = !x, e.state.doc.eq(n.doc) || -1 === b)
+              ...tippyOptions,
+              appendTo: containerDiv,
+              content: element
+            })), element.draggable = !isLocked, view.state.doc.eq(prevState.doc) || -1 === currentPos)
               return;
-            let o = e.nodeDOM(b);
-            if (o = E(e, o), o === e.dom) return;
-            if (1 !== (null == o ? void 0 : o.nodeType)) return;
-            const i = e.posAtDOM(o, 0),
-              d = y(u.state.doc, i),
-              l = h(u.state.doc, i);
-            O = d, b = l, w = v(e.state, b),
-              null == k || k({ editor: u, node: O, pos: b }),
-              D.setProps({ getReferenceClientRect: () => o.getBoundingClientRect() });
+
+            let domNode = view.nodeDOM(currentPos);
+            if (domNode = findParentDomNode(view, domNode), domNode === view.dom) return;
+            if (1 !== (null == domNode ? void 0 : domNode.nodeType)) return;
+
+            const nodePos = view.posAtDOM(domNode, 0);
+            const topLevelNode = getTopLevelNode(editor.state.doc, nodePos);
+            const blockStartPos = getBlockStartPos(editor.state.doc, nodePos);
+
+            currentNode = topLevelNode;
+            currentPos = blockStartPos;
+            relativePosition = positionToRelativePosition(view.state, currentPos);
+            null == onNodeChange || onNodeChange({ editor, node: currentNode, pos: currentPos });
+            tippyInstance.setProps({ getReferenceClientRect: () => domNode.getBoundingClientRect() });
           },
           destroy() {
-            null == D || D.destroy(), s && g(M);
+            null == tippyInstance || tippyInstance.destroy();
+            element && removeElement(containerDiv);
           }
         };
       },
       props: {
         handleDOMEvents: {
-          mouseleave: (e, t) => (
-            x || t.target && !M.contains(t.relatedTarget) && (
-              null == D || D.hide(),
-              O = null,
-              b = -1,
-              null == k || k({ editor: u, node: null, pos: -1 })
+          mouseleave: (view, event) => (
+            isLocked || event.target && !containerDiv.contains(event.relatedTarget) && (
+              null == tippyInstance || tippyInstance.hide(),
+              currentNode = null,
+              currentPos = -1,
+              null == onNodeChange || onNodeChange({ editor, node: null, pos: -1 })
             ),
-            !1
+            false
           ),
-          mousemove(e, t) {
-            if (!s || !D || x) return !1;
-            const n = c({
-              x: t.clientX,
-              y: t.clientY,
+          mousemove(view, event) {
+            if (!element || !tippyInstance || isLocked) return false;
+
+            const searchResult = findElementAndNode({
+              x: event.clientX,
+              y: event.clientY,
               direction: "right",
-              editor: u
+              editor
             });
-            if (!n.resultElement) return !1;
-            let o = n.resultElement;
-            if (o = E(e, o), o === e.dom) return !1;
-            if (1 !== (null == o ? void 0 : o.nodeType)) return !1;
-            const r = e.posAtDOM(o, 0),
-              i = y(u.state.doc, r);
-            if (i !== O) {
-              const t = h(u.state.doc, r);
-              O = i, b = t, w = v(e.state, b),
-                null == k || k({ editor: u, node: O, pos: b }),
-                D.setProps({ getReferenceClientRect: () => o.getBoundingClientRect() }),
-                D.show();
+
+            if (!searchResult.resultElement) return false;
+
+            let domNode = searchResult.resultElement;
+            if (domNode = findParentDomNode(view, domNode), domNode === view.dom) return false;
+            if (1 !== (null == domNode ? void 0 : domNode.nodeType)) return false;
+
+            const nodePos = view.posAtDOM(domNode, 0);
+            const topLevelNode = getTopLevelNode(editor.state.doc, nodePos);
+
+            if (topLevelNode !== currentNode) {
+              const blockStartPos = getBlockStartPos(editor.state.doc, nodePos);
+              currentNode = topLevelNode;
+              currentPos = blockStartPos;
+              relativePosition = positionToRelativePosition(view.state, currentPos);
+              null == onNodeChange || onNodeChange({ editor, node: currentNode, pos: currentPos });
+              tippyInstance.setProps({ getReferenceClientRect: () => domNode.getBoundingClientRect() });
+              tippyInstance.show();
             }
-            return !1;
+            return false;
           }
         }
       }
     });
 };
 
-const M = e.create({
+const DragHandle = Extension.create({
   name: "dragHandle",
   addOptions: () => ({
     render() {
-      const e = document.createElement("div");
-      return e.classList.add("drag-handle"), e;
+      const dragHandleElement = document.createElement("div");
+      return dragHandleElement.classList.add("drag-handle"), dragHandleElement;
     },
     tippyOptions: {},
-    locked: !1,
+    locked: false,
     onNodeChange: () => null
   }),
   addCommands() {
     return {
-      lockDragHandle: () => ({ editor: e }) => (
-        this.options.locked = !0,
-        e.commands.setMeta("lockDragHandle", this.options.locked)
+      lockDragHandle: () => ({ editor }) => (
+        this.options.locked = true,
+        editor.commands.setMeta("lockDragHandle", this.options.locked)
       ),
-      unlockDragHandle: () => ({ editor: e }) => (
-        this.options.locked = !1,
-        e.commands.setMeta("lockDragHandle", this.options.locked)
+      unlockDragHandle: () => ({ editor }) => (
+        this.options.locked = false,
+        editor.commands.setMeta("lockDragHandle", this.options.locked)
       ),
-      toggleDragHandle: () => ({ editor: e }) => (
+      toggleDragHandle: () => ({ editor }) => (
         this.options.locked = !this.options.locked,
-        e.commands.setMeta("lockDragHandle", this.options.locked)
+        editor.commands.setMeta("lockDragHandle", this.options.locked)
       )
     };
   },
   addProseMirrorPlugins() {
-    const e = this.options.render();
-    return [k({
+    const dragHandleElement = this.options.render();
+    return [DragHandlePlugin({
       tippyOptions: this.options.tippyOptions,
-      element: e,
+      element: dragHandleElement,
       editor: this.editor,
       onNodeChange: this.options.onNodeChange
     })];
   }
 });
 
-export { M as DragHandle, k as DragHandlePlugin, M as default, C as dragHandlePluginDefaultKey };
+export { DragHandle, DragHandlePlugin, DragHandle as default, dragHandlePluginDefaultKey };

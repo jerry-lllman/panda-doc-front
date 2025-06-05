@@ -6,7 +6,7 @@ import { TextToolbar, LinkToolbar } from './components'
 
 import '@/assets/styles/keyframe-animations.less'
 import '@/assets/styles/tip-tap.less'
-import { DragHandleComponent } from './extensions/draggable/drag-handle'
+import { DragHandleComponent } from './extensions/draggable'
 
 
 const getRandomName = () => {

@@ -1,5 +1,5 @@
 import type { Editor } from "@tiptap/react"
-import { DragHandle } from "./drag-react"
+import { DragHandle } from "./drag-handle-react"
 import { useData } from "@/pages/hooks/useData"
 import { GripVertical } from "lucide-react"
 import { Button } from "antd"
