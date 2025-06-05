@@ -113,13 +113,7 @@ export default function Layout() {
           </div>
         </Header>
 
-        <Content
-          id='layout-content'
-          style={{
-            margin: '16px auto',
-            padding: 16,
-          }}
-        >
+        <Content id='layout-content'>
           <Outlet />
         </Content>
       </AntLayout>

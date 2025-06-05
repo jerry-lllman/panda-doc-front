@@ -21,9 +21,6 @@ export const DragHandleComponent = (props: {
         zIndex: 99,
       }}
     >
-      {/* <div className="h-8 flex items-center">
-        <GripVertical className="select-none cursor-pointer" size={16} />
-      </div> */}
       <Button type="text" icon={<GripVertical className="select-none cursor-pointer" size={16} />} />
     </DragHandle>
   )
