@@ -12,7 +12,7 @@ import { createCollaborationCaret } from "../extensions";
 export const usePandaEditor = (docId: string, userName: string, userAvatar: string) => {
   // Create document and provider inside the hook for better lifecycle management
   const ydoc = useMemo(() => new Y.Doc(), [docId]);
-  const provider = useMemo(() => new WebsocketProvider(`api/ws`, `/doc-room?docId=${docId}`, ydoc), [docId, ydoc]);
+  const provider = useMemo(() => new WebsocketProvider(`ws`, `doc-room?docId=${docId}`, ydoc), [docId, ydoc]);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -59,6 +59,8 @@ export const usePandaEditor = (docId: string, userName: string, userAvatar: stri
         const content = JSON.parse(res.data?.content || '');
         editor.commands.setContent(content);
 
+        provider.connect()
+
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred');
       } finally {
@@ -80,6 +82,7 @@ export const usePandaEditor = (docId: string, userName: string, userAvatar: stri
     // Cleanup function for this effect
     return () => {
       provider.off('sync', handleSync);
+      provider.disconnect()
     };
   }, [editor, docId, provider]);
 
@@ -95,25 +98,25 @@ export const usePandaEditor = (docId: string, userName: string, userAvatar: stri
   }, [editor])
 
   // Handle WebSocket connection lifecycle
-  useEffect(() => {
-    // Connect to the collaboration room
-    provider.connect()
+  // useEffect(() => {
+  //   // Connect to the collaboration room
+  //   provider.connect()
 
-    // Log connection status changes
-    provider.on('status', (event: { status: string }) => {
-      console.log('Collaboration connection status:', event.status)
-    })
+  //   // Log connection status changes
+  //   provider.on('status', (event: { status: string }) => {
+  //     console.log('Collaboration connection status:', event.status)
+  //   })
 
-    // Store cleanup function
-    cleanupRef.current = () => {
-      provider.disconnect()
-    }
+  //   // Store cleanup function
+  //   cleanupRef.current = () => {
+  //     provider.disconnect()
+  //   }
 
-    return () => {
-      // Clean up WebSocket connection when component unmounts
-      cleanupRef.current?.()
-    }
-  }, [provider])
+  //   return () => {
+  //     // Clean up WebSocket connection when component unmounts
+  //     cleanupRef.current?.()
+  //   }
+  // }, [provider])
 
   // Clean up editor and resources when component unmounts or docId changes
   useEffect(() => {
