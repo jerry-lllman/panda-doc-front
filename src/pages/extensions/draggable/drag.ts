@@ -265,20 +265,19 @@ const DragHandlePlugin = ({ pluginKey = dragHandlePluginDefaultKey, element, edi
   let isLocked = false;
   let currentNode: Node | null = null;
   let currentPos = -1;
-
-  element.addEventListener("dragstart", (event => {
-    !function (dragEvent: DragEvent, editor: Editor) {
+  element.addEventListener("dragstart", (event) => {
+    const handleDragStart = (dragEvent: DragEvent, editor: Editor) => {
       const { view } = editor;
       if (!dragEvent.dataTransfer) return;
 
       const { empty, $from, $to } = view.state.selection;
       const eventSelectionRanges = getSelectionRangesFromEvent(dragEvent, editor);
       const currentSelectionRanges = getSelectionRanges($from, $to, 0);
-      const hasOverlappingSelection = currentSelectionRanges.some((currentRange =>
-        eventSelectionRanges.find((eventRange =>
+      const hasOverlappingSelection = currentSelectionRanges.some((currentRange) =>
+        eventSelectionRanges.find((eventRange) =>
           eventRange.$from === currentRange.$from && eventRange.$to === currentRange.$to
-        ))
-      ));
+        )
+      );
       const finalSelectionRanges = empty || !hasOverlappingSelection ? eventSelectionRanges : currentSelectionRanges;
 
       if (!finalSelectionRanges.length) return;
@@ -290,10 +289,10 @@ const DragHandlePlugin = ({ pluginKey = dragHandlePluginDefaultKey, element, edi
       const nodeRangeSelection = NodeRangeSelection.create(view.state.doc, startPos, endPos);
       const sliceContent = nodeRangeSelection.content();
 
-      finalSelectionRanges.forEach((range => {
+      finalSelectionRanges.forEach((range) => {
         const clonedNode = cloneElement(view.nodeDOM(range.$from.pos) as HTMLElement);
         dragImageContainer.append(clonedNode);
-      }));
+      });
 
       dragImageContainer.style.position = "absolute";
       dragImageContainer.style.top = "-10000px";
@@ -303,44 +302,80 @@ const DragHandlePlugin = ({ pluginKey = dragHandlePluginDefaultKey, element, edi
       (view as any).dragging = { slice: sliceContent, move: true };
       tr.setSelection(nodeRangeSelection);
       view.dispatch(tr);
-      document.addEventListener("drop", (() => removeElement(dragImageContainer)), { once: true });
-    }(event as DragEvent, editor);
-    setTimeout((() => {
-      element && (element.style.pointerEvents = "none");
-    }), 0);
-  }));
+      document.addEventListener("drop", () => removeElement(dragImageContainer), { once: true });
+    };
 
-  element.addEventListener("dragend", (() => {
-    element && (element.style.pointerEvents = "auto");
-  }));
+    handleDragStart(event as DragEvent, editor);
+
+    setTimeout(() => {
+      if (element) {
+        element.style.pointerEvents = "none";
+      }
+    }, 0);
+  });
+  element.addEventListener("dragend", () => {
+    if (element) {
+      element.style.pointerEvents = "auto";
+    }
+  });
 
   return new Plugin<DragHandlePluginState>({
-    key: "string" == typeof pluginKey ? new PluginKey(pluginKey) : pluginKey,
+    key: typeof pluginKey === "string" ? new PluginKey(pluginKey) : pluginKey,
     state: {
       init: () => ({ locked: false }),
       apply(transaction: Transaction, state: DragHandlePluginState, oldState: EditorState, newState: EditorState): DragHandlePluginState {
         const lockMeta = transaction.getMeta("lockDragHandle");
         const hideMeta = transaction.getMeta("hideDragHandle");
 
-        if (void 0 !== lockMeta && (isLocked = lockMeta), hideMeta && tippyInstance)
-          return tippyInstance.hide(),
-            isLocked = false,
-            currentNode = null,
-            currentPos = -1,
-            null == onNodeChange || onNodeChange({ editor, node: null, pos: -1 }),
-            state;
+        // 处理锁定元数据
+        if (void 0 !== lockMeta) {
+          isLocked = lockMeta;
+        }
 
-        if (transaction.docChanged && -1 !== currentPos && element && tippyInstance)
-          if (isChangeOrigin(transaction)) {
-            const newPos = ((state: EditorState, relativePos: RelativePosition | null) => {
-              const ySyncState = ySyncPluginKey.getState(state);
-              return ySyncState && relativePos ? relativePositionToAbsolutePosition(ySyncState.doc, ySyncState.type, relativePos, ySyncState.binding.mapping) || 0 : -1;
-            })(newState, relativePosition);
-            newPos !== currentPos && (currentPos = newPos);
-          } else {
-            const mappedPos = transaction.mapping.map(currentPos);
-            mappedPos !== currentPos && (currentPos = mappedPos, relativePosition = positionToRelativePosition(newState, currentPos));
+        // 处理隐藏元数据
+        if (hideMeta && tippyInstance) {
+          tippyInstance?.hide();
+          isLocked = false;
+          currentNode = null;
+          currentPos = -1;
+
+          if (onNodeChange) {
+            onNodeChange({ editor, node: null, pos: -1 });
           }
+
+          return state;
+        }
+
+        // 处理文档变更时的位置更新
+        if (transaction.docChanged && currentPos !== -1 && element && tippyInstance) {
+          if (isChangeOrigin(transaction)) {
+            // 处理协同编辑的相对位置转换
+            const calculateNewPosition = (state: EditorState, relativePos: RelativePosition | null): number => {
+              const ySyncState = ySyncPluginKey.getState(state);
+              if (ySyncState && relativePos) {
+                return relativePositionToAbsolutePosition(
+                  ySyncState.doc,
+                  ySyncState.type,
+                  relativePos,
+                  ySyncState.binding.mapping
+                ) || 0;
+              }
+              return -1;
+            };
+
+            const newPos = calculateNewPosition(newState, relativePosition);
+            if (newPos !== currentPos) {
+              currentPos = newPos;
+            }
+          } else {
+            // 处理本地编辑的位置映射
+            const mappedPos = transaction.mapping.map(currentPos);
+            if (mappedPos !== currentPos) {
+              currentPos = mappedPos;
+              relativePosition = positionToRelativePosition(newState, currentPos);
+            }
+          }
+        }
         return state;
       }
     },
@@ -358,31 +393,46 @@ const DragHandlePlugin = ({ pluginKey = dragHandlePluginDefaultKey, element, edi
       return {
         update(view: EditorView, prevState: EditorState) {
           if (!element) return;
-          if (!editor.isEditable)
-            return tippyInstance?.destroy(), void (tippyInstance = null);
-
-          if (tippyInstance || (tippyInstance = tippy(view.dom, {
-            getReferenceClientRect: null,
-            interactive: true,
-            trigger: "manual",
-            placement: "left-start",
-            hideOnClick: false,
-            duration: 100,
-            popperOptions: {
-              modifiers: [
-                { name: "flip", enabled: false },
-                { name: "preventOverflow", options: { rootBoundary: "document", mainAxis: false } }
-              ]
-            },
-            ...tippyOptions,
-            appendTo: containerDiv,
-            content: element
-          })), element.draggable = !isLocked, view.state.doc.eq(prevState.doc) || -1 === currentPos)
+          if (!editor.isEditable) {
+            tippyInstance?.destroy();
+            tippyInstance = null;
             return;
+          }
+
+          // 初始化 tippy 实例（如果还未初始化）
+          if (!tippyInstance) {
+            tippyInstance = tippy(view.dom, {
+              getReferenceClientRect: null,
+              interactive: true,
+              trigger: "manual",
+              placement: "left-start",
+              hideOnClick: false,
+              duration: 100,
+              popperOptions: {
+                modifiers: [
+                  { name: "flip", enabled: false },
+                  { name: "preventOverflow", options: { rootBoundary: "document", mainAxis: false } }
+                ]
+              },
+              ...tippyOptions,
+              appendTo: containerDiv,
+              content: element
+            });
+          }
+
+          // 设置拖拽状态
+          element.draggable = !isLocked;
+
+          // 如果文档未变更或当前位置无效，直接返回
+          if (view.state.doc.eq(prevState.doc) || currentPos === -1) {
+            return;
+          }
 
           let domNode = view.nodeDOM(currentPos) as Element;
-          if (domNode = findParentDomNode(view, domNode), domNode === view.dom) return;
-          if (1 !== (domNode as any)?.nodeType) return;
+          domNode = findParentDomNode(view, domNode);
+
+          if (domNode === view.dom) return;
+          if (!(domNode as Element)?.nodeType || (domNode as Element).nodeType !== 1) return;
 
           const nodePos = view.posAtDOM(domNode, 0);
           const topLevelNode = getTopLevelNode(editor.state.doc, nodePos);
@@ -396,21 +446,31 @@ const DragHandlePlugin = ({ pluginKey = dragHandlePluginDefaultKey, element, edi
         },
         destroy() {
           tippyInstance?.destroy();
-          element && removeElement(containerDiv);
+          if (element) {
+            removeElement(containerDiv);
+          }
         }
       };
     },
     props: {
       handleDOMEvents: {
-        mouseleave: (view: EditorView, event: MouseEvent) => (
-          isLocked || event.target && !containerDiv.contains(event.relatedTarget as Node) && (
-            tippyInstance?.hide(),
-            currentNode = null,
-            currentPos = -1,
-            onNodeChange?.({ editor, node: null, pos: -1 })
-          ),
-          false
-        ),
+        mouseleave: (_view: EditorView, event: MouseEvent) => {
+          // 如果已锁定，不处理鼠标离开事件
+          if (isLocked) {
+            return false;
+          }
+
+          // 检查鼠标是否离开了容器区域
+          const shouldHide = event.target && !containerDiv.contains(event.relatedTarget as Element);
+          if (shouldHide) {
+            tippyInstance?.hide();
+            currentNode = null;
+            currentPos = -1;
+            onNodeChange?.({ editor, node: null, pos: -1 });
+          }
+
+          return false;
+        },
         mousemove(view: EditorView, event: MouseEvent): boolean {
           if (!element || !tippyInstance || isLocked) return false;
 
@@ -424,8 +484,10 @@ const DragHandlePlugin = ({ pluginKey = dragHandlePluginDefaultKey, element, edi
           if (!searchResult.resultElement) return false;
 
           let domNode = searchResult.resultElement;
-          if (domNode = findParentDomNode(view, domNode) as HTMLElement, domNode === view.dom) return false;
-          if (1 !== (domNode as any)?.nodeType) return false;
+          domNode = findParentDomNode(view, domNode) as HTMLElement;
+
+          if (domNode === view.dom) return false;
+          if ((domNode as HTMLElement)?.nodeType !== 1) return false;
 
           const nodePos = view.posAtDOM(domNode, 0);
           const topLevelNode = getTopLevelNode(editor.state.doc, nodePos);
@@ -462,7 +524,8 @@ const DragHandle = Extension.create<DragHandleOptions>({
     return {
       render() {
         const dragHandleElement = document.createElement("div");
-        return dragHandleElement.classList.add("drag-handle"), dragHandleElement;
+        dragHandleElement.classList.add("drag-handle");
+        return dragHandleElement;
       },
       tippyOptions: {},
       locked: false,
@@ -471,18 +534,18 @@ const DragHandle = Extension.create<DragHandleOptions>({
   },
   addCommands() {
     return {
-      lockDragHandle: () => ({ editor }: { editor: Editor }) => (
-        this.options.locked = true,
-        editor.commands.setMeta("lockDragHandle", this.options.locked)
-      ),
-      unlockDragHandle: () => ({ editor }: { editor: Editor }) => (
-        this.options.locked = false,
-        editor.commands.setMeta("lockDragHandle", this.options.locked)
-      ),
-      toggleDragHandle: () => ({ editor }: { editor: Editor }) => (
-        this.options.locked = !this.options.locked,
-        editor.commands.setMeta("lockDragHandle", this.options.locked)
-      )
+      lockDragHandle: () => ({ editor }: { editor: Editor }) => {
+        this.options.locked = true;
+        return editor.commands.setMeta("lockDragHandle", this.options.locked);
+      },
+      unlockDragHandle: () => ({ editor }: { editor: Editor }) => {
+        this.options.locked = false;
+        return editor.commands.setMeta("lockDragHandle", this.options.locked);
+      },
+      toggleDragHandle: () => ({ editor }: { editor: Editor }) => {
+        this.options.locked = !this.options.locked;
+        return editor.commands.setMeta("lockDragHandle", this.options.locked);
+      }
     };
   },
   addProseMirrorPlugins() {
