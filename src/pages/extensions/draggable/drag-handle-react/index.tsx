@@ -3,6 +3,8 @@ import { useState, useRef, useEffect } from "react";
 import type { ReactNode } from "react";
 import type { Editor } from "@tiptap/react";
 import type { Node } from '@tiptap/pm/model';
+import type { Plugin } from "@tiptap/pm/state";
+import type { DragHandlePluginProps, DragHandlePluginState } from "../drag";
 
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 export type DragHandleProps = Omit<Optional<DragHandlePluginProps, 'pluginKey'>, 'element'> & {
@@ -25,7 +27,7 @@ const DragHandle = (props: DragHandleProps) => {
     tippyOptions: d = {}
   } = props
   const [element, setElement] = useState<HTMLDivElement | null>(null)
-  const dragHandleRef = useRef(null)
+  const dragHandleRef = useRef<Plugin<DragHandlePluginState> | null>(null)
 
   useEffect(() => {
     if (element) {
