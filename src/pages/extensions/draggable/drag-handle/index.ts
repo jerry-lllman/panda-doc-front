@@ -10,7 +10,7 @@ import {
   absolutePositionToRelativePosition,
   relativePositionToAbsolutePosition,
 } from "y-prosemirror";
-import { getSelectionRanges, NodeRangeSelection } from "./extension-node-range";
+import { getSelectionRanges, NodeRangeSelection } from "../extension-node-range";
 
 type RelativePosition = any; // y-prosemirror 类型定义
 
